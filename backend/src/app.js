@@ -2,9 +2,9 @@ import express from "express";
 const app=express();
 const port=3000;
 
-
+const nums=18;
 app.get("/raj",(req,res)=>{
-    res.send("hello <h1>raj</h1>");
+    res.json({nums:nums});
 })
 
 app.listen(port,()=>{
