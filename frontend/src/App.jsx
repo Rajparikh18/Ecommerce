@@ -1,13 +1,15 @@
-
+import Footer from './components/Footer'
+import Header from './components/Header'
 import './App.css'
-import axios from 'axios'
-import { useState } from 'react';
-import { useEffect } from 'react';
-import Header from './components/Navbar';
+
 
 function App() {
     return (
-        <Header/>
+      <>
+        <Header></Header>
+        <Footer></Footer>
+      <Header/>
+      </>
     )
 }
 
