@@ -1,0 +1,82 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+    height: 50px;
+    color: #333;
+  }
+  
+  .header .logo {
+    height: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e8b57;
+  }
+  
+  .header .search-container {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    max-width: 600px;
+    margin: 0 20px;
+    height: 40px;
+  }
+  
+  .header .category-select {
+    padding: 0 10px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+    border-right: none;
+    background-color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .header .search-input {
+    flex: 1;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    font-size: 14px;
+  }
+  
+  .header .search-button {
+    padding: 0 15px;
+    background-color: #2e8b57;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+  }
+  
+  .header .nav-items {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .header .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  
+  .header .nav-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+  }
+  
+  .header .login-text {
+    font-weight: bold;
+  }
+  
+  .header .nav-item svg {
+    color: #333;
+  }

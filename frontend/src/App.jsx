@@ -1,11 +1,15 @@
-
+import Footer from './components/Footer'
+import Header from './components/Header'
 import './App.css'
-import axios from 'axios'
-import { useState } from 'react';
-import { useEffect } from 'react';
+
 
 function App() {
-    return  
+    return (
+      <>
+        <Header></Header>
+        <Footer></Footer>
+      </>
+    )
 }
 
 export default App
