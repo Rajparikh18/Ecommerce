@@ -1,0 +1,92 @@
+/* Navbar.css */
+*{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 70px;
+  }
+  
+  .navbar li {
+    margin: 0 20px;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar a:hover {
+    color: #0066cc;
+  }
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .categories select {
+    border: none;
+    padding: 0.3rem;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: inherit;
+    color: #333333;
+    font-weight: 500;
+  }
+  
+  .categories {
+    position: relative;
+    display: inline-block;
+    
+  }
+  .categoryParent{
+    position: relative;
+  }
+  .categoryHover{
+    display: none;
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000; 
+    
+  }
+  .categoryParent:hover{
+    cursor: pointer;
+  }
+  .categoryParent:hover .categoryHover{
+    transition-duration: 1s;
+    display: block;
+    
+
+
+  }
+  
+
+  
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      height: auto;
+      padding: 20px 0;
+    }
+  
+    .navbar li {
+      margin: 10px 0;
+    }
+  }
