@@ -3,7 +3,7 @@ const app=express();
 const port=3000;
 
 const nums=18;
-app.get("/raj",(req,res)=>{
+app.get("/api/raj",(req,res)=>{
     res.json({nums:nums});
 })
 
