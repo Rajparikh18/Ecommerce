@@ -4,6 +4,10 @@ import Header from './components/Header'
 import Navbar from './components/Navbar'
 import Slider from './components/Slider'
 import image1 from './assets/slider1.jpg';
+import image2 from './assets/slider2.png';
+import image3 from './assets/slider3.jpg';
+import image4 from './assets/slider4.png';
+
 import './App.css'
 import ProductCard from './components/Productcard';
 import demoimage from "./assets/images/demoimage.jpeg"
@@ -11,16 +15,14 @@ import demoimage from "./assets/images/demoimage.jpeg"
 const slides = [
     {
         mainImage: image1,
-        title: 'Slide 1',
-        subtitle: 'Subtitle 1',
-        description: 'Description 1',
     },
     {
-        mainImage: image1,
-        title: 'Slide 2',
-        subtitle: 'Subtitle 2',
-        description: 'Description 2',
-    },
+      mainImage: image2,
+  }, {
+    mainImage: image3,
+}, {
+  mainImage: image4,
+},
 ];
 
 const productData = {
