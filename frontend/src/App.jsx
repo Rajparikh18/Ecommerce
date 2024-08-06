@@ -1,11 +1,12 @@
+import React from 'react'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import Slider from './components/Slider'
 import image1 from './assets/slider1.jpg';
 import './App.css'
-import ProductcardUsage from './components/Productcardusage'
-
+import ProductCard from './components/Productcard';
+import demoimage from "./assets/images/demoimage.jpeg"
 
 const slides = [
     {
@@ -22,16 +23,32 @@ const slides = [
     },
 ];
 
+const productData = {
+  imageUrl:demoimage,
+  title: "Haldiram's",
+  description:"best bhujia due to a best website",
+  currentPrice: 49.00,
+  originalPrice: 65.00
+};
+
 function App() {
     return (
       <>
-        <Header></Header>
-        <Navbar></Navbar>
-        <Slider slides={slides}></Slider>
-        <ProductcardUsage/>
-        <ProductcardUsage/>
-        <ProductcardUsage/>
-        <Footer></Footer>
+        <Header />
+        <Navbar />
+        <Slider slides={slides} />
+        <br />
+        <div className='allcards'>
+          {
+            Array.from({ length: 10 }).map((_, index) => (
+              <React.Fragment key={index}>
+                <ProductCard {...productData} />  
+              </React.Fragment>
+            ))
+          }
+        </div>
+        <br />
+        <Footer />
       </>
     )
 }
