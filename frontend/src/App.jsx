@@ -5,7 +5,6 @@ import Slider from './components/Slider'
 import image1 from './assets/slider1.jpg';
 import './App.css'
 import ProductcardUsage from './components/Productcardusage'
-import Productcard from './components/Productcard'
 
 
 const slides = [

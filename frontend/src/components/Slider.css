@@ -11,7 +11,7 @@
     overflow: hidden;
     justify-content: space-between;
   }
-  img{
+  .main-image{
     width: 50%;
     margin: 10px;
   }
