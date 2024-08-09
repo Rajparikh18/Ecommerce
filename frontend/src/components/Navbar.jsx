@@ -9,7 +9,7 @@ function Navbar() {
           <a href="/home">Home</a>
         </li>
         <div className="categoryParent">
-          <li className="categories">Categories</li>
+          <a className="categories">Categories</a>
             <div className="categoryHover">
               <a href="">Haldiram</a>
               <br />
