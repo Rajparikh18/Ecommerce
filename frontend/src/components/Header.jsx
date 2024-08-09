@@ -1,11 +1,21 @@
 import React from 'react';
-import { Search, User, Heart, ShoppingCart } from 'lucide-react';
+import { Search, User, ShoppingCart } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
   return (
     <header className="header">
-        <i>Masterkart</i>
+      <div className="top-row">
+        <i className="logo">Masterkart</i>
+        <div className="mobile-actions">
+          <button className="mobile-action-btn">
+            <User size={24} />
+          </button>
+          <button className="mobile-action-btn">
+            <ShoppingCart size={24} />
+          </button>
+        </div>
+      </div>
       <div className="search-container">
         <select className="category-select">
           <option>Category</option>
@@ -21,16 +31,10 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <div className="nav-item">
+          <User size={24} />
           <div className="nav-text">
             <span>Account</span>
             <span className="login-text">LOGIN</span>
-          </div>
-        </div>
-        <div className="nav-item">
-          <Heart size={24} />
-          <div className="nav-text">
-            <span>Wishlist</span>
-            <span>3-ITEMS</span>
           </div>
         </div>
         <div className="nav-item">
