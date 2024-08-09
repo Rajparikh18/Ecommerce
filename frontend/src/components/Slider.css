@@ -1,5 +1,5 @@
 .slider-container {
-  max-width: 1200px;
+  max-width: 77.5rem;
   margin: 0 auto;
   font-family: Arial, sans-serif;
 }
@@ -7,7 +7,7 @@
 .main-slide {
   position: relative;
   background-color: #e6f7f2;
-  height: 400px;
+  height: 25rem;
   display: flex;
   overflow: hidden;
 }

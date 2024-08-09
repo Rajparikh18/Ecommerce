@@ -1,19 +1,18 @@
 .product-card {
-    width: 250px;
+    width: 15.5rem;
     background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(85, 85, 85, 0.1);
+    border-radius: 4px;
     overflow: hidden;
-    border:#333 2px solid;
+    border:#7c7b7b7e 1px solid;
     display: inline-block;
     margin: 25px 20px;
-    
   }
   
   
   .image-container {
     position: relative;
-    border-bottom: #333 2px solid;
+    padding: 10px;
   }
   
   .product-image {
