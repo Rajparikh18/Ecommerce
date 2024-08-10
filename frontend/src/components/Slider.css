@@ -6,7 +6,6 @@
 
 .main-slide {
   position: relative;
-  background-color: #e6f7f2;
   height: 25rem;
   display: flex;
   overflow: hidden;
@@ -47,4 +46,27 @@
 
 .dot.active {
   background-color: #333;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .main-slide {
+    height: auto;
+  }
+
+  .main-image {
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    mix-blend-mode:color-burn;
+  }
+
+  .navigation {
+    margin-top: 10px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+  }
 }
