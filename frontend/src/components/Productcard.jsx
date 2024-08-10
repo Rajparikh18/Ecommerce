@@ -8,6 +8,7 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice 
       <div className="image-container">
         <img src={imageUrl} alt={title} className="product-image" />
       </div>
+      <div className='info-cart'>
       <div className="product-info">
         <h2 className="product-title">{title}</h2>
         <p>{description}</p>
@@ -22,6 +23,7 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice 
       <div className='btncart'>
       <button className='addtocart'>Add to cart</button>
       </div>    
+      </div>
     </div>
   );
 };
