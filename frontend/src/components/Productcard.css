@@ -3,7 +3,6 @@
     background-color: white;
     box-shadow: 0 4px 6px rgba(85, 85, 85, 0.1);
     border-radius: 4px;
-    overflow: hidden;
     border:#7c7b7b7e 1px solid;
     display: inline-block;
     margin: 25px 20px;
@@ -78,3 +77,26 @@
   .addtocart:hover{
     box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.637);;
   }
+  
+  @media (max-width: 768px) {
+    .product-card{
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        overflow-wrap:hidden;
+        justify-content: center;
+        border: none;
+        background-color: none;
+        box-shadow: none;
+        border:#7c7b7b7e 1px solid;
+    }
+        .btncart{
+          padding-bottom: 1rem;
+          display: flex;
+          height: auto;
+        }
+        .image-container{
+          border: none;
+        }
+    }
+  

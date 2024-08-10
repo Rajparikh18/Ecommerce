@@ -17,7 +17,7 @@ const Header = () => {
         </div>
       </div>
       <div className="search-container">
-        <select className="category-select">
+        <select className="category-select"> 
           <option>Category</option>
         </select>
         <input 
