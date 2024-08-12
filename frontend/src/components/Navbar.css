@@ -19,7 +19,7 @@
   text-decoration: none;
   color: white;
   transition-duration:0.3s ;
-  font-size: larger;
+  font-size: large;
 }
 .navbar a:hover{
   background-color: white;
