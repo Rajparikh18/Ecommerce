@@ -1,8 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { Search, User, ShoppingCart } from 'lucide-react';
 import './Header.css';
+import Cart from './Cart';
 
 const Header = () => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   return (
     <header className="header">
       <div className="top-row">
@@ -11,9 +14,10 @@ const Header = () => {
           <button className="mobile-action-btn">
             <User size={24} />
           </button>
-          <button className="mobile-action-btn">
-            <ShoppingCart size={24} />
-          </button>
+            <button onClick={() => setIsCartOpen(true)} className="nav-item">
+              <ShoppingCart size={24} />
+            </button>
+            <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>
       </div>
       <div className="search-container">
@@ -37,13 +41,12 @@ const Header = () => {
             <span className="login-text">LOGIN</span>
           </div>
         </div>
-        <div className="nav-item">
-          <ShoppingCart size={24} />
           <div className="nav-text">
-            <span>Cart</span>
-            <span>3-ITEMS</span>
+            <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+              <ShoppingCart size={24} />
+            </button>
+            <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
           </div>
-        </div>
       </div>
     </header>
   );
