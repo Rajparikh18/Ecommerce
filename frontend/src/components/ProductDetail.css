@@ -1,0 +1,138 @@
+
+.product-page {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .product-image{
+    align-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .product-page {
+      flex-direction: column;
+    }
+  }
+  
+  .product-info h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ratings {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .stars {
+    color: #fbbf24;
+    margin-right: 0.5rem;
+  }
+  
+  .price-info {
+    margin-bottom: 1rem;
+  }
+  
+  .current-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .discount {
+    color: #10b981;
+    margin-left: 0.5rem;
+  }
+  
+  .original-price {
+    color: #6b7280;
+  }
+  
+  .original-price span {
+    text-decoration: line-through;
+  }
+  
+  .description {
+    margin-bottom: 1rem;
+  }
+  
+  .features {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .weight-selection h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .weight-options {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .weight-options button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: #f3f4f6;
+  }
+  
+  .weight-options button.selected {
+    background-color: #10b981;
+    color: white;
+  }
+  
+  .add-to-cart {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .quantity-selector {
+    display: flex;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  
+  .quantity-selector button {
+    padding: 0.5rem;
+    background-color: #f3f4f6;
+  }
+  
+  .quantity-selector input {
+    width: 3rem;
+    text-align: center;
+    border: none;
+  }
+  
+  .cart-button {
+    background-color: #000;
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+  }
+  
+  .icon-button {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  
+  .in-stock {
+    color: #10b981;
+  }
+  
+  .out-of-stock {
+    color: #ef4444;
+  }
+  
+  .sku {
+    color: #6b7280;
+  }

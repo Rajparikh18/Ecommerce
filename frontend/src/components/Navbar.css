@@ -10,18 +10,19 @@
   list-style-type: none;
   margin: 0;
   padding: 0 20px;
-  background-color: #ffffff;
+  background-color: #1a202cf6;
   height: 70px;
 }
 .navbar a{
   padding: 0.5rem;
   border-radius: 5px;
   text-decoration: none;
-  color: #2e8b57;
+  color: white;
   transition-duration:0.3s ;
+  font-size: larger;
 }
 .navbar a:hover{
-  background-color: #0f0f0f0f;
+  background-color: white;
   color: #676767;
 }
 
