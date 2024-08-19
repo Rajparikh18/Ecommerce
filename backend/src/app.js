@@ -1,10 +1,20 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from "express";
-const app=express();
-const port=process.env.PORT;
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
-app.listen(port,()=>{
-    console.log(`running on ${port}`);
-})
+dotenv.config();
+const app=express();
+const port=process.env.PORT || 8000;
+
+app.use(cors({
+    origin:process.env.CORS_ORIGIN,
+    credentials:true
+}));
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(express.static("public"))
+app.use(cookieParser())
+
+
+export {app,port}
