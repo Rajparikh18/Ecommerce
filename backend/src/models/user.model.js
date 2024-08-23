@@ -29,9 +29,9 @@ const userSchema=new Schema({
 })
 
 userSchema.pre("save",async function (next){ // we didn,t use arrow funct cuz we can access this keyword
-    if(!this.isModified("password")) return next();
-
-    this.password=bcrypt.hash(this.password,10);
+    // if(!this.isModified("password")) return next();
+    this.password=await bcrypt.hash(this.password,10);
+    console.log("using hash");
     next();
 })
 userSchema.methods.isPasswordCorrect = async function (password) { // this is used to create our custom methods like save/updateOne etc..
