@@ -3,8 +3,13 @@ import './Productcard.css';
 
 
 const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice }) => {
+
+  function handleclick(event){
+    window.location.href = '/product';
+  }
+
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={handleclick}>
       <div className="image-container">
         <img src={imageUrl} alt={title} className="product-image" />
       </div>
