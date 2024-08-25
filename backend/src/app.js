@@ -23,8 +23,9 @@ import { User } from './models/user.model.js';
 
 
 //routes declaration 
-app.use("/register",userRouter)
-app.use("/login",userRouter)
+app.use("/api/register",userRouter)
+app.use("/api/login",userRouter)
+app.use("/api/logout",userRouter)
 app.use("/",userRouter)
 
 export {app,port}

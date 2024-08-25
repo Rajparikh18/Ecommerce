@@ -14,10 +14,9 @@ const registerUser = asyncHandler(async(req,res)=>{
         if(existingUser){
             throw new ApiError(409,"user with this email already exist");
         }
-        const user=User.create({
+        const user=await User.create({
             username:username.toLowerCase(),email,password
         })
-        
         const createdUser=await User.findById(user._id).select("-password -refreshToken");
         if(!createdUser){
             throw new ApiError(500,"Something went wrong while registering the user");
@@ -65,10 +64,10 @@ const loginUser=asyncHandler(async(req,res)=>{
         .cookie("refreshToken",refreshToken,options)
         .cookie("accessToken",accessToken,options)
         .json(
-            new ApiResponse(
+           new ApiResponse(
                 200,
                 {
-                    user: user,accessToken,refreshToken
+                    user: user
                 },
                 "User logged In successfully"
             )
