@@ -1,17 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
-import { Search, User, ShoppingCart } from 'lucide-react';
+import { Search, User, ShoppingCart, Link } from 'lucide-react';
 import './Header.css';
 import Cart from './Cart';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const logClick = () =>{ navigate('/authpage')};
   const [isCartOpen, setIsCartOpen] = useState(false);
   return (
     <header className="header">
       <div className="top-row">
         <i className="logo">Masterkart</i>
         <div className="mobile-actions">
-          <button className="mobile-action-btn">
+          <button className="mobile-action-btn" onClick={logClick}>
             <User size={24} />
           </button>
             <button onClick={() => setIsCartOpen(true)} className="nav-item">
@@ -34,10 +37,9 @@ const Header = () => {
         </button>
       </div>
       <div className="nav-items">
-        <div className="nav-item">
+        <div className="nav-item" onClick={logClick}>
           <User size={24} />
-          <div className="nav-text">
-            <span>Account</span>
+          <div className="nav-text" >
             <span className="login-text">LOGIN</span>
           </div>
         </div>
