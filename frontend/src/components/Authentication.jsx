@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './Authentication.css';
 import axios from "axios"
+import { useNavigate } from 'react-router-dom';
 
 const Authcomponent = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login');
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -18,7 +20,7 @@ const Authcomponent = () => {
       const response = await axios.post(`/api/${type}`, formData);
   
       if (response.status === 200) {
-        console.log('Form submitted successfully:', response.data);
+        navigate("/home")
       }
     } catch (error) {
       console.error('Error submitting form', error);
@@ -34,7 +36,7 @@ const Authcomponent = () => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
-   
+    
     <form onSubmit={(e) =>{ console.log(type);handleSubmit(e, type)} }  className="auth-form">
       {type === 'register' && (
         <div className="form-group">
@@ -85,7 +87,7 @@ const Authcomponent = () => {
       </button>
     </form>
   );
-
+  
   return (
     <div className="auth-container">
       <div className="auth-card">

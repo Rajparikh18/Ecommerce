@@ -8,6 +8,7 @@ import image2 from '../assets/slider2.png';
 import image3 from '../assets/slider3.jpg';
 import image4 from '../assets/slider4.png';
 import './Home.css'
+import { useEffect } from 'react'
 
 import '../App.css'
 import ProductCard from '../components/Productcard';
@@ -35,6 +36,10 @@ const productData = {
 };
 
 function Home() {
+  useEffect(() => {
+    // Scroll to the top of the page on component mount
+    window.scrollTo(0, 0);
+  }, []);
     return (
       <>
         <Header />

@@ -6,6 +6,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function ProductPage(){
+  useEffect(() => {
+    // Scroll to the top of the page on component mount
+    window.scrollTo(0, 0);
+  }, []);
     const productData = {
         title: "Crunchy Potato Chips Cheese Flavour, 1 Kg (2 x 500g) Pack.",
         ratings: 4,

@@ -44,7 +44,7 @@ const loginUser=asyncHandler(async(req,res)=>{
             throw new ApiError(404,"User does not exist")
         }
 
-        if(user && user.isPasswordCorrect(password)){
+        if(user && await user.isPasswordCorrect(password)){
             const refreshToken=user.RefreshAccessToken();
             const accessToken =user.generateAccessToken();
             user.refreshToken=refreshToken;
