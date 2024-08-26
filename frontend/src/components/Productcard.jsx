@@ -1,11 +1,12 @@
 import React from 'react';
 import './Productcard.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice }) => {
-
-  function handleclick(event){
-    window.location.href = '/product';
+  const navigate = useNavigate();
+  const handleclick=()=>{
+    navigate('/product');
   }
 
   return (
