@@ -67,15 +67,17 @@
     display: flex;
     justify-content: center;
   }
-  .addtocart{
-    font-size: 1rem;
-    height: 2.5rem;
-    width: 8rem;
-    border-radius: 1rem;
+  .addtocart {
+    background-color: #28a745;
+    color: #fff;
     border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
   }
-  .addtocart:hover{
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.637);;
+  
+  .addtocart :hover{
+    background-color: #218838;
   }
   
   @media (max-width: 768px) {
