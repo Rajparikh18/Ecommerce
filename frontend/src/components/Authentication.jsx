@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Authentication.css';
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Authcomponent = () => {
   const navigate = useNavigate();
@@ -13,26 +14,24 @@ const Authcomponent = () => {
 
   const handleSubmit =async (e, type) => {
     e.preventDefault();
+
    const formData={
     email,password,username:name
    }
     try {
       const response = await axios.post(`/api/${type}`, formData);
+      const expires = new Date(); 
+      expires.setDate(expires.getDate() + 7);
   
       if (response.status === 200) {
-        navigate("/home")
+        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", {expires});
+          navigate("/home")
       }
     } catch (error) {
       console.error('Error submitting form', error);
     }
 
   };
-  const namaskar=async()=>{
-    await axios.post("/api/logout",(req,res)=>{
-      alert("hello world")
-    })
-  }
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
@@ -118,7 +117,6 @@ const Authcomponent = () => {
           <p>
             Protected by reCAPTCHA and subject to the Privacy Policy and Terms of Service.
           </p>
-          <button onClick={namaskar}>logout</button>
         </div>
       </div>
     </div>
