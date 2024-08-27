@@ -3,6 +3,7 @@ import ProductDetail from '../components/ProductDetail'
 import demoimage from '../assets/images/demoimage.jpeg'
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
+import { useEffect } from 'react';
 import Footer from '../components/Footer';
 
 function ProductPage(){
