@@ -3,7 +3,6 @@ import mongoose,{Schema} from 'mongoose';
 const productSchema = new Schema({
     image: {
         type: String,
-        required: true
     },
     productName: {
         type: String,
@@ -26,8 +25,10 @@ const productSchema = new Schema({
         type: Array,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
 });
 
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;
+export const Product = mongoose.model('Product', productSchema);
