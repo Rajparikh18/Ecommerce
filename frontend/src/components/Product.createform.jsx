@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './Product.createform.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ProductForm = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = useState({
     productName: '',
     price: [],
@@ -25,10 +27,10 @@ const ProductForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response=await axios.post('/api/create', product);
+        const response = await axios.post('/api/admin/create', product);
         console.log(response);
         if (response.status === 201) {
-          alert('Product created successfully!');
+          navigate("/home")
           setProduct({
             productName: '',
             price: [],
@@ -38,11 +40,10 @@ const ProductForm = () => {
             category: ''
           });
         } else {
-          alert('Failed to create product. Please try again.');
+          console.error('Error submitting form');
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred. Please try again.');
       }
   };
 
