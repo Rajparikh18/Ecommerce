@@ -7,6 +7,5 @@ router.route("/getproduct").get( getProducts);
 router.route("/getbyid").get( getProductById);
 router.route("/delete").delete( deleteProduct);
 router.route("/update").put( updateProduct);
-router.route("/getbycategory").get( getProductsByCategory);
-
+router.route("/getbycategory/:category").get( getProductsByCategory);
 export default router;
