@@ -2,50 +2,45 @@ import React, { useState } from 'react';
 import { Heart, Eye } from 'lucide-react';
 import './ProductDetail.css';
 
-const ProductPage = ({
-  title,
-  ratings,
-  numRatings,
+const ProductDetail = ({
+  productName,
   price,
-  discount,
   originalPrice,
   description,
   features,
-  weightOptions,
+  weight, 
   mainImage,
-  thumbnails
+  characs
 }) => {
   const [quantity, setQuantity] = useState(0);
-  const [selectedWeight, setSelectedWeight] = useState(weightOptions[0]);
-
+  const [selectedWeight, setSelectedWeight] = useState(weight[0]);
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   return (
     <div className="product-page">
         <div className="product-image">
-          <img src={mainImage} alt={title} />
+          <img src={mainImage} alt={productName} />
         </div>
       <div className="product-info">
-        <h1>{title}</h1>
-        <div className="ratings">
+        <h1>{productName}</h1>
+        {/* <div className="ratings">
           <div className="stars">
             {"★★★★☆".slice(0, ratings)}
             {"☆☆☆☆☆".slice(ratings)}
           </div>
-          <span>{numRatings} Ratings</span>
-        </div>
+        </div> */}
         
         <div className="price-info">
-          <span className="current-price">${price.toFixed(2)}</span>
-          <span className="discount">-{discount}%</span>
-          <p className="original-price">M.R.P.: <span>${originalPrice.toFixed(2)}</span></p>
+          <span className="current-price"> &#8377;{price[0]}</span> 
+          <span className="discount">-{Math.round(((price[1]-price[0])/price[1])*100)}%</span>
+          <p className="original-price">M.R.P.: <span> &#8377;{price[1]}</span></p>
         </div>
         
         <p className="description">{description}</p>
         
         <ul className="features">
-          {features.map((feature, index) => (
+          {characs.map((feature, index) => (
             <li key={index}>{feature}</li>
           ))}
         </ul>
@@ -53,7 +48,7 @@ const ProductPage = ({
         <div className="weight-selection">
           <h3>WEIGHT</h3><br />
           <div className="weight-options">
-            {weightOptions.map((weight) => (
+            {weight.map((weight) => (
               <button 
                 key={weight}
                 onClick={() => setSelectedWeight(weight)}
@@ -83,4 +78,4 @@ const ProductPage = ({
   );
 };
 
-export default ProductPage;
+export default ProductDetail;

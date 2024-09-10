@@ -23,7 +23,7 @@ const slides = [
 
 function Home() {
   const [products, setProducts] = useState([]); // Combined product list from both categories
-
+  const navigate = useNavigate();
   // Function to fetch products by category
   const getProductsByCategory = async (category) => {
     try {
@@ -40,9 +40,7 @@ function Home() {
       return []; // Return an empty array in case of error
     }
   };
-
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -71,13 +69,14 @@ function Home() {
         {
           products.length > 0 ? products.map((product, index) => (
             <React.Fragment key={index}>
-              <ProductCard
+              <ProductCard 
                 imageUrl={demoimage} // Use the correct image path if dynamic
                 title={product.productName}
                 description={product.description}
                 currentPrice={product.price[0]}
                 originalPrice={product.price[1]}
-              />
+                id={product._id}
+                />   
             </React.Fragment>
           )) : <p>No products available</p>
         }

@@ -4,7 +4,7 @@ const router = Router();
 
 router.route("/create").post( createProduct);
 router.route("/getproduct").get( getProducts);
-router.route("/getbyid").get( getProductById);
+router.route("/getbyid/:id").get( getProductById);
 router.route("/delete").delete( deleteProduct);
 router.route("/update").put( updateProduct);
 router.route("/getbycategory/:category").get( getProductsByCategory);

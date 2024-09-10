@@ -1,47 +1,42 @@
-import React from 'react';
-import ProductDetail from '../components/ProductDetail'
-import demoimage from '../assets/images/demoimage.jpeg'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ProductDetail from '../components/ProductDetail';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import { useEffect } from 'react';
 import Footer from '../components/Footer';
+import axios from 'axios';
 
-function ProductPage(){
+function ProductPage() {
+  const { id } = useParams(); 
+  const [productData, setProductData] = useState(null);
+
   useEffect(() => {
-    // Scroll to the top of the page on component mount
-    window.scrollTo(0, 0);
-  }, []);
-    const productData = {
-        title: "Crunchy Potato Chips Cheese Flavour, 1 Kg (2 x 500g) Pack.",
-        ratings: 4,
-        numRatings: 992,
-        price: 664.00,
-        discount: 78,
-        originalPrice: 2999.00,
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1990.",
-        features: [
-          "Closure: Hook & Loop",
-          "Sole: Polyvinyl Chloride",
-          "Width: Medium",
-          "Outer Material: A-Grade Standard Quality"
-        ],
-        weightOptions: ['250g', '500g', '1kg', '2kg'],
-        sku: "WH12",
-        inStock: true,
-        mainImage: demoimage,
-        thumbnails: [
-          demoimage,
-          demoimage,demoimage,demoimage
-        ]
-      };
+    window.scrollTo(0, 0); 
+    const fetchProductData = async () => {
+      try {
+        const response = await axios.get(`/api/admin/getbyid/${id}`);
+        console.log(response.data.data);
+        setProductData(response.data.data); 
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+
+    fetchProductData();
+  }, [id]);
+
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      <Header/>
-      <Navbar/>
-      <ProductDetail {...productData}/>
-      <Footer/>
+      <Header />
+      <Navbar />
+      <ProductDetail {...productData} />
+      <Footer />
     </div>
   );
-};
+}
 
 export default ProductPage;

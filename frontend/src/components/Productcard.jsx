@@ -3,10 +3,10 @@ import './Productcard.css';
 import { useNavigate } from 'react-router-dom';
 
 
-const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice }) => {
+const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,id }) => {
   const navigate = useNavigate();
   const handleclick=()=>{
-    navigate('/product');
+    navigate(`/product/${id}`);
   }
 
   return (
