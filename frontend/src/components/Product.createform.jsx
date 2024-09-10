@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const ProductForm = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({
+    productImage: null,
     productName: '',
     price: [],
     characs: [],
@@ -23,15 +24,24 @@ const ProductForm = () => {
     const { value } = e.target;
     setProduct({ ...product, [field]: value.split(',').map(item => item.trim()) });
   };
-
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProduct({ ...product, productImage: file });
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response = await axios.post('/api/admin/create', product);
+        console.log(product);
+        const response = await axios.post('/api/admin/create', product,{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         console.log(response);
         if (response.status === 201) {
           navigate("/home")
           setProduct({
+            productImage: null,
             productName: '',
             price: [],
             characs: [],
@@ -51,6 +61,17 @@ const ProductForm = () => {
     <div className="product-form-container">
       <h2>Add New Product</h2>
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="productImage">Product Image:</label>
+          <input
+            type="file"
+            id="productImage"
+            name="productImage"
+            onChange={handleFileChange}
+            accept="image/*"
+            required
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="productName">Product Name:</label>
           <input

@@ -3,6 +3,7 @@ import mongoose,{Schema} from 'mongoose';
 const productSchema = new Schema({
     image: {
         type: String,
+        required: true
     },
     productName: {
         type: String,

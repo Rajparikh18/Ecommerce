@@ -2,19 +2,29 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import {Product}  from "../models/product.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
+import {uploadOnCloudinary} from "../utils/cloudinary.js";
 
 const createProduct = asyncHandler(async(req,res)=>{
     try {
-        const {image,characs,description,price,productName,weight,category}=req.body;
+        const {characs,description,price,productName,weight,category}=req.body;
         if(!(characs && description && price && productName && weight && category)){
             throw new ApiError(400,"All fields are compulsory");
         }
+        const localpath=req.files?.productImage[0]?.path;
+        if(!localpath){
+            throw new ApiError(400,"Product image is required");
+        }
+        const image=await uploadOnCloudinary(localpath);
+        if(!image){
+            throw new ApiError(500,"Something went wrong while uploading the image");
+        }
         const product=await Product.create({
-            image,characs,description,price,productName,weight,category
+            image:image.url,characs,description,price,productName,weight,category
         })
         if(!product){
             throw new ApiError(500,"Something went wrong while creating the product");
         }
+
         return res.status(201).json(
             new ApiResponse(200,product,"Product created successfully")
         );
