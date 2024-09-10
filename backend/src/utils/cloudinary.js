@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 // this is the file handling and uploading ......
   cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -20,5 +21,6 @@ import { v2 as cloudinary } from "cloudinary";
     } catch (error) {
         fs.unlinkSync(localFilePath) // remove the locally saved temporary file 
         // as the upload operation got failed
-     } };
+        return null;
+      } };
        

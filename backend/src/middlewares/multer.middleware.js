@@ -1,5 +1,5 @@
 import multer from "multer"
-
+// the below code is directly used from the documentation of multure
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './public/temp')
