@@ -12,9 +12,8 @@ function Navbar() {
         <div className="categoryParent">
           <a className="categories">Categories</a>
             <div className="categoryHover">
-              <a href="">Haldiram</a>
-              <br />
-              <a href="">G2 Products</a>
+              <a href="/products/Haldiram">Haldiram</a><br /><br />
+              <a href="/products/G2">G2Products</a>
             </div>
         </div>
         <li>

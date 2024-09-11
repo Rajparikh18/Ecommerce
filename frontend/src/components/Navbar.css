@@ -40,12 +40,13 @@
   display: none;
   position: absolute;
   top: 100%;
-  width: 100%;
+  width: auto;
   left: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: #1a202cf6;
+  border-radius: 5%;
   padding: 10px;
   z-index: 1000;
+  color: #1a202cf6;
 }
 
 .categoryParent:hover .categoryHover {
