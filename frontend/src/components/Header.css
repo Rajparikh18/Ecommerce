@@ -98,6 +98,29 @@
   padding: 5px;
 }
 
+
+
+.clickProfile{
+  background-color: white;
+  font-size: larger;
+  position:absolute;
+  width: max-content;
+  height: max-content;
+  padding: 1rem;
+  margin-top: 2rem ;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.clickProfile p{
+  margin: 5px;
+}
+.clickProfile p:hover{
+  background-color: #ccc;
+}
+
+
 @media (max-width: 768px) {
   .header {
     padding: 10px;
