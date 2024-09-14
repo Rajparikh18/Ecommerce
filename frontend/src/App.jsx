@@ -13,7 +13,7 @@ function App() {
     return (
       <Router>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/authpage" element={<Authpage/>} />
           <Route path="/admin/create" element={<AdminCreateProduct/>} />

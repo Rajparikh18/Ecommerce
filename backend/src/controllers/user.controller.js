@@ -5,8 +5,8 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 const registerUser = asyncHandler(async(req,res)=>{
     try{
-        const {username,email,password}=req.body;
-        if(!(username && email && password)){
+        const {username,email,password,number}=req.body;
+        if(!(username && number && email && password )){
             throw new ApiError(400,"All fields are compulsory");
         }
         // Checking if user already exist
@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async(req,res)=>{
             throw new ApiError(409,"user with this email already exist");
         }
         const user=await User.create({
-            username:username.toLowerCase(),email,password
+            username:username.toLowerCase(),email,password,number
         })
         const createdUser=await User.findById(user._id).select("-password -refreshToken");
         if(!createdUser){
