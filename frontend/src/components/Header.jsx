@@ -5,12 +5,15 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 
 const Header = () => {
   const navigate = useNavigate();
   const [raj, setRaj] = useState('');
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // State to manage profile menu visibility
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(JSON.parse(Cookies.get('cart') || '[]').length);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
@@ -19,6 +22,12 @@ const Header = () => {
       setRaj(false);
     }
   }, [raj]);
+
+  useEffect(() => {
+    if(Cookies.get('clicked')){
+      setCartCount(JSON.parse(Cookies.get('cart')).length);
+    }
+  },[clicked]);
 
   const logClick = async () => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
@@ -31,7 +40,6 @@ const Header = () => {
       navigate('/authpage');
     }
   };
-
   // Toggle profile menu visibility
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
@@ -45,16 +53,19 @@ const Header = () => {
           <button className="mobile-action-btn" onClick={logClick}>
             <User size={24} />
           </button>
-          <button onClick={() => setIsCartOpen(true)} className="nav-item">
-            <ShoppingCart size={24} />
+          <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+            <ShoppingCart size={18} />
+            {cartCount > 0 && (
+              <span className="cart-count">{cartCount}</span>
+            )}
           </button>
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>
       </div>
       <div className="search-container">
-        <input 
-          type="text" 
-          placeholder="Search Products..." 
+        <input
+          type="text"
+          placeholder="Search Products..."
           className="search-input"
         />
         <button className="search-button">
@@ -66,22 +77,25 @@ const Header = () => {
         <div className="nav-item profile" onClick={toggleProfileMenu}>
           <User size={24} />
           <div className="nav-text">
-            <span className="login-text">
-              {raj ? 'Profile' : 'Login'}
-            </span>
+            <span className="login-text">{raj ? "Profile" : "Login"}</span>
             {/* Toggle visibility of clickProfile based on state */}
             {isProfileMenuOpen && (
               <div className="clickProfile">
-                <p className='yourprofile'>Your Profile</p>
-                <p onClick={logClick} className='logout'>Log Out</p>
+                <p className="yourprofile">Your Profile</p>
+                <p onClick={logClick} className="logout">
+                  Log Out
+                </p>
               </div>
             )}
           </div>
         </div>
 
         <div className="nav-text">
-          <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
-            <ShoppingCart size={24} /> 
+        <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+            <ShoppingCart size={24} />
+            {cartCount > 0 && (
+              <div className="cart-count">{cartCount}</div>
+            )}
           </button>
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>
