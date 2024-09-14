@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Authentication.css';
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { Cookie } from 'lucide-react';
+
+
 
 const Authcomponent = () => {
   const navigate = useNavigate();
@@ -11,34 +14,51 @@ const Authcomponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [number,setNumber]=useState()
 
   const handleSubmit =async (e, type) => {
     e.preventDefault();
 
    const formData={
-    email,password,username:name
+    email,password,username:name,number
    }
     try {
+      console.log(formData.username);
       const response = await axios.post(`/api/${type}`, formData);
+      console.log(response);
       const expires = new Date(); 
       expires.setDate(expires.getDate() + 7);
   
       if (response.status === 200) {
         Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", {expires});
-          navigate("/home")
+        Cookies.set("username", `${formData.username}`,{expires});
+          navigate("/")
       }
     } catch (error) {
       console.error('Error submitting form', error);
     }
 
   };
+  const ifUserLoggedIn = () =>{
+    if(Cookies.get('hegsgeerjyhweffyw',"dbsygygdushcjbsduhyawvkiehjv")){
+      navigate("/");
+    }
+  }
+  
+  useEffect(() => {
+    if (Cookies.get('hegsgeerjyhweffyw')) {
+      ifUserLoggedIn();
+    }
+  });
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
     
     <form onSubmit={(e) =>{ console.log(type);handleSubmit(e, type)} }  className="auth-form">
       {type === 'register' && (
-        <div className="form-group">
+        <>
+          <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             id="name"
@@ -48,7 +68,22 @@ const Authcomponent = () => {
             onChange={(e) => setName(e.target.value)}
             required
           />
+          </div>
+          <div className="form-group">
+          <label htmlFor="number">Mobile Number</label>
+          <input
+            id="number"
+            type="tel"
+            pattern="[0-9]{10}" minLength="10" maxLength="10"
+            placeholder="Enter Mobile Number"
+            value={number} 
+            onChange={(e) => setNumber(e.target.value)}
+            
+          />
         </div>
+        </>
+        
+        
       )}
       <div className="form-group">
         <label htmlFor="email">Email</label>
@@ -58,7 +93,6 @@ const Authcomponent = () => {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
       </div>
       <div className="form-group">

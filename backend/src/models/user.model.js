@@ -10,6 +10,12 @@ const userSchema=new Schema({
         lowercase:true,
         index:true
     },
+    number:{
+        type:Number,
+        required:true,
+        unique:true,
+        trim:true,
+    },
     email:{
         type:String,
         required:true,

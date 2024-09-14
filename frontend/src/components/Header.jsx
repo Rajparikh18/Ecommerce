@@ -6,43 +6,56 @@ import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
 import { set } from 'mongoose';
+import * as jwtDecode from 'jwt-decode';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [raj, setRaj] = useState('');
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // State to manage profile menu visibility
+  const [raj, setRaj] = useState(false); // Initially assume not logged in
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // Profile menu state
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(JSON.parse(Cookies.get('cart') || '[]').length);
-  const [clicked, setClicked] = useState(false);
+  const [username,setUsername]=useState("");
 
+  // Check login status on component mount
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
-      setRaj(true);
+      setRaj(true); // Logged in
     } else {
-      setRaj(false);
+      setRaj(false); // Not logged in
     }
-  }, [raj]);
+  }, []);
 
-  useEffect(() => {
-    if(Cookies.get('clicked')){
-      setCartCount(JSON.parse(Cookies.get('cart')).length);
+  useEffect(()=>{
+    if(Cookies.get('username')){
+      setUsername(Cookies.get('username'));
     }
-  },[clicked]);
+  },[]);
 
+  // Logout function
   const logClick = async () => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
       Cookies.remove('hegsgeerjyhweffyw');
-      setRaj(false);
-      await axios.post('/api/logout', (req, res) => {
-        navigate('/home');
-      });
+      setRaj(false); // Set logged out state
+      setIsProfileMenuOpen(false); // Close profile menu after logging out
+      window.location.reload();
+      await axios.post('/api/logout');
+      navigate('/');
     } else {
-      navigate('/authpage');
+      navigate('/authpage'); // Redirect to login page
     }
   };
   // Toggle profile menu visibility
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
+  // Check for login and toggle profile menu
+  const checkforlogin = () => {
+    if (!raj) {
+      navigate('/authpage'); // Redirect to login if not logged in
+    } else {
+      // Toggle profile menu if logged in
+      setIsProfileMenuOpen((prevState) => !prevState);
+    }
   };
 
   return (
@@ -74,10 +87,12 @@ const Header = () => {
       </div>
       <div className="nav-items">
         {/* Profile Menu */}
-        <div className="nav-item profile" onClick={toggleProfileMenu}>
+        <div className="nav-item profile" onClick={checkforlogin}>
           <User size={24} />
           <div className="nav-text">
-            <span className="login-text">{raj ? "Profile" : "Login"}</span>
+            <span className="login-text" >
+              {raj ? `${username}` : 'Login'} 
+            </span>
             {/* Toggle visibility of clickProfile based on state */}
             {isProfileMenuOpen && (
               <div className="clickProfile">
