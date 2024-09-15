@@ -13,23 +13,43 @@ const Header = () => {
   const [raj, setRaj] = useState(false); // Initially assume not logged in
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // Profile menu state
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(JSON.parse(Cookies.get('cart') || '[]').length);
-  const [username,setUsername]=useState("");
-
+  const [cartCount, setCartCount] = useState(0);
+  const [username, setUsername] = useState("");
   // Check login status on component mount
+  
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
-      setRaj(true); // Logged in
+      setRaj(true);
     } else {
-      setRaj(false); // Not logged in
+      setRaj(false);
     }
   }, []);
 
-  useEffect(()=>{
-    if(Cookies.get('username')){
+  useEffect(() => {
+    if (Cookies.get('username')) {
       setUsername(Cookies.get('username'));
     }
-  },[]);
+  }, []);
+
+  const updateCartStatus = () => {
+    if (Cookies.get('cart')) {
+      const cartArr = JSON.parse(Cookies.get('cart'));
+      const totalQty = cartArr.reduce((total, item) => total + item.qty, 0);
+      setCartCount(totalQty);
+    }
+  };
+
+  useEffect(() => {
+    updateCartStatus();
+
+    // Add event listener for cart updates
+    window.addEventListener('cartUpdated', updateCartStatus);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartStatus);
+    };
+  }, []);
 
   // Logout function
   const logClick = async () => {

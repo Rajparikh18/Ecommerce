@@ -12,7 +12,6 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,
   }
   function addToCart(e,product) {
     e.stopPropagation();
-    status();
     if(!Cookies.get('cart')){
       Cookies.set('cart', JSON.stringify([product]), { expires: 7 });
       return;
@@ -25,9 +24,10 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,
       cartArr.push(product);
     }
     Cookies.set('cart', JSON.stringify(cartArr), { expires: 7 });
-}
-function status() {
-    Cookies.set(('clicked',true),{expires:1/24});
+    Cookies.set('CartbtnStatusClicked', 'true', { expires: 1/24 });
+    
+    // Dispatch a custom event to notify Header component
+    window.dispatchEvent(new Event('cartUpdated'));
 }
 const product = {
   id,
