@@ -1,6 +1,8 @@
 import React from 'react';
 import './Productcard.css';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { Cookie } from 'lucide-react';
 
 
 const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,id }) => {
@@ -8,6 +10,31 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,
   const handleclick=()=>{
     navigate(`/product/${id}`);
   }
+  function addToCart(e,product) {
+    e.stopPropagation();
+    if(!Cookies.get('cart')){
+      Cookies.set('cart', JSON.stringify([product]), { expires: 7 });
+      return;
+    }
+    let cartArr = JSON.parse(Cookies.get('cart')) || [];
+    const existingProduct = cartArr.find((p) => p.id === product.id);
+    if (existingProduct) {
+      existingProduct.qty += 1;
+    }else{
+      cartArr.push(product);
+    }
+    Cookies.set('cart', JSON.stringify(cartArr), { expires: 7 });
+    Cookies.set('CartbtnStatusClicked', 'true', { expires: 1/24 });
+    
+    // Dispatch a custom event to notify Header component
+    window.dispatchEvent(new Event('cartUpdated'));
+}
+const product = {
+  id,
+  title,
+  imageUrl,
+  qty: 1,
+};
 
   return (
     <div className="product-card" onClick={handleclick}>
@@ -26,7 +53,7 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,
           )}
         </div>
       </div>
-      <div className='btncart'>
+      <div className='btncart' onClick={(e)=>addToCart(e,product)}>
       <button className='addtocart'>Add to cart</button>
       </div>    
       </div>

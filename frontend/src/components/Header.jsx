@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 import * as jwtDecode from 'jwt-decode';
 
 const Header = () => {
@@ -12,22 +13,43 @@ const Header = () => {
   const [raj, setRaj] = useState(false); // Initially assume not logged in
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // Profile menu state
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [username,setUsername]=useState("");
-
+  const [cartCount, setCartCount] = useState(0);
+  const [username, setUsername] = useState("");
   // Check login status on component mount
+  
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
-      setRaj(true); // Logged in
+      setRaj(true);
     } else {
-      setRaj(false); // Not logged in
+      setRaj(false);
     }
   }, []);
 
-  useEffect(()=>{
-    if(Cookies.get('username')){
+  useEffect(() => {
+    if (Cookies.get('username')) {
       setUsername(Cookies.get('username'));
     }
-  })
+  }, []);
+
+  const updateCartStatus = () => {
+    if (Cookies.get('cart')) {
+      const cartArr = JSON.parse(Cookies.get('cart'));
+      const totalQty = cartArr.reduce((total, item) => total + item.qty, 0);
+      setCartCount(totalQty);
+    }
+  };
+
+  useEffect(() => {
+    updateCartStatus();
+
+    // Add event listener for cart updates
+    window.addEventListener('cartUpdated', updateCartStatus);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartStatus);
+    };
+  }, []);
 
   // Logout function
   const logClick = async () => {
@@ -42,7 +64,10 @@ const Header = () => {
       navigate('/authpage'); // Redirect to login page
     }
   };
-
+  // Toggle profile menu visibility
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
   // Check for login and toggle profile menu
   const checkforlogin = () => {
     if (!raj) {
@@ -61,16 +86,19 @@ const Header = () => {
           <button className="mobile-action-btn" onClick={logClick}>
             <User size={24} />
           </button>
-          <button onClick={() => setIsCartOpen(true)} className="nav-item">
-            <ShoppingCart size={24} />
+          <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+            <ShoppingCart size={18} />
+            {cartCount > 0 && (
+              <span className="cart-count">{cartCount}</span>
+            )}
           </button>
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>
       </div>
       <div className="search-container">
-        <input 
-          type="text" 
-          placeholder="Search Products..." 
+        <input
+          type="text"
+          placeholder="Search Products..."
           className="search-input"
         />
         <button className="search-button">
@@ -88,16 +116,21 @@ const Header = () => {
             {/* Toggle visibility of clickProfile based on state */}
             {isProfileMenuOpen && (
               <div className="clickProfile">
-                <p className='yourprofile'>Your Profile</p>
-                <p onClick={logClick} className='logout'>Log Out</p>
+                <p className="yourprofile">Your Profile</p>
+                <p onClick={logClick} className="logout">
+                  Log Out
+                </p>
               </div>
             )}
           </div>
         </div>
 
         <div className="nav-text">
-          <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
-            <ShoppingCart size={24} /> 
+        <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+            <ShoppingCart size={24} />
+            {cartCount > 0 && (
+              <div className="cart-count">{cartCount}</div>
+            )}
           </button>
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>

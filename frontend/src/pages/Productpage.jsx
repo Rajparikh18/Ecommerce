@@ -15,7 +15,6 @@ function ProductPage() {
     const fetchProductData = async () => {
       try {
         const response = await axios.get(`/api/admin/getbyid/${id}`);
-        console.log(response.data.data);
         setProductData(response.data.data); 
       } catch (error) {
         console.error('Error fetching product data:', error);
