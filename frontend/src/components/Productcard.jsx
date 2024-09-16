@@ -33,6 +33,7 @@ const product = {
   id,
   title,
   imageUrl,
+  price:currentPrice,
   qty: 1,
 };
 
