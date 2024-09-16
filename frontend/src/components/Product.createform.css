@@ -37,7 +37,11 @@
     height: 100px;
     resize: vertical;
   }
-  
+  .priceandqty{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
   .submit-button {
     display: block;
     width: 100%;
@@ -53,6 +57,13 @@
   
   .submit-button:hover {
     background-color: #45a049;
+  }
+  .dropdown{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
   }
   
   @media (max-width: 768px) {
