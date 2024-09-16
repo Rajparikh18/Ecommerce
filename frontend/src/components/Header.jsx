@@ -5,8 +5,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
-import { set } from 'mongoose';
-import * as jwtDecode from 'jwt-decode';
+
 
 const Header = () => {
   const navigate = useNavigate();
