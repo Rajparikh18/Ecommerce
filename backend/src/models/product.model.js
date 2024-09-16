@@ -30,6 +30,10 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    availability: {
+        type: Boolean,
+        required: true
+    }
 });
 
 export const Product = mongoose.model('Product', productSchema);
