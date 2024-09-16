@@ -6,7 +6,6 @@ import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
 
-
 const Header = () => {
   const navigate = useNavigate();
   const [raj, setRaj] = useState(false); // Initially assume not logged in
@@ -14,8 +13,16 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [username, setUsername] = useState("");
+
+  // Check if cart should be opened after reload
+  useEffect(() => {
+    if (localStorage.getItem('openCartAfterReload') === 'true') {
+      setIsCartOpen(true);
+      localStorage.removeItem('openCartAfterReload');
+    }
+  }, []);
+
   // Check login status on component mount
-  
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
       setRaj(true);
@@ -63,10 +70,12 @@ const Header = () => {
       navigate('/authpage'); // Redirect to login page
     }
   };
+
   // Toggle profile menu visibility
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
+
   // Check for login and toggle profile menu
   const checkforlogin = () => {
     if (!raj) {
@@ -77,6 +86,12 @@ const Header = () => {
     }
   };
 
+  // Cart refresh method
+  const cartrefresh = () => {
+    localStorage.setItem('openCartAfterReload', 'true'); // Set flag to open cart after reload
+    window.location.reload(); // Refresh the page
+  };
+
   return (
     <header className="header">
       <div className="top-row">
@@ -85,7 +100,7 @@ const Header = () => {
           <button className="mobile-action-btn" onClick={logClick}>
             <User size={24} />
           </button>
-          <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+          <button onClick={cartrefresh} className="nav-item cartbtn">
             <ShoppingCart size={18} />
             {cartCount > 0 && (
               <span className="cart-count">{cartCount}</span>
@@ -125,7 +140,7 @@ const Header = () => {
         </div>
 
         <div className="nav-text">
-        <button onClick={() => setIsCartOpen(true)} className="nav-item cartbtn">
+        <button onClick={cartrefresh} className="nav-item cartbtn">
             <ShoppingCart size={24} />
             {cartCount > 0 && (
               <div className="cart-count">{cartCount}</div>
