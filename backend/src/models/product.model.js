@@ -22,8 +22,8 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    weight: {
-        type: Array,
+    fixedqty: {
+        type: Number,
         required: true
     },
     category: {

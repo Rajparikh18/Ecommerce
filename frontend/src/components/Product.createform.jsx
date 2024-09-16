@@ -8,10 +8,10 @@ const ProductForm = () => {
   const [product, setProduct] = useState({
     productImage: null,
     productName: '',
-    price: [],
+    price: [0, 0],
     characs: [],
     description: '',
-    weight: [],
+    fixedqty: '',
     category: ''
   });
 
@@ -20,41 +20,49 @@ const ProductForm = () => {
     setProduct({ ...product, [name]: value });
   };
 
+  const handlePriceChange = (e, index) => {
+    const { value } = e.target;
+    const newPrice = [...product.price];
+    newPrice[index] = parseFloat(value) || 0;
+    setProduct({ ...product, price: newPrice });
+  };
+
   const handleArrayInputChange = (e, field) => {
     const { value } = e.target;
     setProduct({ ...product, [field]: value.split(',').map(item => item.trim()) });
   };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setProduct({ ...product, productImage: file });
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        console.log(product);
-        const response = await axios.post('/api/admin/create', product,{
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await axios.post('/api/admin/create', product, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response);
+      if (response.status === 201) {
+        navigate("/")
+        setProduct({
+          productImage: null,
+          productName: '',
+          price: [0, 0],
+          characs: [],
+          description: '',
+          fixedqty: '',
+          category: ''
         });
-        console.log(response);
-        if (response.status === 201) {
-          navigate("/home")
-          setProduct({
-            productImage: null,
-            productName: '',
-            price: [],
-            characs: [],
-            description: '',
-            weight: [],
-            category: ''
-          });
-        } else {
-          console.error('Error submitting form');
-        }
-      } catch (error) {
-        console.error('Error:', error);
+      } else {
+        console.error('Error submitting form');
       }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -83,16 +91,56 @@ const ProductForm = () => {
             required
           />
         </div>
+        <div className="form-group priceandqty">
+          <div className="price1">
+            <label htmlFor="price1">Our Price:</label>
+            <input
+              type="number"
+              id="price1"
+              name="price1"
+              value={product.price[0]}
+              onChange={(e) => handlePriceChange(e, 0)}
+              required
+            />
+          </div>
+          <div className="price2">
+            <label htmlFor="price2">MRP:</label>
+            <input
+              type="number"
+              id="price2"
+              name="price2"
+              value={product.price[1]}
+              onChange={(e) => handlePriceChange(e, 1)}
+              required
+            />
+          </div>
+          <div className="fixedqty">
+            <label htmlFor="fixedqty">Fixed Quantity:</label>
+            <input
+              type="number"
+              min={0}
+              id="fixedqty"
+              name="fixedqty"
+              value={product.fixedqty}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
         <div className="form-group">
-          <label htmlFor="price">Price (comma-separated):</label>
-          <input
-            type="text"
-            id="price"
-            name="price"
-            value={product.price.join(', ')}
-            onChange={(e) => handleArrayInputChange(e, 'price')}
+          <label htmlFor="category">Category:</label>
+          <select
+            name="category"
+            id="category"
+            className="dropdown"
+            value={product.category}
+            onChange={handleInputChange}
             required
-          />
+          >
+            <option value="">Select Category</option>
+            <option value="Haldiram">Haldiram</option>
+            <option value="G2">G2</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="characs">Characteristics (comma-separated):</label>
@@ -100,8 +148,8 @@ const ProductForm = () => {
             type="text"
             id="characs"
             name="characs"
-            value={product.characs.join(', ')}
-            onChange={(e) => handleArrayInputChange(e, 'characs')}
+            value={product.characs.join(", ")}
+            onChange={(e) => handleArrayInputChange(e, "characs")}
             required
           />
         </div>
@@ -115,29 +163,9 @@ const ProductForm = () => {
             required
           ></textarea>
         </div>
-        <div className="form-group">
-          <label htmlFor="weight">Weight (comma-separated):</label>
-          <input
-            type="text"
-            id="weight"
-            name="weight"
-            value={product.weight.join(', ')}
-            onChange={(e) => handleArrayInputChange(e, 'weight')}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">Category:</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={product.category}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <button type="submit" className="submit-button">Add Product</button>
+        <button type="submit" className="submit-button">
+          Add Product
+        </button>
       </form>
     </div>
   );
