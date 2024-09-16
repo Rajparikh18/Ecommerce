@@ -8,11 +8,13 @@ const ProductDetail = ({
   originalPrice,
   description,
   features,
-  weight, 
+  weight,
   mainImage,
   characs
 }) => {
   const [quantity, setQuantity] = useState(0);
+  const [qty,Setqty]=useState(12);
+  const [availability,Setavailability]=useState(true);
   const [selectedWeight, setSelectedWeight] = useState(weight[0]);
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
@@ -44,22 +46,8 @@ const ProductDetail = ({
             <li key={index}>{feature}</li>
           ))}
         </ul>
-        
-        <div className="weight-selection">
-          <h3>WEIGHT</h3><br />
-          <div className="weight-options">
-            {weight.map((weight) => (
-              <button 
-                key={weight}
-                onClick={() => setSelectedWeight(weight)}
-                className={selectedWeight === weight ? 'selected' : ''}
-              >
-                {weight}
-              </button>
-            ))}
-          </div>
-        </div>
-        <br /><br />
+          <h3>1 Quantity equals {qty} packets</h3><br />
+          <h2>Availability Yes</h2>
         <div className="add-to-cart">
           <div className="quantity-selector">
             <button onClick={decrementQuantity}>-</button>

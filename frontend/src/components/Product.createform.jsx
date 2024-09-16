@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Product.createform.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToggleLeft, ToggleRight } from 'lucide-react';
 
 const ProductForm = () => {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ const ProductForm = () => {
     characs: [],
     description: '',
     fixedqty: '',
-    category: ''
+    category: '',
+    availability: true,
   });
 
   const handleInputChange = (e) => {
@@ -36,6 +38,9 @@ const ProductForm = () => {
     const file = e.target.files[0];
     setProduct({ ...product, productImage: file });
   };
+  const toggleAvailability = () => {
+    setProduct({ ...product, availability: !product.availability });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,7 +60,8 @@ const ProductForm = () => {
           characs: [],
           description: '',
           fixedqty: '',
-          category: ''
+          category: '',
+          availability: true
         });
       } else {
         console.error('Error submitting form');
@@ -127,8 +133,9 @@ const ProductForm = () => {
             />
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="category">Category:</label>
+        <div className="form-group catgoryandavailability">
+          <div className='category'>
+            <label htmlFor="category">Category:</label>
           <select
             name="category"
             id="category"
@@ -141,6 +148,13 @@ const ProductForm = () => {
             <option value="Haldiram">Haldiram</option>
             <option value="G2">G2</option>
           </select>
+          </div>
+          <div className='availability'>
+            <label htmlFor="availability">Availability:</label>
+            <button type="button" id='availability' className={`availability-toggle ${product.availability ? 'active' : 'inactive'}`} onClick={toggleAvailability}>
+              {product.availability ? <ToggleRight />: <ToggleLeft /> }
+            </button>
+          </div>
         </div>
         <div className="form-group">
           <label htmlFor="characs">Characteristics (comma-separated):</label>

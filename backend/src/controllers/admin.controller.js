@@ -11,8 +11,8 @@ const createProduct = asyncHandler(async(req,res)=>{
         if(!localpath){
             throw new ApiError(400,"Product image is required");
         }
-        const {characs,description,price,productName,fixedqty,category}=req.body;
-        if(!(characs && description && price && productName && fixedqty && category)){
+        const {characs,description,price,productName,fixedqty,category,availability}=req.body;
+        if(!(characs && description && price && productName && fixedqty && category && availability)){
             fs.unlinkSync(localpath);
             throw new ApiError(400,"All fields are compulsory");
         }
@@ -21,7 +21,7 @@ const createProduct = asyncHandler(async(req,res)=>{
             throw new ApiError(500,"Something went wrong while uploading the image");
         }
         const product=await Product.create({
-            image:image.url,characs,description,price,productName,fixedqty,category
+            image:image.url,characs,description,price,productName,fixedqty,category,availability
         })
         if(!product){
             throw new ApiError(500,"Something went wrong while creating the product");
