@@ -18,6 +18,7 @@ const createProduct = asyncHandler(async(req,res)=>{
         }
         const image=await uploadOnCloudinary(localpath);
         if(!image){
+            fs.unlinkSync(localpath);
             throw new ApiError(500,"Something went wrong while uploading the image");
         }
         const product=await Product.create({
