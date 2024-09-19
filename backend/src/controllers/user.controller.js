@@ -3,6 +3,8 @@ import {ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
+import { Admin } from "../models/admin.model.js";
+
 const registerUser = asyncHandler(async(req,res)=>{
     try{
         const {username,email,password,number}=req.body;
@@ -35,10 +37,17 @@ const registerUser = asyncHandler(async(req,res)=>{
 const loginUser=asyncHandler(async(req,res)=>{
     try {
         const {email,password}=req.body;
+
+        
         if(!(email && password)){
             throw new ApiError(400,"email and password both are required")
         }
-        const user = await User.findOne({email});
+        let user = await User.findOne({email});
+        let admin;
+        if(!user){
+            admin= await Admin.findOne({email});
+            user=admin;
+        }
 
         if(!user){
             throw new ApiError(404,"User does not exist")
@@ -59,7 +68,23 @@ const loginUser=asyncHandler(async(req,res)=>{
             httpOnly:true,
             secure:true
         }
-        res
+        if(user==admin){
+            res
+            .status(285)
+            .cookie("refreshToken",refreshToken,options)
+            .cookie("accessToken",accessToken,options)
+            .json(
+               new ApiResponse(
+                    285,
+                    {
+                        admin: user
+                    },
+                    "Admin logged In successfully"
+                )
+            )
+        }
+        else{
+            res
         .status(200)
         .cookie("refreshToken",refreshToken,options)
         .cookie("accessToken",accessToken,options)
@@ -72,6 +97,8 @@ const loginUser=asyncHandler(async(req,res)=>{
                 "User logged In successfully"
             )
         )
+        }
+        
         }
         else{
             throw new ApiError(401,"Password is incorrect")
