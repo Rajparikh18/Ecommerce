@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Authpage from './pages/Authpage';
 import AdminCreateProduct from './pages/admin.createProduct';
 import Productlist from './pages/Productlist';
+import OtpInputWithValidation from './components/otpverification';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/authpage" element={<Authpage/>} />
           <Route path="/admin/create" element={<AdminCreateProduct/>} />
           <Route path="/products/:category" element={<Productlist />} />
+          <Route path="/otp" element={<OtpInputWithValidation numberOfDigits={6} />} />
         </Routes>
 
     </Router>

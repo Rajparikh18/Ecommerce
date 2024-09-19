@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Authentication.css';
-import axios from "axios"
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Cookie } from 'lucide-react';
+import OtpInputWithValidation from './otpverification';
 
-
+const correctOTP = "123456"; // Example, replace it with server-side validation
 
 const Authcomponent = () => {
   const navigate = useNavigate();
@@ -14,37 +14,46 @@ const Authcomponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [number,setNumber]=useState()
+  const [number, setNumber] = useState('');
+  const [admin, setAdmin] = useState(false);
+  const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
 
-  const handleSubmit =async (e, type) => {
+  // Function to trigger OTP popup
+  const otpClick = () => {
+    setIsOtpPopupVisible(true);
+  };
+
+  const handleSubmit = async (e, type) => {
     e.preventDefault();
 
-   const formData={
-    email,password,username:name,number
-   }
+    const formData = {
+      email, password, username: name, number
+    };
+
     try {
       console.log(formData.username);
       const response = await axios.post(`/api/${type}`, formData);
       console.log(response);
-      const expires = new Date(); 
+      const expires = new Date();
       expires.setDate(expires.getDate() + 7);
-  
-      if (response.status === 200) {
-        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", {expires});
-        Cookies.set("username", `${formData.username}`,{expires});
-          navigate("/")
+      if (response.status === 285) {
+        setAdmin(true);
+      } else if (response.status === 200) {
+        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
+        Cookies.set("username", `${formData.username}`, { expires });
+        navigate("/");
       }
     } catch (error) {
       console.error('Error submitting form', error);
     }
-
   };
-  const ifUserLoggedIn = () =>{
-    if(Cookies.get('hegsgeerjyhweffyw',"dbsygygdushcjbsduhyawvkiehjv")){
+
+  const ifUserLoggedIn = () => {
+    if (Cookies.get('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv")) {
       navigate("/");
     }
-  }
-  
+  };
+
   useEffect(() => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
       ifUserLoggedIn();
@@ -54,36 +63,32 @@ const Authcomponent = () => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
-    
-    <form onSubmit={(e) =>{ console.log(type);handleSubmit(e, type)} }  className="auth-form">
+    <form onSubmit={(e) => { console.log(type); handleSubmit(e, type) }} className="auth-form">
       {type === 'register' && (
         <>
           <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
-          <label htmlFor="number">Mobile Number</label>
-          <input
-            id="number"
-            type="tel"
-            pattern="[0-9]{10}" minLength="10" maxLength="10"
-            placeholder="Enter Mobile Number"
-            value={number} 
-            onChange={(e) => setNumber(e.target.value)}
-            
-          />
-        </div>
+            <label htmlFor="number">Mobile Number</label>
+            <input
+              id="number"
+              type="tel"
+              pattern="[0-9]{10}" minLength="10" maxLength="10"
+              placeholder="Enter Mobile Number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+            />
+          </div>
         </>
-        
-        
       )}
       <div className="form-group">
         <label htmlFor="email">Email</label>
@@ -115,12 +120,17 @@ const Authcomponent = () => {
           </button>
         </div>
       </div>
+      {admin === true && (
+        <div className="form-group">
+          <button type="button" onClick={otpClick}>GET OTP</button>
+        </div>
+      )}
       <button type="submit" className="submit-btn">
         {type}
       </button>
     </form>
   );
-  
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -153,6 +163,11 @@ const Authcomponent = () => {
           </p>
         </div>
       </div>
+
+      {/* Render OTP Popup */}
+      {isOtpPopupVisible && (
+        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} />
+      )}
     </div>
   );
 };
