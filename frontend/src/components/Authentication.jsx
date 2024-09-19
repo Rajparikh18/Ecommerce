@@ -19,7 +19,10 @@ const Authcomponent = () => {
   const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
 
   // Function to trigger OTP popup
-  const otpClick = () => {
+  const otpClick = async() => {
+    const fdjghjd= await axios.get(`/api/sendotp`);
+    console.log(fdjghjd);
+
     setIsOtpPopupVisible(true);
   };
 
@@ -166,7 +169,7 @@ const Authcomponent = () => {
 
       {/* Render OTP Popup */}
       {isOtpPopupVisible && (
-        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} />
+        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.sk_test_51J0QJvSFS9} />
       )}
     </div>
   );
