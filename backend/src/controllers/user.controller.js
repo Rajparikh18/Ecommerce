@@ -38,17 +38,18 @@ const loginUser=asyncHandler(async(req,res)=>{
     try {
         const {email,password}=req.body;
 
-        
         if(!(email && password)){
             throw new ApiError(400,"email and password both are required")
         }
-        let user = await User.findOne({email});
-        let admin;
+        const user = await User.findOne({email});
         if(!user){
-            admin= await Admin.findOne({email});
-            user=admin;
+            const admin= await Admin.findOne({email});
+            if(admin && admin.isPasswordCorrect(password)){
+                new ApiResponse(285,admin,"Admin exist please verify otp");
+            }else{
+                throw new ApiError(401,"Password is incorrect")
+            }
         }
-
         if(!user){
             throw new ApiError(404,"User does not exist")
         }
@@ -68,22 +69,6 @@ const loginUser=asyncHandler(async(req,res)=>{
             httpOnly:true,
             secure:true
         }
-        if(user==admin){
-            res
-            .status(285)
-            .cookie("refreshToken",refreshToken,options)
-            .cookie("accessToken",accessToken,options)
-            .json(
-               new ApiResponse(
-                    285,
-                    {
-                        admin: user
-                    },
-                    "Admin logged In successfully"
-                )
-            )
-        }
-        else{
             res
         .status(200)
         .cookie("refreshToken",refreshToken,options)
@@ -97,8 +82,6 @@ const loginUser=asyncHandler(async(req,res)=>{
                 "User logged In successfully"
             )
         )
-        }
-        
         }
         else{
             throw new ApiError(401,"Password is incorrect")
