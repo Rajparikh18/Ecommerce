@@ -18,6 +18,7 @@ const Authcomponent = () => {
   const [admin, setAdmin] = useState(false);
   const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
   const [fdjghjd,setFdjghjd]=useState({});
+  const [admindetails,setAdmindetails]=useState({});
   // Function to trigger OTP popup
   const otpClick = async() => {
     try {
@@ -48,6 +49,7 @@ const Authcomponent = () => {
       const expires = new Date();
       expires.setDate(expires.getDate() + 7);
       if (response.status === 285) {
+        setAdmindetails(response.data.data);
         setAdmin(true);
       } else if (response.status === 200) {
         Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
@@ -177,7 +179,7 @@ const Authcomponent = () => {
 
       {/* Render OTP Popup */}
       {isOtpPopupVisible && (
-        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data.data} />
+        <OtpInputWithValidation details={admindetails} numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data.data} />
       )}
     </div>
   );
