@@ -2,9 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import './otpverification.css'
 import { useNavigate } from 'react-router-dom';
 
-const correctOTP = "123456"; // validate from your server
-
-export default function OtpInputWithValidation({ numberOfDigits, onClose }) {
+export default function OtpInputWithValidation({ numberOfDigits, onClose ,fjkasdf }) {
   const navigate = useNavigate();
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
     const [otpError, setOtpError] = useState(null);
@@ -35,7 +33,7 @@ export default function OtpInputWithValidation({ numberOfDigits, onClose }) {
       if (otpValue.length < numberOfDigits) {
         setOtpError("⚠️ Please enter the full OTP.");
         setOtpSuccess(null);
-      } else if (otpValue !== correctOTP) {
+      } else if (otpValue !== fjkasdf) {
         setOtpError("❌ Wrong OTP. Please check again.");
         setOtpSuccess(null);
       } else {
