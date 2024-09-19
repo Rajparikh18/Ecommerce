@@ -20,10 +20,11 @@ app.use(cookieParser())
 //routes
 import userRouter from "./routes/user.routes.js"
 import adminRouter from "./routes/admin.routes.js"
-
+import sendOtpRouter from "./routes/sendOtp.routes.js"
 
 //routes declaration 
 app.use("/api",userRouter)
 app.use("/api/admin",adminRouter)
+app.use("/api/checkotp",sendOtpRouter);
 
 export {app,port}

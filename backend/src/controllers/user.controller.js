@@ -44,8 +44,8 @@ const loginUser=asyncHandler(async(req,res)=>{
         const user = await User.findOne({email});
         if(!user){
             const admin= await Admin.findOne({email});
-            if(admin && admin.isPasswordCorrect(password)){
-                new ApiResponse(285,admin,"Admin exist please verify otp");
+            if(admin && await admin.isPasswordCorrect(password)){
+               return res.status(285).json(new ApiResponse(285,admin,"Admin exist please verify otp"));
             }else{
                 throw new ApiError(401,"Password is incorrect")
             }
