@@ -1,8 +1,9 @@
 import {Router} from "express";
-import {createProduct,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory} from "../controllers/admin.controller.js";
+import {createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory} from "../controllers/admin.controller.js";
 const router = Router();
 import { upload } from "../middlewares/multer.middleware.js";
 
+router.route("/register").post(adminregister);
 router.route("/create").post( 
     upload.fields([  // this is middleware of multer to upload files
         { name: 'productImage', maxCount: 1 }

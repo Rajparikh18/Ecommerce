@@ -4,7 +4,33 @@ import {Product}  from "../models/product.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import fs from "fs";
+import { Admin} from "../models/admin.model.js";
 
+const adminregister = asyncHandler(async(req,res)=>{
+    try{
+        const {username,email,password,number}=req.body;
+        if(!(username && number && email && password )){
+            throw new ApiError(400,"All fields are compulsory");
+        }
+        // Checking if user already exist
+        const existingAdmin = await Admin.findOne({email});
+        if(existingAdmin){
+            throw new ApiError(409,"Admin with this email already exist");
+        }
+        const admin=await Admin.create({
+            username:username.toLowerCase(),email,password,number
+        })
+        const createdAdmin=await Admin.findById(admin._id).select("-password -refreshToken");
+        if(!createdAdmin){
+            throw new ApiError(500,"Something went wrong while registering the user");
+        }
+        return res.status(201).json(
+            new ApiResponse(200,createdAdmin,"Admin registered successfully")
+        );
+    }catch(err){
+        console.log(err);
+    }
+});
 const createProduct = asyncHandler(async(req,res)=>{
     try {
         const localpath=req.files?.productImage[0]?.path;
@@ -102,4 +128,4 @@ const getProductsByCategory = asyncHandler(async(req,res)=>{
     }
 });
 
-export {createProduct,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};
+export {createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};

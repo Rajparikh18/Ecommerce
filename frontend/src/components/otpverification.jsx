@@ -40,10 +40,10 @@ export default function OtpInputWithValidation({ numberOfDigits, onClose }) {
         setOtpSuccess(null);
       } else {
         setOtpError(null);
+
         
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Admin Login Successfully");
-          
           // Delay navigation by 2 seconds
           setTimeout(() => {
             navigate("/");
