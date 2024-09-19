@@ -29,11 +29,10 @@ export default function OtpInputWithValidation({ numberOfDigits, onClose ,fjkasd
   
     useEffect(() => {
       const otpValue = otp.join("");
-    
       if (otpValue.length < numberOfDigits) {
         setOtpError("⚠️ Please enter the full OTP.");
         setOtpSuccess(null);
-      } else if (otpValue !== fjkasdf) {
+      } else if (parseInt(otpValue) !== fjkasdf) {
         setOtpError("❌ Wrong OTP. Please check again.");
         setOtpSuccess(null);
       } else {

@@ -17,15 +17,25 @@ const Authcomponent = () => {
   const [number, setNumber] = useState('');
   const [admin, setAdmin] = useState(false);
   const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
-
+  const [fdjghjd,setFdjghjd]=useState({});
   // Function to trigger OTP popup
   const otpClick = async() => {
-    const fdjghjd= await axios.get(`/api/sendotp`);
-    console.log(fdjghjd);
-
-    setIsOtpPopupVisible(true);
+    try {
+      const response = await axios.get(`/api/checkotp/sendotp`);
+      setFdjghjd(response);
+      // Access data only after the state has been updated
+      if (response && response.data && response.data.data) {
+        setIsOtpPopupVisible(true);
+      } else {
+        // Handle cases where response.data or response.data.data is missing
+        console.error("Response data is missing or invalid.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
-
+  useEffect(() => {
+  }, [fdjghjd]);
   const handleSubmit = async (e, type) => {
     e.preventDefault();
 
@@ -34,9 +44,7 @@ const Authcomponent = () => {
     };
 
     try {
-      console.log(formData.username);
       const response = await axios.post(`/api/${type}`, formData);
-      console.log(response);
       const expires = new Date();
       expires.setDate(expires.getDate() + 7);
       if (response.status === 285) {
@@ -66,7 +74,7 @@ const Authcomponent = () => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
-    <form onSubmit={(e) => { console.log(type); handleSubmit(e, type) }} className="auth-form">
+    <form onSubmit={(e) => { handleSubmit(e, type) }} className="auth-form">
       {type === 'register' && (
         <>
           <div className="form-group">
@@ -169,7 +177,7 @@ const Authcomponent = () => {
 
       {/* Render OTP Popup */}
       {isOtpPopupVisible && (
-        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.sk_test_51J0QJvSFS9} />
+        <OtpInputWithValidation numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data.data} />
       )}
     </div>
   );
