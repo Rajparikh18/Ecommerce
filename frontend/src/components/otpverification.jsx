@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './otpverification.css'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function OtpInputWithValidation({ numberOfDigits, onClose ,fjkasdf }) {
+export default function OtpInputWithValidation({details, numberOfDigits, onClose ,fjkasdf }) {
   const navigate = useNavigate();
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
     const [otpError, setOtpError] = useState(null);
@@ -26,7 +27,18 @@ export default function OtpInputWithValidation({ numberOfDigits, onClose ,fjkasd
         otpBoxReference.current[index + 1].focus();
       }
     }
-  
+    const loginadmin = async () => {
+      try {
+        const response = await axios.post('/api/admin/login', {
+          email: details.email,
+          password: details.password,
+        });
+        console.log('Admin login successful:', response.data);
+      } catch (error) {
+        console.error('Admin login failed:', error.response ? error.response.data : error.message);
+        setOtpError("❌ Admin login failed. Please try again.");
+      }
+    };
     useEffect(() => {
       const otpValue = otp.join("");
       if (otpValue.length < numberOfDigits) {
@@ -37,8 +49,7 @@ export default function OtpInputWithValidation({ numberOfDigits, onClose ,fjkasd
         setOtpSuccess(null);
       } else {
         setOtpError(null);
-
-        
+        loginadmin();
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Admin Login Successfully");
           // Delay navigation by 2 seconds

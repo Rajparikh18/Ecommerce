@@ -31,6 +31,45 @@ const adminregister = asyncHandler(async(req,res)=>{
         console.log(err);
     }
 });
+const adminlogin=asyncHandler(async(req,res)=>{
+    const {email,password}=req.body;
+    if(!(email && password)){
+        throw new ApiError(400,"email and password both are required")
+    }
+    const admin = await Admin.findOne({email});
+    if(!admin){
+        throw new ApiError(404,"Admin does not exist")
+    }
+
+    if(admin){
+        const refreshToken=admin.RefreshAccessToken();
+        const accessToken =admin.generateAccessToken();
+        admin.refreshToken=refreshToken;
+
+        await admin.save();
+        admin.password=undefined;
+        admin.refreshToken=undefined;
+    // sending token in cookie
+    //cookie section
+
+    const options={
+        httpOnly:true,
+        secure:true
+    }
+        res
+    .status(200)
+    .cookie("refreshToken",refreshToken,options)
+    .cookie("accessToken",accessToken,options)
+    .json(
+       new ApiResponse(
+            200,
+            {
+                admin: admin
+            },
+            "Admin logged In successfully"
+        )
+    )
+}});
 const createProduct = asyncHandler(async(req,res)=>{
     try {
         const localpath=req.files?.productImage[0]?.path;
@@ -128,4 +167,4 @@ const getProductsByCategory = asyncHandler(async(req,res)=>{
     }
 });
 
-export {createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};
+export {adminlogin,createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};
