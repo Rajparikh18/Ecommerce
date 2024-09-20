@@ -19,14 +19,43 @@ const registerUser = asyncHandler(async(req,res)=>{
         const user=await User.create({
             username:username.toLowerCase(),email,password,number
         })
-        const createdUser=await User.findById(user._id).select("-password -refreshToken");
+        const createdUser=await User.findById(user._id).select("-refreshToken");
         if(!createdUser){
             throw new ApiError(500,"Something went wrong while registering the user");
         }
 
-        return res.status(201).json(
-            new ApiResponse(200,createdUser,"User registered successfully")
-        );
+        if(createdUser && await createdUser.isPasswordCorrect(password)){
+            const refreshToken=createdUser.RefreshAccessToken();
+            const accessToken =createdUser.generateAccessToken();
+            createdUser.refreshToken=refreshToken;
+
+            await createdUser.save();
+            createdUser.password=undefined;
+            createdUser.refreshToken=undefined;
+        // sending token in cookie
+        //cookie section
+
+        const options={
+            httpOnly:true,
+            secure:true
+        }
+            res
+        .status(200)
+        .cookie("refreshToken",refreshToken,options)
+        .cookie("accessToken",accessToken,options)
+        .json(
+           new ApiResponse(
+                200,
+                {
+                    user: createdUser
+                },
+                "User registered and logged In successfully"
+            )
+        )
+        }
+        else{
+            throw new ApiError(401,"Something went wrong")
+        }
 
 
     }catch(err){
@@ -93,6 +122,28 @@ const loginUser=asyncHandler(async(req,res)=>{
 
 const logoutUser=asyncHandler(async(req,res)=>{
     try {
+        if(req.admin){
+            await Admin.findByIdAndUpdate(
+                req.admin._id,
+                {
+                    $set:{
+                        refreshToken:undefined
+                    }
+                },
+                {
+                    new:true
+                }
+            )
+            const options={
+                httpOnly:true,
+                secure:true
+            }
+            return res
+        .status(200)
+        .clearCookie("accessToken",options)
+        .clearCookie("refreshToken",options)
+        .json(new ApiResponse(200,{},"Admin logged Out")) 
+        }
         await User.findByIdAndUpdate(
             req.user._id,
             {
