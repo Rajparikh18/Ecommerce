@@ -5,7 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { Admin } from "../models/admin.model.js";
 
-const registerUser = asyncHandler(async(req,res)=>{
+const VerifyUserdetails = asyncHandler(async(req,res)=>{
     try{
         const {username,email,password,number}=req.body;
         if(!(username && number && email && password )){
@@ -16,6 +16,18 @@ const registerUser = asyncHandler(async(req,res)=>{
         if(existingUser){
             throw new ApiError(409,"user with this email already exist");
         }
+        return res.status(285).json(new ApiResponse(285,req.body,"please verify otp"));
+    }catch(error){
+        throw new ApiError(500,error.message);
+    }
+});
+const registerUser=asyncHandler(async(req,res)=>{
+    try{
+        const {username,email,password,number}=req.body;
+        if(!(username && number && email && password )){
+            throw new ApiError(400,"All fields are compulsory");
+        }
+        // Checking if user already exist
         const user=await User.create({
             username:username.toLowerCase(),email,password,number
         })
@@ -56,12 +68,10 @@ const registerUser = asyncHandler(async(req,res)=>{
         else{
             throw new ApiError(401,"Something went wrong")
         }
-
-
-    }catch(err){
-        console.log(err);
+    }catch(error){
+        throw new ApiError(500,error.message);
     }
-})
+});
 
 const loginUser=asyncHandler(async(req,res)=>{
     try {
@@ -246,4 +256,4 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
 
 
 
-export {registerUser,loginUser,logoutUser,refreshAccessToken,getCurrentUser};
+export {VerifyUserdetails,registerUser,loginUser,logoutUser,refreshAccessToken,getCurrentUser};
