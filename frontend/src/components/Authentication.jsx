@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import OtpInputWithValidation from './otpverification';
 
-const correctOTP = "123456"; // Example, replace it with server-side validation
 
 const Authcomponent = () => {
   const navigate = useNavigate();
@@ -15,14 +14,14 @@ const Authcomponent = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [admin, setAdmin] = useState(false);
+  const [logger, setLogger] = useState(false);
   const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
   const [fdjghjd,setFdjghjd]=useState({});
-  const [admindetails,setAdmindetails]=useState({});
+  const [loggerdetails,setLoggerdetails]=useState({});
   // Function to trigger OTP popup
   const otpClick = async() => {
     try {
-      const response = await axios.get(`/api/checkotp/sendotp`);
+      const response = await axios.post(`/api/checkotp/sendotp`,logger);
       setFdjghjd(response);
       // Access data only after the state has been updated
       if (response && response.data && response.data.data) {
@@ -49,9 +48,10 @@ const Authcomponent = () => {
       const expires = new Date();
       expires.setDate(expires.getDate() + 7);
       if (response.status === 285) {
-        setAdmindetails(response.data.data);
-        setAdmin(true);
-      } else if (response.status === 200) {
+        setLoggerdetails(response.data.data);
+        setLogger(true);
+      }
+      else if (response.status === 200) {
         Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
         Cookies.set("username", `${response.data.data.user.username}`, { expires });
         navigate("/");
@@ -133,7 +133,7 @@ const Authcomponent = () => {
           </button>
         </div>
       </div>
-      {admin === true && (
+      {logger === true && (
         <div className="form-group">
           <button type="button" onClick={otpClick}>GET OTP</button>
         </div>
@@ -179,8 +179,9 @@ const Authcomponent = () => {
 
       {/* Render OTP Popup */}
       {isOtpPopupVisible && (
-        <OtpInputWithValidation details={admindetails} numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data.data} />
+        <OtpInputWithValidation details={loggerdetails} numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data} />
       )}
+
     </div>
   );
 };
