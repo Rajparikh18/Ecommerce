@@ -21,7 +21,7 @@ const Authcomponent = () => {
   // Function to trigger OTP popup
   const otpClick = async() => {
     try {
-      const response = await axios.post(`/api/checkotp/sendotp`,logger);
+      const response = await axios.post(`/api/checkotp/sendotp`,loggerdetails);
       setFdjghjd(response);
       // Access data only after the state has been updated
       if (response && response.data && response.data.data) {

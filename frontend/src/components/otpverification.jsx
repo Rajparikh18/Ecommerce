@@ -3,6 +3,8 @@ import './otpverification.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
+
 export default function OtpInputWithValidation({details, numberOfDigits, onClose ,fjkasdf }) {
   const navigate = useNavigate();
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
@@ -19,7 +21,6 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         otpBoxReference.current[index + 1].focus();
       }
     }
-    console.log(fjkasdf);
     function handleBackspaceAndEnter(e, index) {
       if (e.key === "Backspace" && !e.target.value && index > 0) {
         otpBoxReference.current[index - 1].focus();
@@ -51,7 +52,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           number:details.number
         });
         if(response){
-        Cookies.set("username" ,`${response.data.data.admin.username}`);
+        Cookies.set("username" ,`${response.data.data.user.username}`);
         }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);
@@ -68,22 +69,23 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         setOtpSuccess(null);
       } else {
         setOtpError(null);
-        if(fjkasdf.data.statusCode===237){
+        if(fjkasdf.statusCode===237){
           userRegister();
         }
-        else if(fjkasdf.data.statusCode===244){
+        else if(fjkasdf.statusCode===244){
           loginadmin();
         }
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
         setTimeout(() => {
-          setOtpSuccess("✅ Correct OTP. Admin Login Successfully");
-          // Delay navigation by 2 seconds
+          setOtpSuccess("✅ Correct OTP. Admin Login Successfully");         
+          // Navigate to "/" and immediately reload
           setTimeout(() => {
             navigate("/");
-          }, 300); // 2 seconds delay for showing success message
-        }, 0);
+            window.location.reload(); // Reload right after navigation
+          }, 300); // Delay for showing success message
+        }, 0);        
       }
     }, [otp, numberOfDigits, navigate]);
     return (

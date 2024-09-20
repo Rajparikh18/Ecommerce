@@ -82,7 +82,7 @@ const loginUser=asyncHandler(async(req,res)=>{
         }
         const user = await User.findOne({email});
         if(!user){
-            const admin= await Admin.findOne({email});
+            const admin= await Admin.findOne({email}).select("-number");
             if(admin && await admin.isPasswordCorrect(password)){
                return res.status(285).json(new ApiResponse(285,admin,"Admin exist please verify otp"));
             }else{
