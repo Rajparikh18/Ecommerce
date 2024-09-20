@@ -60,11 +60,12 @@ const Header = () => {
   // Logout function
   const logClick = async () => {
     if (Cookies.get('hegsgeerjyhweffyw')) {
+      await axios.post('/api/logout');
       Cookies.remove('hegsgeerjyhweffyw');
+      Cookies.remove('username');
       setRaj(false); // Set logged out state
       setIsProfileMenuOpen(false); // Close profile menu after logging out
       window.location.reload();
-      await axios.post('/api/logout');
       navigate('/');
     } else {
       navigate('/authpage'); // Redirect to login page

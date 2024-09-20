@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import './otpverification.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 export default function OtpInputWithValidation({details, numberOfDigits, onClose ,fjkasdf }) {
   const navigate = useNavigate();
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
@@ -33,7 +33,9 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           email: details.email,
           password: details.password,
         });
-        console.log('Admin login successful:', response.data);
+        if(response){
+        Cookies.set("username" ,`${response.data.data.admin.username}`);
+        }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);
         setOtpError("❌ Admin login failed. Please try again.");
@@ -50,6 +52,10 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
       } else {
         setOtpError(null);
         loginadmin();
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
+        Cookies.set('username',)
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Admin Login Successfully");
           // Delay navigation by 2 seconds
@@ -59,7 +65,6 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         }, 0);
       }
     }, [otp, numberOfDigits, navigate]);
-    
     return (
       <>
         <div className="popup-overlay" onClick={onClose}></div>

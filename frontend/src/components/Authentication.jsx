@@ -53,7 +53,7 @@ const Authcomponent = () => {
         setAdmin(true);
       } else if (response.status === 200) {
         Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
-        Cookies.set("username", `${formData.username}`, { expires });
+        Cookies.set("username", `${response.data.data.user.username}`, { expires });
         navigate("/");
       }
     } catch (error) {
@@ -62,7 +62,7 @@ const Authcomponent = () => {
   };
 
   const ifUserLoggedIn = () => {
-    if (Cookies.get('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv")) {
+    if (Cookies.get('hegsgeerjyhweffyw')) {
       navigate("/");
     }
   };
