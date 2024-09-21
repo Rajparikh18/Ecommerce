@@ -47,14 +47,20 @@ const registerUser=asyncHandler(async(req,res)=>{
         // sending token in cookie
         //cookie section
 
-        const options={
+        const Aoptions={
             httpOnly:true,
-            secure:true
+            secure:true,
+            maxAge:60*60*1000
+        }
+        const Roptions={
+            httpOnly:true,
+            secure:true,
+            maxAge:7*24*60*60*1000
         }
             res
         .status(200)
-        .cookie("refreshToken",refreshToken,options)
-        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,Roptions)
+        .cookie("accessToken",accessToken,Aoptions)
         .json(
            new ApiResponse(
                 200,
@@ -104,14 +110,20 @@ const loginUser=asyncHandler(async(req,res)=>{
         // sending token in cookie
         //cookie section
 
-        const options={
+        const Aoptions={
             httpOnly:true,
-            secure:true
+            secure:true,
+            maxAge:60*60*1000
+        }
+        const Roptions={
+            httpOnly:true,
+            secure:true,
+            maxAge:7*24*60*60*1000
         }
             res
         .status(200)
-        .cookie("refreshToken",refreshToken,options)
-        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,Roptions)
+        .cookie("accessToken",accessToken,Aoptions)
         .json(
            new ApiResponse(
                 200,
@@ -144,14 +156,20 @@ const logoutUser=asyncHandler(async(req,res)=>{
                     new:true
                 }
             )
-            const options={
+            const Aoptions={
                 httpOnly:true,
-                secure:true
+                secure:true,
+                maxAge:60*60*1000
+            }
+            const Roptions={
+                httpOnly:true,
+                secure:true,
+                maxAge:7*24*60*60*1000
             }
             return res
         .status(200)
-        .clearCookie("accessToken",options)
-        .clearCookie("refreshToken",options)
+        .clearCookie("accessToken",Aoptions)
+        .clearCookie("refreshToken",Roptions)
         .json(new ApiResponse(200,{},"Admin logged Out")) 
         }
         await User.findByIdAndUpdate(
@@ -167,7 +185,7 @@ const logoutUser=asyncHandler(async(req,res)=>{
         )
         const options={
             httpOnly:true,
-            secure:true
+            secure:true,
         }
     
         return res
@@ -179,57 +197,6 @@ const logoutUser=asyncHandler(async(req,res)=>{
         throw new ApiError(401,"error: ",error)
     } 
 })
-
-const refreshAccessToken=asyncHandler(async(req,res)=>{
-    const incomingRefreshToken=req.cookies.refreshToken || req.body.refreshToken
-
-    if(!incomingRefreshToken){
-        throw new ApiError(401,"unauthorized request");
-    }
-
-   try {
-     const decodedToken=jwt.verify(
-         incomingRefreshToken,
-         process.env.REFRESH_TOKEN_SECRET
-     )
- 
-     const user=await User.findById(decodedToken?._id);
- 
-     if(!user){
-         throw new ApiError(401,"Invalid refresh token")
-     }
-     if(incomingRefreshToken!==user?.refreshToken){
-         throw new ApiError(401,"Refresh token is expired or used"); 
-     }
-     const options={
-         httpOnly:true,
-         secure:true
-     }
- 
-     const refreshToken=user.RefreshAccessToken();
-         const accessToken=user.generateAccessToken();
-         user.accessToken=accessToken; // something is wrong
-         user.refreshToken=refreshToken;
- 
-         await user.save();
-         user.password=undefined;
-         
-         return res.status(200)
-         .cookie("accessToken",accessToken,options)
-         .cookie("refreshToken",refreshToken,options)
-         .json(
-             new ApiResponse(
-                 200,
-                 {accessToken,refreshToken},
-                 "Access token refreshed"
-             )
-         )
- 
-   } catch (error) {
-        throw new ApiError(401,error?.message || "Invalid refresh token")
-   }
-
-});
 
 const changePassword=asyncHandler(async(req,res)=>{
     const {oldPassword,newPassword}=req.body;
@@ -256,4 +223,4 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
 
 
 
-export {VerifyUserdetails,registerUser,loginUser,logoutUser,refreshAccessToken,getCurrentUser};
+export {VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser};
