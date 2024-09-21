@@ -148,6 +148,22 @@ const deleteProduct = asyncHandler(async(req,res)=>{
 });
 const updateProduct = asyncHandler(async(req,res)=>{
     try {
+        console.log(req.body);
+        const localpath=req.files?.productImage[0]?.path;
+        const {characs,description,price,productName,fixedqty,category,availability}=req.body;
+        if(localpath){
+            if(!(characs && description && price && productName && fixedqty && category && availability)){
+                fs.unlinkSync(localpath);
+                throw new ApiError(400,"All fields are compulsory");
+            }
+            const image=await uploadOnCloudinary(localpath);
+            if(!image){
+                fs.unlinkSync(localpath);
+                throw new ApiError(500,"Something went wrong while uploading the image");
+            }
+            req.body.image=image.url;
+        }
+        
         const product=await Product.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!product){
             throw new ApiError(404,"Product not found");

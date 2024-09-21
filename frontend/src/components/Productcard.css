@@ -93,7 +93,34 @@
   .addtocart :hover{
     background-color: #218838;
   }
-  
+  .adminbtncart{
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .updatebtn{
+    background-color:rgb(0, 140, 255);
+    color: white;
+    border-radius: 10%;
+    width: 4rem;
+    transition: background-color 0.2s ease-in-out;
+    padding: 0.5rem;
+}
+.updatebtn:hover{
+  background-color: #18264c;
+}
+  .deletebtn{
+    background-color: red;
+    color: white;
+    border-radius: 10%;
+    width: 4rem;
+    transition: background-color 0.2s ease-in-out;
+    padding: 0.5rem;
+  }
+  .deletebtn:hover{
+    background-color: #4c1818;
+  }  
+
   @media (max-width: 768px) {
     .product-card{
         width: auto;

@@ -9,6 +9,7 @@ import Authpage from './pages/Authpage';
 import AdminCreateProduct from './pages/admin.createProduct';
 import Productlist from './pages/Productlist';
 import OtpInputWithValidation from './components/otpverification';
+import EditProductForm from './components/Editproductdetails';
 
 // Create a custom hook for authentication
 const useAuth = () => {
@@ -68,6 +69,7 @@ function App() {
         />
         <Route path="/products/:category" element={<Productlist />} />
         <Route path="/otp" element={<OtpInputWithValidation numberOfDigits={6} />} />
+        <Route path="/update/:id" element={<EditProductForm  />} />
       </Routes>
     </Router>
   );
