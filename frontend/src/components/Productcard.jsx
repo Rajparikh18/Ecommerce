@@ -24,7 +24,7 @@ const ProductCard = ({ imageUrl, title,description, currentPrice, originalPrice,
       cartArr.push(product);
     }
     Cookies.set('cart', JSON.stringify(cartArr), { expires: 7 });
-    Cookies.set('CartbtnStatusClicked', 'true', { expires: 1/24 });
+    Cookies.set('CartbtnStatusClicked', 'true', { expires: 7 });
     
     // Dispatch a custom event to notify Header component
     window.dispatchEvent(new Event('cartUpdated'));

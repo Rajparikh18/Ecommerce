@@ -52,14 +52,20 @@ const adminlogin=asyncHandler(async(req,res)=>{
     // sending token in cookie
     //cookie section
 
-    const options={
+    const Roptions={
         httpOnly:true,
-        secure:true
+        secure:true,
+        maxAge:24*60*60*1000,
+    }
+    const Aoptions={
+        httpOnly:true,
+        secure:true,
+        maxAge:15*60*1000,
     }
         res
     .status(200)
-    .cookie("refreshToken",refreshToken,options)
-    .cookie("accessToken",accessToken,options)
+    .cookie("refreshToken",refreshToken,Roptions)
+    .cookie("accessToken",accessToken,Aoptions)
     .json(
        new ApiResponse(
             200,

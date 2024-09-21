@@ -37,7 +37,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         });
         if(response){
           console.log(response);
-        Cookies.set("username" ,`${response.data.data.admin.username}`);
+        Cookies.set("username" ,`${response.data.data.admin.username}`, { expires: 1 });
         }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);
@@ -53,7 +53,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           number:details.number
         });
         if(response){
-        Cookies.set("username" ,`${response.data.data.user.username}`);
+        Cookies.set("username" ,`${response.data.data.user.username}`, { expires: 7 });
         }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);

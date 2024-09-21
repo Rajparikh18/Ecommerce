@@ -1,6 +1,6 @@
 import {Router} from "express";
-import { VerifyUserdetails,registerUser,loginUser, logoutUser,refreshAccessToken } from "../controllers/user.controller.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { VerifyUserdetails,registerUser,loginUser, logoutUser } from "../controllers/user.controller.js";
+import { verifyJWT,verifyAdmin,verifyUser } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -10,7 +10,6 @@ router.route("/createuser").post(registerUser);
 
 //secured routes
 router.route("/logout").post(verifyJWT,logoutUser);
-router.route("/refresh-token").post(refreshAccessToken);
 router.route("/").get((req,res)=>{
     res.send("hello raj")
 })

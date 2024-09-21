@@ -27,3 +27,17 @@ try {
     throw new ApiError(401,error?.message || "Invalid access token")
 }
 })
+
+export const verifyAdmin=asyncHandler(async(req,res,next)=>{
+    if(!req.admin){
+        throw new ApiError(401,"Unauthorized Request")
+    }
+    next();
+});
+
+export const verifyUser=asyncHandler(async(req,res,next)=>{
+    if(!req.user){
+        throw new ApiError(401,"Unauthorized Request")
+    }
+    next();
+})
