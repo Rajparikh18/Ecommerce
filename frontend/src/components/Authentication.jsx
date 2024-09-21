@@ -95,7 +95,6 @@ const Authcomponent = () => {
             <input
               id="number"
               type="tel"
-              pattern="[0-9]{10}" minLength="10" maxLength="10"
               placeholder="Enter Mobile Number"
               value={number}
               onChange={(e) => setNumber(e.target.value)}

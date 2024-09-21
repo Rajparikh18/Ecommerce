@@ -36,6 +36,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           password: details.password,
         });
         if(response){
+          console.log(response);
         Cookies.set("username" ,`${response.data.data.admin.username}`);
         }
       } catch (error) {
@@ -64,7 +65,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
       if (otpValue.length < numberOfDigits) {
         setOtpError("⚠️ Please enter the full OTP.");
         setOtpSuccess(null);
-      } else if (parseInt(otpValue) !== fjkasdf.data) {
+      } else if (parseInt(otpValue) !== parseInt(fjkasdf.data)) {
         setOtpError("❌ Wrong OTP. Please check again.");
         setOtpSuccess(null);
       } else {
@@ -73,6 +74,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           userRegister();
         }
         else if(fjkasdf.statusCode===244){
+          console.log(fjkasdf);
           loginadmin();
         }
         const expires = new Date();

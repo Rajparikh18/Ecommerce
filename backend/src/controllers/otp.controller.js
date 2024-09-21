@@ -1,5 +1,5 @@
-const twilio = require('twilio');
-const nodemailer = require('nodemailer');
+import twilio from 'twilio';
+import nodemailer from 'nodemailer';
 
 // Twilio credentials from your Twilio Console
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
