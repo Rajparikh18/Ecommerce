@@ -146,33 +146,70 @@ const deleteProduct = asyncHandler(async(req,res)=>{
         console.log(err);
     }
 });
-const updateProduct = asyncHandler(async(req,res)=>{
+const updateProduct = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body);
-        const localpath=req.files?.productImage[0]?.path;
-        const {characs,description,price,productName,fixedqty,category,availability}=req.body;
-        if(localpath){
-            if(!(characs && description && price && productName && fixedqty && category && availability)){
-                fs.unlinkSync(localpath);
-                throw new ApiError(400,"All fields are compulsory");
-            }
-            const image=await uploadOnCloudinary(localpath);
-            if(!image){
-                fs.unlinkSync(localpath);
-                throw new ApiError(500,"Something went wrong while uploading the image");
-            }
-            req.body.image=image.url;
-        }
+        const { id, imgStatus } = req.params;
+        const localpath = req.files?.productImage?.[0]?.path;
         
-        const product=await Product.findByIdAndUpdate(req.params.id,req.body,{new:true});
-        if(!product){
-            throw new ApiError(404,"Product not found");
+        let {
+            characs,
+            description,
+            price,
+            productName,
+            fixedqty,
+            category,
+            availability
+        } = req.body;
+
+        // Handle potential string representations of arrays/objects
+        try {
+            characs = typeof characs === 'string' ? JSON.parse(characs) : characs || [];
+            price = typeof price === 'string' ? JSON.parse(price) : price || [0, 0];
+        } catch (parseError) {
+            console.error("Error parsing JSON:", parseError);
         }
+
+        // Convert other fields
+        availability = availability === 'true' || availability === true;
+        fixedqty = Number(fixedqty) || 0;
+
+        if (!(description && productName && category)) {
+            if (localpath) fs.unlinkSync(localpath);
+            throw new ApiError(400, "Product name, description, and category are required");
+        }
+
+        let updateData = {
+            characs,
+            description,
+            price,
+            productName,
+            fixedqty,
+            category,
+            availability
+        };
+
+        if (imgStatus === 'true' && localpath) {
+            const image = await uploadOnCloudinary(localpath);
+            if (!image) {
+                fs.unlinkSync(localpath);
+                throw new ApiError(500, "Something went wrong while uploading the image");
+            }
+            updateData.image = image.url;
+        }
+
+        const product = await Product.findByIdAndUpdate(id, updateData, { new: true });
+        if (!product) {
+            throw new ApiError(404, "Product not found");
+        }
+
         return res.status(200).json(
-            new ApiResponse(200,product,"Product updated successfully")
-        )
+            new ApiResponse(200, product, "Product updated successfully")
+        );
     } catch (err) {
-        console.log(err);
+        console.error("Error in updateProduct:", err);
+        res.status(err.statusCode || 500).json(
+            new ApiResponse(err.statusCode || 500, null, err.message || "Something went wrong")
+        );
     }
 });
 const getProductsByCategory = asyncHandler(async(req,res)=>{

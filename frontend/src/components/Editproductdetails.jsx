@@ -81,30 +81,42 @@ const EditProductForm = () => {
   const toggleAvailability = () => {
     setProduct({ ...product, availability: !product.availability });
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        console.log(product , imgStatus)
-      const response = await axios.put(`/api/admin/update/${id}/${imgStatus}`,product,{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      let data;
+      let headers = {};
+      
+      if (imgStatus) {
+        data = new FormData();
+        if (product.productImage) {
+          data.append('productImage', product.productImage);
+        }
+        data.append('productName', product.productName);
+        data.append('price', JSON.stringify(product.price));
+        data.append('characs', JSON.stringify(product.characs));
+        data.append('description', product.description);
+        data.append('fixedqty', product.fixedqty);
+        data.append('category', product.category);
+        data.append('availability', product.availability);
+      } else {
+        data = {
+          productName: product.productName,
+          price: product.price,
+          characs: product.characs,
+          description: product.description,
+          fixedqty: product.fixedqty,
+          category: product.category,
+          availability: product.availability
+        };
+        headers['Content-Type'] = 'application/json';
       }
-      );
+  
+      const response = await axios.put(`/api/admin/update/${id}/${imgStatus}`, data, { headers });
       
       if (response.status === 200) {
         navigate("/");
-        setProduct({
-          productImage: null,
-          productName: "",
-          price: [0, 0],
-          characs: [],
-          description: "",
-          fixedqty: 0,
-          category: "",
-          availability: true,
-        });
+        // Reset product state...
       } else {
         console.error("Error submitting form");
       }
