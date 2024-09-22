@@ -8,7 +8,10 @@ const CartItem = ({ item, updateQuantity, removeItem }) => (
     <img src={item.imageUrl} alt={item.title} className="item-image" />
     <div className="item-details">
       <h3 className="item-name">{item.title}</h3>
-      <p className="item-price"> &#8377;{item.price} x {item.qty} {item.unit}</p>
+      <p className="item-price">
+      <span className="current-price1">&#8377;{item.price[0]} x {item.qty} {item.unit}</span>
+        <span className="original-price1">&#8377;{item.price[1]}</span>
+      </p>
     </div>
     <div className="quantity-controls">
       <button onClick={() => updateQuantity(item.id, item.qty - 1)} className="quantity-button">
@@ -61,9 +64,9 @@ const Cart = ({ isOpen, onClose }) => {
     window.dispatchEvent(event);
   };
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const vat = subtotal * 0.2;
-  const total = subtotal + vat;
+  const subtotalOriginal = items.reduce((sum, item) => sum + item.price[1] * item.qty, 0);
+  const subtotalDiscounted = items.reduce((sum, item) => sum + item.price[0] * item.qty, 0);
+  const total = subtotalDiscounted; // Use the total of discounted prices for final total
 
   if (!isOpen) return null;
 
@@ -72,10 +75,7 @@ const Cart = ({ isOpen, onClose }) => {
       <div className="cart-container">
         <div className="cart-header">
           <h2 className="cart-title">My Cart</h2>
-          <button
-            onClick={onClose} // Close the cart without reload
-            className="close-button"
-          >
+          <button onClick={onClose} className="close-button">
             <X size={24} />
           </button>
         </div>
@@ -93,12 +93,12 @@ const Cart = ({ isOpen, onClose }) => {
 
         <div className="cart-summary">
           <div className="summary-row">
-            <span>Sub-Total:</span>
-            <span>&#8377;{subtotal.toFixed(2)}</span>
+            <span>Sub-Total (Original):</span>
+            <span>&#8377;{subtotalOriginal}</span>
           </div>
           <div className="summary-row">
-            <span>VAT (20%):</span>
-            <span>&#8377;{vat.toFixed(2)}</span>
+            <span>Sub-Total (Discounted):</span>
+            <span>&#8377;{subtotalDiscounted}</span>
           </div>
           <div className="summary-row total">
             <span>Total:</span>

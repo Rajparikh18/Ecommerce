@@ -92,6 +92,18 @@
     color: #2e8b57;
     padding: 5px;
   }
+  .current-price1 {
+    color: #2196F3 ; 
+    font-weight: bold;
+    font-size: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .original-price1 {
+    color: #999;
+    text-decoration: line-through;
+    font-size: .9rem;
+    }
   
   .quantity {
     margin: 0 10px;
