@@ -22,9 +22,6 @@ const useAuth = () => {
     const checkAuth = async () => {
       try {
         const response = await axios.get('/api/admin/verify', { withCredentials: true });
-        if(response){
-          console.log(response.data.data);
-        }
         setIsAuthenticated(response.data.data.isAuthenticated);
         setIsAdmin(!!response.data.data.admin); // Change here: removed the negation
       } catch (error) {
@@ -56,7 +53,6 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 
 function App() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
-console.log("in app como",isAuthenticated, isAdmin, isLoading);
   if (isLoading) {
     return <div>Loading...</div>;
   }
