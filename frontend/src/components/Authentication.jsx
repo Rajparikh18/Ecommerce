@@ -98,6 +98,12 @@ const Authcomponent = () => {
               placeholder="Enter Mobile Number"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
+              minLength={10}
+              maxLength={10} // Restrict to 10 digits for a standard mobile number
+              pattern="[0-9]*" // Allow only numeric input
+              required // Make it a required field
+              onInvalid={(e) => e.target.setCustomValidity('Please enter a valid phone number')}
+              onInput={(e) => e.target.setCustomValidity('')} // Clear the custom validity on input
             />
           </div>
         </>

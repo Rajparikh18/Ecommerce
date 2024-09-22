@@ -52,7 +52,7 @@ const ProductCard = ({
     id,
     title,
     imageUrl,
-    price: currentPrice,
+    price:[currentPrice,originalPrice] ,
     qty: 1,
   };
 

@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { Admin } from "../models/admin.model.js";
+import {billingSchema} from "../models/billingdetails.model.js";
 
 const VerifyUserdetails = asyncHandler(async(req,res)=>{
     try{
@@ -218,7 +219,29 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
     )
 })
 
+const billingDetails = asyncHandler(async(req,res)=>{
+        const {firstName,lastName,address,city,postCode,owner,cart}=req.body;
+        if(!(owner && firstName && lastName && address && city && postCode && cart)){
+            throw new ApiError(400,"All fields are compulsory");
+        }
+
+        const billing=await billingSchema.create({
+            firstName,lastName,address,city,postCode,cart
+        });
+        res
+        .status(200)
+        .json(
+           new ApiResponse(
+                200,
+                {
+                    billing
+                },
+                "Billing Details Saved Successfully"
+            )
+        )
+})
 
 
 
-export {VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser};
+
+export {VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser,billingDetails};

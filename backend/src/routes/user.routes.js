@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { VerifyUserdetails,registerUser,loginUser, logoutUser } from "../controllers/user.controller.js";
+import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails } from "../controllers/user.controller.js";
 import { verifyJWT,verifyAdmin,verifyUser } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -13,6 +13,7 @@ router.route("/logout").post(verifyJWT,logoutUser);
 router.route("/").get((req,res)=>{
     res.send("hello raj")
 })
+router.route("/billingdetails").post(verifyJWT,billingDetails);
 
 
 export default router;
