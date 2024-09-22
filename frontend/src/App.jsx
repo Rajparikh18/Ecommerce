@@ -21,8 +21,11 @@ const useAuth = () => {
     const checkAuth = async () => {
       try {
         const response = await axios.get('/api/admin/verify', { withCredentials: true });
+        if(response){
+          console.log(response.data.data);
+        }
         setIsAuthenticated(response.data.data.isAuthenticated);
-        setIsAdmin(!!response.data.data.admin); // Assuming the presence of 'admin' indicates admin status
+        setIsAdmin(!!response.data.data.admin); // Change here: removed the negation
       } catch (error) {
         setIsAuthenticated(false);
         setIsAdmin(false);
@@ -33,10 +36,8 @@ const useAuth = () => {
 
     checkAuth();
   }, []);
-
   return { isAuthenticated, isAdmin, isLoading };
 };
-
 // Create a ProtectedRoute component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
@@ -53,11 +54,17 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 };
 
 function App() {
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+console.log("in app como",isAuthenticated, isAdmin, isLoading);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/" element={<Home isAdmin={isAdmin} />} />
+        <Route path="/product/:id" element={<ProductPage isAdmin={isAdmin} />} />
         <Route path="/authpage" element={<Authpage />} />
         <Route 
           path="/admin/create" 
@@ -67,9 +74,16 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/products/:category" element={<Productlist />} />
+        <Route path="/products/:category" element={<Productlist isAdmin={isAdmin} />} />
         <Route path="/otp" element={<OtpInputWithValidation numberOfDigits={6} />} />
-        <Route path="/update/:id" element={<EditProductForm  />} />
+        <Route 
+          path="/update/:id" 
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <EditProductForm />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );

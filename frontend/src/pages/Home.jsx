@@ -21,8 +21,8 @@ const slides = [
     { mainImage: image4 },
 ];
 
-function Home() {
-  const [products, setProducts] = useState([]); // Combined product list from both categories
+const Home=(isAdmin)=> {
+  const [products, setProducts] = useState([]);// Combined product list from both categories
   const navigate = useNavigate();
   // Function to fetch products by category
   const getProductsByCategory = async (category) => {
@@ -76,6 +76,7 @@ function Home() {
                 currentPrice={product.price[0]}
                 originalPrice={product.price[1]}
                 id={product._id}
+                verify={isAdmin.isAdmin}
                 />   
             </React.Fragment>
           )) : <p>No products available</p>

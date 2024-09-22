@@ -64,7 +64,7 @@ router.route("/verify").get(verifyJWT, (req, res) => {
       },
       "Authentication checked successfully"
     ));
-  } else {
+  } else if(req.admin) {
     return res.json(new ApiResponse(
       200,
       {
@@ -72,6 +72,14 @@ router.route("/verify").get(verifyJWT, (req, res) => {
         admin: req.admin
       },
       "Authentication for admin successful"
+    ));
+  }else{
+    return res.json(new ApiResponse(
+      200,
+      {
+        isAuthenticated: false,
+      },
+      "Authentication failed"
     ));
   }
 });
