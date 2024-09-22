@@ -220,13 +220,14 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
 })
 
 const billingDetails = asyncHandler(async(req,res)=>{
-        const {firstName,lastName,address,city,postCode,owner,cart}=req.body;
-        if(!(owner && firstName && lastName && address && city && postCode && cart)){
+    console.log(req.body);
+        const {firstName,lastName,address,city,postCode,phoneNumber,cart}=req.body;
+        if(!( firstName && lastName && address && city && postCode && cart)){
             throw new ApiError(400,"All fields are compulsory");
         }
 
         const billing=await billingSchema.create({
-            firstName,lastName,address,city,postCode,cart
+            firstName,lastName,address,city,postCode,cart,owner:req.user._id,phoneNumber
         });
         res
         .status(200)

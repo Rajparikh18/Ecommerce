@@ -5,13 +5,13 @@ const billingDetailSchema = new Schema ({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
-    firstname:{
+    firstName:{
         type:String,
         required:true,
         trim:true,
         lowercase:true,
     },
-    lastname:{
+    lastName:{
         type:String,
         required:true,
         trim:true,
@@ -35,7 +35,7 @@ const billingDetailSchema = new Schema ({
         required: true,
         unique:true
       },
-    postalcode:{
+    postCode:{
         type:String,
         required:true,
         trim:true,

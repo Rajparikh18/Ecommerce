@@ -51,6 +51,17 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   return children;
 };
 
+const UserProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+      if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (!isAuthenticated) {
+    return <Navigate to="/authpage" replace />;
+  }
+  return children;
+};
+
 function App() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
   if (isLoading) {
@@ -81,7 +92,14 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/checkout" element={<Checkout/>} />
+        <Route 
+          path="/checkout" 
+          element={
+            <UserProtectedRoute>
+              <Checkout />
+            </UserProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

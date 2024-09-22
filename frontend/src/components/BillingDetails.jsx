@@ -40,7 +40,7 @@ const BillingDetails = () => {
       console.log('Submission data:', submissionData)
 
       // Send POST request
-      const response = await axios.post('/api/users/billingdetails', submissionData)
+      const response = await axios.post('/api/billingdetails', submissionData)
       
       console.log('Order submitted successfully:', response.data)
       // Handle successful submission (e.g., show success message, redirect to confirmation page)
