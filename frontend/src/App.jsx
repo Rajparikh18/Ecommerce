@@ -10,6 +10,7 @@ import AdminCreateProduct from './pages/admin.createProduct';
 import Productlist from './pages/Productlist';
 import OtpInputWithValidation from './components/otpverification';
 import EditProductForm from './components/Editproductdetails';
+import Checkout from './pages/Checkoutpage';
 
 // Create a custom hook for authentication
 const useAuth = () => {
@@ -84,6 +85,7 @@ console.log("in app como",isAuthenticated, isAdmin, isLoading);
             </ProtectedRoute>
           } 
         />
+        <Route path="/checkout" element={<Checkout/>} />
       </Routes>
     </Router>
   );

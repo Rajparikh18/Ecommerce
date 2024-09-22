@@ -37,7 +37,7 @@ const Productlist=(isAdmin)=> {
                     description={product.description}
                     currentPrice={product.price[0]}
                     originalPrice={product.price[1]}
-                    id={product._id} verify={isAdmin}/>
+                    id={product._id} verify={isAdmin.isAdmin}/>
                 ))}
             </div>
             <Footer />
