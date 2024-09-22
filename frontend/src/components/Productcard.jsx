@@ -6,7 +6,7 @@ import { Cookie, Edit, Trash2 } from "lucide-react";
 import axios from "axios";
 
 const ProductCard = ({
-  verify=true,
+  verify,
   imageUrl,
   title,
   description,

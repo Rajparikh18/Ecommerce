@@ -5,8 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/Productcard';
 import Navbar from '../components/Navbar';
-
-function Productlist() {
+const Productlist=(isAdmin)=> {
     const { category } = useParams();
     const [products, setProducts] = useState([]);
 
@@ -38,7 +37,7 @@ function Productlist() {
                     description={product.description}
                     currentPrice={product.price[0]}
                     originalPrice={product.price[1]}
-                    id={product._id} />
+                    id={product._id} verify={isAdmin}/>
                 ))}
             </div>
             <Footer />

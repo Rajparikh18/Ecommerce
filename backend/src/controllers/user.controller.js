@@ -158,13 +158,11 @@ const logoutUser=asyncHandler(async(req,res)=>{
             )
             const Aoptions={
                 httpOnly:true,
-                secure:true,
-                maxAge:60*60*1000
+                secure:true
             }
             const Roptions={
                 httpOnly:true,
                 secure:true,
-                maxAge:7*24*60*60*1000
             }
             return res
         .status(200)
