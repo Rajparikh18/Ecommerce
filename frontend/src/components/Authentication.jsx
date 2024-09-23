@@ -52,26 +52,18 @@ const Authcomponent = () => {
         setLogger(true);
       }
       else if (response.status === 200) {
-        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
-        Cookies.set("username", `${response.data.data.user.username}`, { expires });
         navigate("/");
       }
     } catch (error) {
       console.error('Error submitting form', error);
     }
   };
-
-  const ifUserLoggedIn = () => {
-    if (Cookies.get('hegsgeerjyhweffyw')) {
+  useEffect(()=>{
+    if(Cookies.get("username")){
       navigate("/");
     }
-  };
+  },[]);
 
-  useEffect(() => {
-    if (Cookies.get('hegsgeerjyhweffyw')) {
-      ifUserLoggedIn();
-    }
-  });
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 

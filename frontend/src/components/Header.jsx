@@ -24,7 +24,7 @@ const Header = () => {
 
   // Check login status on component mount
   useEffect(() => {
-    if (Cookies.get('hegsgeerjyhweffyw')) {
+    if (Cookies.get('username')) {
       setRaj(true);
     } else {
       setRaj(false);
@@ -59,9 +59,8 @@ const Header = () => {
 
   // Logout function
   const logClick = async () => {
-    if (Cookies.get('hegsgeerjyhweffyw')) {
+    if (Cookies.get('username')) {
       await axios.post('/api/logout');
-      Cookies.remove('hegsgeerjyhweffyw');
       Cookies.remove('username');
       setRaj(false); // Set logged out state
       setIsProfileMenuOpen(false); // Close profile menu after logging out

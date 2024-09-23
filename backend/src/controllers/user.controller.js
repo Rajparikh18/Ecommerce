@@ -171,7 +171,8 @@ const logoutUser=asyncHandler(async(req,res)=>{
         .clearCookie("refreshToken",Roptions)
         .json(new ApiResponse(200,{},"Admin logged Out")) 
         }
-        await User.findByIdAndUpdate(
+        else if(req.user){
+            await User.findByIdAndUpdate(
             req.user._id,
             {
                 $set:{
@@ -191,7 +192,10 @@ const logoutUser=asyncHandler(async(req,res)=>{
         .status(200)
         .clearCookie("accessToken",options)
         .clearCookie("refreshToken",options)
-        .json(new ApiResponse(200,{},"User logged Out"))   
+        .json(new ApiResponse(200,{},"User logged Out"))
+    } else{
+        return res.json(new ApiResponse(404,{},"Please log in to move further"));
+    }   
     } catch (error) {
         throw new ApiError(401,"error: ",error)
     } 
