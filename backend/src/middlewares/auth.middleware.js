@@ -37,7 +37,14 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
       decodedRefresh = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     } catch (err) {
       // Refresh token is invalid or expired
+      const Roptions={
+        httpOnly:true,
+        secure:true,
+    }
       console.warn("Refresh token verification failed:", err.message);
+      res
+        .status(200)
+        .clearCookie("refreshToken",Roptions);
       return next(); // Proceed without setting user/admin
     }
 
@@ -71,7 +78,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     }
 
     // Proceed to the next middleware
-    next();
+    return next();
   } catch (error) {
     // Handle unexpected errors
     next(new ApiError(401, error.message || "Unauthorized"));

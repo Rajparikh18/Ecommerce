@@ -35,10 +35,6 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           email: details.email,
           password: details.password,
         });
-        if(response){
-          console.log(response);
-        Cookies.set("username" ,`${response.data.data.admin.username}`, { expires: 1 });
-        }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);
         setOtpError("❌ Admin login failed. Please try again.");
@@ -52,9 +48,6 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
           password: details.password,
           number:details.number
         });
-        if(response){
-        Cookies.set("username" ,`${response.data.data.user.username}`, { expires: 7 });
-        }
       } catch (error) {
         console.error('Admin login failed:', error.response ? error.response.data : error.message);
         setOtpError("❌ Admin login failed. Please try again.");
@@ -79,7 +72,6 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         }
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
-        Cookies.set('hegsgeerjyhweffyw', "dbsygygdushcjbsduhyawvkiehjv", { expires });
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Admin Login Successfully");         
           // Navigate to "/" and immediately reload

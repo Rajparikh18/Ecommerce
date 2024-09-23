@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 // Import your components
 import Home from './pages/Home';
 import ProductPage from './pages/Productpage';
@@ -17,16 +17,28 @@ const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [details, setDetails] = useState({});
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const response = await axios.get('/api/admin/verify', { withCredentials: true });
-        setIsAuthenticated(response.data.data.isAuthenticated);
-        setIsAdmin(!!response.data.data.admin); // Change here: removed the negation
+        console.log(response);
+        
+        const { isAuthenticated, admin, user } = response.data.data;
+        
+        setIsAuthenticated(isAuthenticated);
+        setIsAdmin(!!admin);
+        
+        if (admin) {
+          setDetails(admin);
+        } else if (user) {
+          setDetails(user);
+        }
       } catch (error) {
         setIsAuthenticated(false);
         setIsAdmin(false);
+        setDetails({});
       } finally {
         setIsLoading(false);
       }
@@ -34,8 +46,10 @@ const useAuth = () => {
 
     checkAuth();
   }, []);
-  return { isAuthenticated, isAdmin, isLoading };
+
+  return { isAuthenticated, isAdmin, isLoading, details };
 };
+
 // Create a ProtectedRoute component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
@@ -52,18 +66,30 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 };
 
 const UserProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
-      if (isLoading) {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
+
   if (!isAuthenticated) {
     return <Navigate to="/authpage" replace />;
   }
+
   return children;
 };
 
 function App() {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading, details } = useAuth();
+
+  useEffect(() => {
+    if (details.username) {
+      Cookies.set('username', `${details.username}`, { expires: isAdmin ? 1 : 7 });
+    } else if (!isAuthenticated) {
+      Cookies.remove('username');
+    }
+  }, [details, isAdmin, isAuthenticated]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
