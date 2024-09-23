@@ -1,24 +1,48 @@
 import React, { useState } from 'react';
 import { Heart, Eye } from 'lucide-react';
 import './ProductDetail.css';
+import Cookies from 'js-cookie';
 
 const ProductDetail = ({
   productName,
   price,
-  originalPrice,
   description,
-  features,
-  weight,
+  id,
+  Fixedqty=12,
   mainImage,
-  characs
+  characs,
+  availability=true,
 }) => {
-  const [quantity, setQuantity] = useState(0);
-  const [qty,Setqty]=useState(12);
-  const [availability,Setavailability]=useState(true);
-  const [selectedWeight, setSelectedWeight] = useState(weight[0]);
+  const [quantity, setQuantity] = useState(1);
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
+  
+  function addToCart(e, product) {
+    if (!Cookies.get("cart")) {
+      Cookies.set("cart", JSON.stringify([product]), { expires: 7 });
+      return;
+    }
+    let cartArr = JSON.parse(Cookies.get("cart")) || [];
+    const existingProduct = cartArr.find((p) => p.id === product.id);
+    if (existingProduct) {
+      existingProduct.qty += quantity;
+    } else {
+      cartArr.push(product);
+    }
+    Cookies.set("cart", JSON.stringify(cartArr), { expires: 7 });
+    Cookies.set("CartbtnStatusClicked", "true", { expires: 7 });
+
+    // Dispatch a custom event to notify Header component
+    window.dispatchEvent(new Event("cartUpdated"));
+  }
+  const product = {
+    id: id,
+    title: productName,
+    imageUrl: mainImage,
+    price ,
+    qty: quantity,
+  };
   return (
     <div className="product-page">
         <div className="product-image">
@@ -46,7 +70,7 @@ const ProductDetail = ({
             <li key={index}>{feature}</li>
           ))}
         </ul>
-          <h3>1 Quantity equals {qty} packets</h3><br />
+          <h3>1 Quantity equals {Fixedqty} packets</h3><br />
           <h2>Availability Yes</h2>
         <div className="add-to-cart">
           <div className="quantity-selector">
@@ -58,7 +82,7 @@ const ProductDetail = ({
             />
             <button onClick={incrementQuantity}>+</button>
           </div>
-          <button className="cart-button">ADD TO CART</button>
+          <button className="cart-button" onClick={(e) => addToCart(e, product)}>ADD TO CART</button>
         </div>
 
       </div>

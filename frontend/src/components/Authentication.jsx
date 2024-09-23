@@ -52,6 +52,7 @@ const Authcomponent = () => {
         setLogger(true);
       }
       else if (response.status === 200) {
+        window.location.reload();
         navigate("/");
       }
     } catch (error) {
