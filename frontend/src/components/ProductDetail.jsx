@@ -8,10 +8,10 @@ const ProductDetail = ({
   price,
   description,
   id,
-  Fixedqty=12,
-  mainImage,
+  fixedqty,
+  image,
   characs,
-  availability=true,
+  availability,
 }) => {
   const [quantity, setQuantity] = useState(1);
   const incrementQuantity = () => setQuantity(prev => prev + 1);
@@ -19,6 +19,9 @@ const ProductDetail = ({
 
   
   function addToCart(e, product) {
+    if(availability===false){
+      return;
+    }
     if (!Cookies.get("cart")) {
       Cookies.set("cart", JSON.stringify([product]), { expires: 7 });
       return;
@@ -39,14 +42,14 @@ const ProductDetail = ({
   const product = {
     id: id,
     title: productName,
-    imageUrl: mainImage,
+    imageUrl: image,
     price ,
     qty: quantity,
   };
   return (
     <div className="product-page">
         <div className="product-image">
-          <img src={mainImage} alt={productName} />
+          <img src={image} alt={productName} />
         </div>
       <div className="product-info">
         <h1>{productName}</h1>
@@ -70,9 +73,9 @@ const ProductDetail = ({
             <li key={index}>{feature}</li>
           ))}
         </ul>
-          <h3>1 Quantity equals {Fixedqty} packets</h3><br />
-          <h2>Availability Yes</h2>
-        <div className="add-to-cart">
+          <h3 className='Quantity'>1 Quantity equals {fixedqty} packets</h3>
+          <p className={availability?("available"):("notavailable")}>{availability? ('In Stock'):("Out of Stock")}</p>
+        <div className='add-to-cart'>
           <div className="quantity-selector">
             <button onClick={decrementQuantity}>-</button>
             <input 
@@ -82,7 +85,7 @@ const ProductDetail = ({
             />
             <button onClick={incrementQuantity}>+</button>
           </div>
-          <button className="cart-button" onClick={(e) => addToCart(e, product)}>ADD TO CART</button>
+          <button  className={availability? ("cart-button "):("cart-button out-of-stock1")} onClick={(e) => addToCart(e, product)}>ADD TO CART</button>
         </div>
 
       </div>

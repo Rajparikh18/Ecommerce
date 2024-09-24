@@ -12,6 +12,7 @@ const ProductCard = ({
   description,
   currentPrice,
   originalPrice,
+  availability,
   id,
 }) => {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ const ProductCard = ({
   };
   function addToCart(e, product) {
     e.stopPropagation();
+    if(availability===false){
+      return;
+    }
     if (!Cookies.get("cart")) {
       Cookies.set("cart", JSON.stringify([product]), { expires: 7 });
       return;
@@ -53,11 +57,12 @@ const ProductCard = ({
     title,
     imageUrl,
     price:[currentPrice,originalPrice] ,
+    availability,
     qty: 1,
   };
 
   return (
-    <div className="product-card" onClick={handleclick}>
+    <div className={availability? ("product-card"):("product-card out-of-stock")} onClick={handleclick}>
       <div className="image-container">
         <img src={imageUrl} alt={title} className="product-image" />
       </div>

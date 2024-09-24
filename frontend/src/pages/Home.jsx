@@ -11,7 +11,6 @@ import image4 from '../assets/slider4.png';
 import './Home.css';
 import '../App.css';
 import ProductCard from '../components/Productcard';
-import demoimage from "../assets/images/demoimage.jpeg";
 import axios from 'axios';
 
 const slides = [
@@ -70,12 +69,13 @@ const Home=(isAdmin)=> {
           products.length > 0 ? products.map((product, index) => (
             <React.Fragment key={index}>
               <ProductCard 
-                imageUrl={demoimage} // Use the correct image path if dynamic
+                imageUrl={product.image} // Use the correct image path if dynamic
                 title={product.productName}
                 description={product.description}
                 currentPrice={product.price[0]}
                 originalPrice={product.price[1]}
                 id={product._id}
+                availability={product.availability}
                 verify={isAdmin.isAdmin}
                 />   
             </React.Fragment>
