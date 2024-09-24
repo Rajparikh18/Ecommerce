@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails } from "../controllers/user.controller.js";
+import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails,searchProduct } from "../controllers/user.controller.js";
 import { verifyJWT,verifyAdmin,verifyUser } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -14,6 +14,6 @@ router.route("/").get((req,res)=>{
     res.send("hello raj")
 })
 router.route("/billingdetails").post(verifyJWT,billingDetails);
-
+router.route("/products/search").get(searchProduct)
 
 export default router;

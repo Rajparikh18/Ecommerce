@@ -4,7 +4,7 @@
   align-items: center;
   padding: 10px 20px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   height: 80px;
   color: #333;
@@ -27,6 +27,7 @@
   max-width: 600px;
   margin: 10px 0;
   height: 40px;
+  position: relative; /* Add position relative for absolute positioning of results */
 }
 
 .category-select {
@@ -58,11 +59,41 @@
   cursor: pointer;
 }
 
+.results-dropdown {
+  position: absolute; /* Position below the search input */
+  top: 100%; /* Align with the bottom of the search container */
+  left: 0;
+  right: 0; /* Match the width of the search input */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure it appears above other elements */
+  max-height: 200px; /* Optional: limit height */
+  overflow-y: auto; /* Scroll if necessary */
+}
+
+.results-dropdown ul {
+  list-style: none; /* Remove bullets */
+  margin: 0;
+  padding: 0;
+}
+
+.results-dropdown li {
+  padding: 10px; /* Add padding for clickable area */
+  cursor: pointer; /* Show pointer on hover */
+}
+
+.results-dropdown li:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
 .nav-items {
   display: flex;
   gap: 40px;
 }
-.cartbtn{
+
+.cartbtn {
   background-color: #2e8b57;
   color: white;
   border: none;
@@ -70,15 +101,18 @@
   padding: 5px 10px;
   cursor: pointer;
 }
-.cartbtn:hover{
+
+.cartbtn:hover {
   background-color: #226941;
 }
+
 .nav-item {
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
 }
+
 .cart-count {
   position: relative;
   background-color: red;
@@ -87,7 +121,6 @@
   padding: 2px 6px;
   font-size: 12px;
 }
-
 
 .nav-text {
   display: flex;
@@ -107,28 +140,27 @@
   padding: 5px;
 }
 
-
-
-.clickProfile{
+.clickProfile {
   background-color: white;
   font-size: larger;
-  position:absolute;
+  position: absolute;
   width: max-content;
   height: max-content;
   padding: 1rem;
-  margin-top: 2rem ;
+  margin-top: 2rem;
   border: 2px solid black;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
-.clickProfile p{
+
+.clickProfile p {
   margin: 5px;
 }
-.clickProfile p:hover{
+
+.clickProfile p:hover {
   background-color: #ccc;
 }
-
 
 @media (max-width: 768px) {
   .header {
@@ -162,6 +194,7 @@
     border-radius: 5px 0 0 5px;
   }
 }
+
 @media (max-width: 782px) {
   .header {
     flex-direction: column;
@@ -193,24 +226,20 @@
     flex-direction: row;
     width: 100%;
     margin-top: 10px;
-    
   }
 
-  .search-input{
+  .search-input {
     width: 100%;
     border-radius: 5px 0 0 5px;
     height: 35px;
     border: 1px solid #ccc;
     border-right: none;
-    
   }
+
   .search-button {
     width: 16%;
     height: 37px;
     border-radius: 0 5px 5px 0;
     margin-right: 0.5rem;
-    
   }
-
 }
-

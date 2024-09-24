@@ -13,6 +13,46 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [username, setUsername] = useState("");
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+};
+
+
+  const handleSearch = debounce(async (event) => {
+    const value = event.target.value;
+    setQuery(value);
+
+    if (value) {
+        const response = await axios.get(`/api/products/search?query=${value}`);
+        if(response){
+          setResults(response.data);
+        }
+        console.log(results);
+    }
+    //  else {
+    //     setResults([]);
+    // }
+}, 1000);
+
+  const gotoproduct= (id)=>{
+      navigate(`/product/${id}`);
+  }
+
+  const search=document.querySelector('results-dropdown');
+  window.addEventListener("click",(e)=>{
+    if(e.target !=search && results.length>0){
+      setResults([]);
+    }
+  })
 
   // Check if cart should be opened after reload
   useEffect(() => {
@@ -110,15 +150,25 @@ const Header = () => {
         </div>
       </div>
       <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search Products..."
-          className="search-input"
-        />
-        <button className="search-button">
-          <Search size={20} />
-        </button>
-      </div>
+  <input
+    type="text"
+    placeholder="Search Products..."
+    className="search-input"
+    onChange={handleSearch}
+  />
+  <button className="search-button">
+    <Search size={20} />
+  </button>
+  {results.length > 0 && (
+    <div className="results-dropdown">
+      <ul>
+        {results.map((product) => (
+          <li key={product._id} onClick={()=>gotoproduct(product._id)}>{product.productName}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
       <div className="nav-items">
         {/* Profile Menu */}
         <div className="nav-item profile" onClick={checkforlogin}>

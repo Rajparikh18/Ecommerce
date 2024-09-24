@@ -5,6 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { Admin } from "../models/admin.model.js";
 import {billingSchema} from "../models/billingdetails.model.js";
+import { Product } from "../models/product.model.js";
 
 const VerifyUserdetails = asyncHandler(async(req,res)=>{
     try{
@@ -246,7 +247,36 @@ const billingDetails = asyncHandler(async(req,res)=>{
         )
 })
 
+const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+};
+
+const searchProduct = async (req, res) => {
+    const { query } = req.query; // Get the search query from the URL
+
+    if (!query) {
+        return res.status(400).json({ message: 'Query is required' });
+    }
+
+    try {
+        const products = await Product.find({
+            productName: { $regex: query, $options: 'i' } // Case-insensitive search
+        }).limit(10); // Limit to 5 results
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 
 
-export {VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser,billingDetails};
+
+
+export {searchProduct,VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser,billingDetails};
