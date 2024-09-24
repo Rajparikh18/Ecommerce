@@ -142,3 +142,21 @@
         }
     }
   
+    .product-card.out-of-stock {
+      opacity: 0.7; /* Example: Reduce opacity for out-of-stock items */
+ /* Example: Disable pointer events */
+      /* Add any other styling specific to out-of-stock cards */
+  }
+  
+  .product-card.out-of-stock .product-info {
+      /* Example: Adjust styling for out-of-stock product information */
+      filter: grayscale(100%); /* Grayscale effect */
+  }
+  
+  .product-card.out-of-stock .addtocart {
+      /* Example: Adjust styling for the 'Add to Cart' button */
+      background-color: #ccc; /* Light gray background */
+      color: #999; /* Light gray text */
+      cursor: not-allowed; /* Change cursor to indicate non-interactivity */
+  }
+  

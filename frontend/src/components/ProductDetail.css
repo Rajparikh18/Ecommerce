@@ -136,3 +136,30 @@
   .sku {
     color: #6b7280;
   }
+  .available {
+    margin: 10px;
+    color: green;
+    font-size: large;
+    font-weight: bold;
+  }
+  .notavailable{
+    margin: 10px;
+    color: red;
+    font-size: large;
+    font-weight: bold;
+  }
+  .Quantity{
+    background-color: #2e8b57;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+  }
+
+  
+  .out-of-stock1{
+    /* Example: Adjust styling for the 'Add to Cart' button */
+    background-color: #ccc ; /* Light gray background */
+    color: #000000 ; /* Light gray text */
+    cursor: not-allowed;
+    border: none; /* Change cursor to indicate non-interactivity */
+}

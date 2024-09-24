@@ -35,6 +35,7 @@ const Productlist=(isAdmin)=> {
                     imageUrl={product.image}// Use the correct image path if dynamic
                     title={product.productName}
                     description={product.description}
+                    availability={product.availability}
                     currentPrice={product.price[0]}
                     originalPrice={product.price[1]}
                     id={product._id} verify={isAdmin.isAdmin}/>
