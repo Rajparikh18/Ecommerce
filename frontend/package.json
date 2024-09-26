@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@firebase/app": "^0.10.11",
+    "@firebase/auth": "^1.7.9",
     "axios": "^1.7.5",
     "cloudinary": "^2.4.0",
+    "firebase": "^10.13.2",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.424.0",
