@@ -2,8 +2,10 @@ import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import './BillingDetails.css'
+import {useNavigate} from 'react-router-dom'
 
 const BillingDetails = () => {
+  const navigate = useNavigate()
   useEffect(() => {
     // Dynamically load the Razorpay script
     const script = document.createElement('script');
@@ -66,8 +68,8 @@ const BillingDetails = () => {
       key: import.meta.env.VITE_PAYMENT_KEY_ID,
       amount: orderData.amount,
       currency: orderData.currency,
-      name: "Your Company Name",
-      description: "Purchase Description",
+      name: "APARNA DISTRIBUTORS",
+      description: "THIS IS THE PAYMENT-GATEWAY AT APARNA DISTRIBUTORS FOR YOUR ORDER",
       order_id: orderData.id,
       handler: function (response) {
         verifyPayment(response, orderData);
@@ -93,7 +95,8 @@ const BillingDetails = () => {
         razorpay_payment_id: paymentResponse.razorpay_payment_id,
         razorpay_signature: paymentResponse.razorpay_signature,
         ...formData,
-        cart: orderData.cart
+        cart: orderData.cart,
+        amount: orderData.amount
       };
 
       const response = await axios.post('/api/payment/verify', verificationData);
@@ -101,6 +104,7 @@ const BillingDetails = () => {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
         Cookies.remove('cart');
+        navigate('/myorders');
         // Redirect to success page or show success message
       } else {
         // Handle payment verification failure
