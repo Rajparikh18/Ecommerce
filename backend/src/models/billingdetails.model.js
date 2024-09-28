@@ -32,8 +32,7 @@ const billingDetailSchema = new Schema ({
     phoneNumber: {
         type: String,
         match: [/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number'],
-        required: true,
-        unique:true
+        required: true
       },
     postCode:{
         type:String,
@@ -46,6 +45,28 @@ const billingDetailSchema = new Schema ({
         required:true,
         trim:true,
         lowercase:true
+    },
+    paymentId:{
+        type:String,
+        required:true,
+        trim:true,
+        lowercase:true
+    },
+    orderId:{
+        type:String,
+        required:true,
+        trim:true,
+        lowercase:true
+    },
+    amount:{
+        type:Number,
+        required:true,
+        trim:true,
+        lowercase:true
+    },
+    created_At:{
+        type:Date,
+        default:Date.now
     }
 })
 

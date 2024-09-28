@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Cart.css';
 import { X, Minus, Plus } from 'lucide-react';
 import Cookies from 'js-cookie';
+import {useNavigate} from 'react-router-dom';
 
 const CartItem = ({ item, updateQuantity, removeItem }) => (
   <div className="cart-item">
@@ -27,8 +28,9 @@ const CartItem = ({ item, updateQuantity, removeItem }) => (
     </button>
   </div>
 );
-
 const Cart = ({ isOpen, onClose }) => {
+  
+const navigate=useNavigate();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -108,7 +110,7 @@ const Cart = ({ isOpen, onClose }) => {
 
         <div className="cart-buttons">
           <button className="view-cart-button">VIEW CART</button>
-          <button className="checkout-button">CHECKOUT</button>
+          <button className="checkout-button" >CHECKOUT</button>
         </div>
       </div>
     </div>

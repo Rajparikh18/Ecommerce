@@ -12,6 +12,7 @@ import OtpInputWithValidation from './components/otpverification';
 import EditProductForm from './components/Editproductdetails';
 import Checkout from './pages/Checkoutpage';
 import Auth from './components/Auth';
+import Orders from './pages/Orders';
 
 // Create a custom hook for authentication
 const useAuth = () => {
@@ -128,6 +129,7 @@ function App() {
           }
         />
          <Route path="/mobileotp" element={<Auth />} />
+         <Route path='/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
       </Routes>
     </Router>
   );
