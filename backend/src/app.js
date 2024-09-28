@@ -21,10 +21,12 @@ app.use(cookieParser())
 import userRouter from "./routes/user.routes.js"
 import adminRouter from "./routes/admin.routes.js"
 import sendOtpRouter from "./routes/sendOtp.routes.js"
+import paymentRouter from "./routes/payment.routes.js"
 
 //routes declaration 
 app.use("/api",userRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/checkotp",sendOtpRouter);
+app.use("/api/payment",paymentRouter);
 
 export {app,port}

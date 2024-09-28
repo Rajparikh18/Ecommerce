@@ -1,6 +1,7 @@
 import {Router} from "express";
 import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails,searchProduct } from "../controllers/user.controller.js";
 import { verifyJWT,verifyAdmin,verifyUser } from "../middlewares/auth.middleware.js";
+import { createOrder } from "../controllers/payment.controller.js";
 
 const router = Router();
 

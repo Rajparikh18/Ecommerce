@@ -225,7 +225,6 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
 })
 
 const billingDetails = asyncHandler(async(req,res)=>{
-    console.log(req.body);
         const {firstName,lastName,address,city,postCode,phoneNumber,cart}=req.body;
         if(!( firstName && lastName && address && city && postCode && cart)){
             throw new ApiError(400,"All fields are compulsory");
