@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import './BillingDetails.css'
 
 const BillingDetails = () => {
+  useEffect(() => {
+    // Dynamically load the Razorpay script
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => console.log('Razorpay script loaded successfully');
+    script.onerror = () => console.error('Error loading Razorpay script');
+    document.body.appendChild(script);
+
+    return () => {
+      // Clean up: remove script if the component unmounts
+      document.body.removeChild(script);
+    };
+  }, []);
   const [formData, setFormData] = useState({
     checkoutOption: 'new',
     firstName: '',
@@ -25,30 +39,78 @@ const BillingDetails = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log('Form data:', formData)
+    e.preventDefault();
     try {
-      // Fetch cart data from cookie
-      const cartData = Cookies.get('cart')
-      const cart = cartData ? JSON.parse(cartData) : []
+      const cartData = Cookies.get('cart');
+      const cart = cartData ? JSON.parse(cartData) : [];
 
-      // Prepare data for submission
       const submissionData = {
         ...formData,
         cart
-      }
-      console.log('Submission data:', submissionData)
+      };
 
-      // Send POST request
-      const response = await axios.post('/api/billingdetails', submissionData)
-      
-      console.log('Order submitted successfully:', response.data)
-      // Handle successful submission (e.g., show success message, redirect to confirmation page)
+      const response = await axios.post('/api/payment/createorder', submissionData);
+      if (response.data && response.data.data) {
+        console.log(response.data.data);
+        initializeRazorpay(response.data.data);
+      } else {
+        console.error('Invalid response from server');
+      }
     } catch (error) {
-      console.error('Error submitting order:', error)
-      // Handle error (e.g., show error message to user)
+      console.error('Error submitting order:', error);
     }
-  }
+  };
+
+  const initializeRazorpay = (orderData) => {
+    const options = {
+      key: import.meta.env.VITE_PAYMENT_KEY_ID,
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: "Your Company Name",
+      description: "Purchase Description",
+      order_id: orderData.id,
+      handler: function (response) {
+        verifyPayment(response, orderData);
+      },
+      prefill: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: orderData.user.email,
+        contact: formData.phoneNumber
+      },
+      theme: {
+        color: "#3399cc"
+      }
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+  const verifyPayment = async (paymentResponse, orderData) => {
+    try {
+      const verificationData = {
+        razorpay_order_id: paymentResponse.razorpay_order_id,
+        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+        razorpay_signature: paymentResponse.razorpay_signature,
+        ...formData,
+        cart: orderData.cart
+      };
+
+      const response = await axios.post('/api/payment/verify', verificationData);
+      if (response.data.success) {
+        // Payment verified successfully
+        // Clear the cart and redirect to a success page
+        Cookies.remove('cart');
+        // Redirect to success page or show success message
+      } else {
+        // Handle payment verification failure
+        console.error('Payment verification failed');
+      }
+    } catch (error) {
+      console.error('Error verifying payment:', error);
+    }
+  };
+
 
   return (
     <form className="billing-details" onSubmit={handleSubmit}>

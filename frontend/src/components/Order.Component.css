@@ -1,0 +1,187 @@
+.container {
+   display: flex;
+    flex-direction: row;
+    overflow: hidden;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+  }
+  
+  .card-header1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .badge-default {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+  
+  .badge-secondary {
+    background-color: #bfdbfe;
+    color: #1e40af;
+  }
+  
+  .order-date {
+    color: #4b5563;
+    margin-bottom: 1rem;
+  }
+  
+  .order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .shopkeeper-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 9999px;
+    background-color: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .shopkeeper-details {
+    margin-left: 0.75rem;
+  }
+  
+  .shopkeeper-name {
+    font-weight: bold;
+  }
+  
+  .shopkeeper-role {
+    color: #6b7280;
+  }
+  
+  .order-total {
+    text-align: right;
+  }
+  
+  .total-amount {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .total-label {
+    color: #6b7280;
+  }
+  
+  .delivery-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .delivery-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .delivery-date {
+    margin-left: 0.75rem;
+  }
+  
+  .details-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #3b82f6;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .details-button:hover {
+    background-color: #2563eb;
+  }
+  
+  .order-items {
+    margin-top: 1rem;
+  }
+  
+  .items-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  
+  .item-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .item-name {
+    margin-left: 0.75rem;
+  }
+  
+  .item-total {
+    text-align: right;
+  }
+  
+  .item-subtotal {
+    font-weight: bold;
+  }
+  
+  .separator {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 1rem 0;
+  }
+  
+  .icon-package, .icon-truck {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #6b7280;
+  }
+  
