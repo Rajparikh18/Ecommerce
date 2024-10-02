@@ -129,7 +129,7 @@ function App() {
           }
         />
          <Route path="/mobileotp" element={<Auth />} />
-         <Route path='/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
+         <Route path='/:username/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
       </Routes>
     </Router>
   );

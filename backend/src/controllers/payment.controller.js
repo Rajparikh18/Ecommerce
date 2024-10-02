@@ -30,6 +30,7 @@ const createOrder = async (req, res) => {
         const response = await razorpay.orders.create(options);
         response.cart = cart;
         response.user = req.user;
+        response.amount = amount;
         return res.json(new ApiResponse(200, response, "Order created successfully"));
     } catch (error) {
         console.error('Razorpay Error:', error);
@@ -37,7 +38,7 @@ const createOrder = async (req, res) => {
     }
 };
 const verifyPayment = async (req, res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, firstName, lastName, address, city, postCode, phoneNumber, cart } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, firstName, lastName, address, city, postCode, phoneNumber, cart ,amount} = req.body;
 
     try {
         // Generate the expected signature
@@ -59,6 +60,7 @@ const verifyPayment = async (req, res) => {
                 city,
                 postCode,
                 cart,
+                amount: amount / 100,
                 owner: req.user.id,
                 phoneNumber,
                 paymentId: razorpay_payment_id,
