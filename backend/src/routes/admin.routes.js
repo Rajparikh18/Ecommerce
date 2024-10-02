@@ -7,7 +7,9 @@ import {
   deleteProduct,
   updateProduct,
   getProductsByCategory,
-  adminlogin
+  adminlogin,
+  getOrder,
+  getOrderDetails
 } from "../controllers/admin.controller.js";
 import { verifyAdmin, verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -54,6 +56,8 @@ router.route("/delete/:id").delete(deleteProduct);
 router.route("/update/:id/:imgStatus").put(imageChanges, updateProduct);
 router.route("/getbycategory/:category").get(getProductsByCategory);
 router.route("/login").post(adminlogin);
+router.route("/getorders/:date").get(verifyJWT,getOrder)
+router.route("/order/:id").get(verifyJWT,getOrderDetails);
 router.route("/verify").get(verifyJWT, (req, res) => {
   if (req.user) {
     return res.json(new ApiResponse(

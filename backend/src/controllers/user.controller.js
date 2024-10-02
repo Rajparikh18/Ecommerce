@@ -276,9 +276,20 @@ const searchProduct = asyncHandler(async (req, res) => {
 
 const orders = asyncHandler(async (req, res) => {
     try {
-        const orders = await billingSchema.find({ owner: req.user._id });
-        res.status(200).json(ApiResponse(200, orders, 'Orders fetched successfully'));
+        const ordersUser = await billingSchema.find({ owner: req.user._id });
+        res
+        .status(200)
+        .json(
+           new ApiResponse(
+                200,
+                {
+                    ordersUser
+                },
+                "orders Details fetched Successfully"
+            )
+        )
     } catch (error) {
+        console.log("catch error")
         res.status(500).json({ message: 'Server error or no orders found' });
     }
 });

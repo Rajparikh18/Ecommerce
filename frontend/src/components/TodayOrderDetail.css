@@ -1,0 +1,218 @@
+.order-details {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.order-details__title {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-details__subtitle {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.order-details__info {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.order-details__field {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.7rem 0;
+  font-size: 1.1rem;
+}
+
+.order-details__field strong {
+  font-weight: 600;
+  color: #34495e;
+}
+
+.order-details__products-table-container {
+  overflow-x: auto;
+}
+
+.order-details__products-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-details__products-table th,
+.order-details__products-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.order-details__products-table th {
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.order-details__products-table tr:last-child td {
+  border-bottom: none;
+}
+
+.order-details__products-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.order-details__shipping {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.order-details__address {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.order-details__back-button {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+}
+
+.order-details__back-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(52, 152, 219, 0.3);
+}
+
+.order-details__loading,
+.order-details__error,
+.order-details__not-found {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #3498db;
+  padding: 2rem;
+}
+
+.order-details__error {
+  color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .order-details {
+      padding: 1.5rem;
+      margin: 1rem;
+  }
+
+  .order-details__title {
+      font-size: 2rem;
+  }
+
+  .order-details__subtitle {
+      font-size: 1.5rem;
+  }
+
+  .order-details__field,
+  .order-details__address {
+      font-size: 1rem;
+      flex-direction: column;
+  }
+
+  .order-details__field strong {
+      margin-bottom: 0.3rem;
+  }
+
+  .order-details__products-table thead {
+      display: none;
+  }
+
+  .order-details__products-table,
+  .order-details__products-table tbody,
+  .order-details__products-table tr,
+  .order-details__products-table td {
+      display: block;
+      width: 100%;
+  }
+
+  .order-details__products-table tr {
+      margin-bottom: 1rem;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-details__products-table td {
+      text-align: right;
+      padding: 0.8rem 1rem;
+      position: relative;
+      padding-left: 50%;
+  }
+
+  .order-details__products-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0.5rem;
+      width: 45%;
+      padding-right: 10px;
+      text-align: left;
+      font-weight: bold;
+      color: #34495e;
+  }
+
+  .order-details__back-button {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-details {
+      padding: 1rem;
+  }
+
+  .order-details__title {
+      font-size: 1.8rem;
+  }
+
+  .order-details__subtitle {
+      font-size: 1.3rem;
+  }
+
+  .order-details__products-table td {
+      font-size: 0.9rem;
+      padding: 0.6rem;
+      padding-left: 45%;
+  }
+}

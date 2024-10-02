@@ -13,6 +13,9 @@ import EditProductForm from './components/Editproductdetails';
 import Checkout from './pages/Checkoutpage';
 import Auth from './components/Auth';
 import Orders from './pages/Orders';
+import OrderManagement from './pages/adminTodayorder.jsx';
+import OrderToday from './pages/adminTodayorder.jsx';
+import AdminOrderTodayDetail from './pages/AdminTodayOrderDetail.jsx';
 
 // Create a custom hook for authentication
 const useAuth = () => {
@@ -129,6 +132,23 @@ function App() {
           }
         />
          <Route path="/mobileotp" element={<Auth />} />
+         <Route path='/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
+         <Route 
+          path="/todayorders" 
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <OrderToday/>
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/order/:id" 
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminOrderTodayDetail/>
+            </ProtectedRoute>
+          } 
+        />
          <Route path='/:username/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
       </Routes>
     </Router>

@@ -49,6 +49,9 @@ const Header = () => {
   const gotoMyorders=(name)=>{
     navigate(`/${name}/myorders`);
   }
+  const gotoTodaysorders=()=>{
+    navigate("/todayorders");
+  }
   const search=document.querySelector('results-dropdown');
   window.addEventListener("click",(e)=>{
     if(e.target !=search && results.length>0){
@@ -173,6 +176,7 @@ const Header = () => {
 </div>
 <div>
   <button onClick={(e)=>gotoMyorders(username)} className="myorders">My Orders</button>
+  <button onClick={(e)=>gotoTodaysorders()} className="Todays">Todays Orders</button>
 </div>
       <div className="nav-items">
         {/* Profile Menu */}

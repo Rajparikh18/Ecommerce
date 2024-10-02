@@ -5,6 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import fs from "fs";
 import { Admin} from "../models/admin.model.js";
+import { billingSchema } from "../models/billingdetails.model.js";
 
 const adminregister = asyncHandler(async(req,res)=>{
     try{
@@ -226,4 +227,35 @@ const getProductsByCategory = asyncHandler(async(req,res)=>{
     }
 });
 
-export {adminlogin,createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};
+const getOrder=asyncHandler(async(req,res)=>{
+    try{
+        const {date}=req.params;
+        
+        const Orders = await billingSchema.find({
+            created_At: {
+              $gte: new Date(`${date}T00:00:00.000Z`),  
+              $lt: new Date(`${date}T23:59:59.999Z`)
+            }
+          });
+          return res.status(200).json(
+            new ApiResponse(200,Orders,"Orders fetched successfully")
+        )
+
+    }catch(err){
+        console.log(err)
+    }
+})
+
+const getOrderDetails=asyncHandler(async(req,res)=>{
+    try {
+        const { id } = req.params;
+        const details = await billingSchema.find({ _id: id });        
+        return res.status(200).json(
+            new ApiResponse(200,details,"Order details fetched successfully")
+        )
+    } catch (error) {
+        console.log(err)
+    }
+})
+
+export {getOrderDetails,getOrder,adminlogin,createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};

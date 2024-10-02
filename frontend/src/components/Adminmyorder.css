@@ -1,0 +1,142 @@
+.todays-orders {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.date-picker input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.summary {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.card h2 {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+}
+
+.card p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.search {
+  margin-bottom: 20px;
+}
+
+.search input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.button1 {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Existing styles */
+.todays-orders {
+  /* Your existing styles */
+}
+
+/* Add these new styles for the table and link */
+.todays-orders table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.todays-orders th, .todays-orders td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.todays-orders th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.todays-orders tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.todays-orders tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Style for the "View Details" link */
+.todays-orders .view-details-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.todays-orders .view-details-link:hover {
+  background-color: #0056b3;
+}
