@@ -256,7 +256,7 @@ const debounce = (func, delay) => {
     };
 };
 
-const searchProduct = async (req, res) => {
+const searchProduct = asyncHandler(async (req, res) => {
     const { query } = req.query; // Get the search query from the URL
 
     if (!query) {
@@ -272,10 +272,17 @@ const searchProduct = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
-};
+});
+
+const orders = asyncHandler(async (req, res) => {
+    try {
+        const orders = await billingSchema.find({ owner: req.user._id });
+        res.status(200).json(ApiResponse(200, orders, 'Orders fetched successfully'));
+    } catch (error) {
+        res.status(500).json({ message: 'Server error or no orders found' });
+    }
+});
 
 
 
-
-
-export {searchProduct,VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser,billingDetails};
+export {searchProduct,VerifyUserdetails,registerUser,loginUser,logoutUser,getCurrentUser,billingDetails,orders};

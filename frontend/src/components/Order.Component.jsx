@@ -1,155 +1,160 @@
-import React, { useState } from 'react';
-import './Order.Component.css'; // Import the CSS file for styling
+import React, { useState, useEffect } from 'react';
+import { Package, MapPin, Phone, CreditCard, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import './Order.Component.css';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+const Orders = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const {username} = useParams();
+  console.log(username.trim());
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        console.log("hello");
+        const response = await axios.get(`/api/orders`);
+        console.log("after");
+        console.log(response);
+        if (response.status == 200) {
+          console.log(response.data);
+        }
+        setOrders(response.data);  // No need for response.data.json()
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
 
-// Mock data for orders
-const orders = [
-  {
-    id: '1',
-    date: '2023-09-15',
-    status: 'Delivered',
-    total: 89.99,
-    shopkeeper: {
-      name: 'Electronics Hub',
-      avatar: '/placeholder.svg?height=40&width=40',
-    },
-    items: [
-      { name: 'Wireless Earbuds', quantity: 1, price: 59.99 },
-      { name: 'Phone Case', quantity: 1, price: 15.99 },
-      { name: 'Screen Protector', quantity: 1, price: 14.01 },
-    ],
-    estimatedDelivery: '2023-09-20',
-  },
-  {
-    id: '2',
-    date: '2023-09-18',
-    status: 'In Transit',
-    total: 124.50,
-    shopkeeper: {
-      name: 'Fashion Forward',
-      avatar: '/placeholder.svg?height=40&width=40',
-    },
-    items: [
-      { name: 'T-Shirt', quantity: 2, price: 29.99 },
-      { name: 'Jeans', quantity: 1, price: 64.52 },
-    ],
-    estimatedDelivery: '2023-09-25',
-  },
-];
+    fetchOrders();
+}, [username]);
 
-const Card = ({ children }) => (
-  <div className="card">
-    {children}
-  </div>
-);
 
-const Badge = ({ children, variant = 'default' }) => (
-  <span className={`badge badge-${variant}`}>
-    {children}
-  </span>
-);
-
-const Avatar = ({ src, alt, fallback }) => (
-  <div className="avatar">
-    {src ? (
-      <img src={src} alt={alt} className="avatar-img" />
-    ) : (
-      <span className="avatar-fallback">{fallback}</span>
-    )}
-  </div>
-);
-
-const Separator = () => <hr className="separator" />;
-
-const IconPackage = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="icon-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
-    <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
-    <path d="M12 3v6"></path>
-  </svg>
-);
-
-const IconTruck = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="icon-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h13.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5Z"></path>
-    <path d="M10 15V6"></path>
-    <path d="M15 9h5.5a2 2 0 0 1 2 2v7"></path>
-    <circle cx="7" cy="18" r="2"></circle>
-    <circle cx="17" cy="18" r="2"></circle>
-  </svg>
-);
-
-export default function MyOrders() {
-    const [expandedOrder, setExpandedOrder] = useState(null);
-
-  const toggleOrderDetails = (orderId) => {
-    setExpandedOrder(expandedOrder === orderId ? null : orderId);
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container">
-      <h1 className="title" style={{color:"black"}} >My Orders</h1>
+    <div className="orders-list">
       {orders.map((order) => (
-        <Card key={order.id}>
-          <div className="card-content">
-            <div className="card-header1">
-              <h2 className="card-title">Order #{order.id}</h2>
-              <Badge variant={order.status === 'Delivered' ? 'default' : 'secondary'}>
-                {order.status}
-              </Badge>
-            </div>
-            <p className="order-date">Placed on {order.date}</p>
-            <div className="order-details">
-              <div className="shopkeeper-info">
-                <Avatar 
-                  src={order.shopkeeper.avatar} 
-                  alt={order.shopkeeper.name} 
-                  fallback={order.shopkeeper.name[0]} 
-                />
-                <div className="shopkeeper-details">
-                  <p className="shopkeeper-name">{order.shopkeeper.name}</p>
-                  <p className="shopkeeper-role">Seller</p>
-                </div>
-              </div>
-              <div className="order-total">
-                <p className="total-amount">${order.total.toFixed(2)}</p>
-                <p className="total-label">Total</p>
-              </div>
-            </div>
-            <div className="delivery-info">
-              <div className="delivery-details">
-                <IconTruck />
-                <span className="delivery-date">Estimated Delivery: {order.estimatedDelivery}</span>
-              </div>
-              <button
-                onClick={() => toggleOrderDetails(order.id)}
-                className="details-button"
-              >
-                {expandedOrder === order.id ? 'Hide Details' : 'Show Details'}
-              </button>
-            </div>
-            {expandedOrder === order.id && (
-              <div className="order-items">
-                <Separator />
-                <h4 className="items-title">Order Items</h4>
-                {order.items.map((item, index) => (
-                  <div key={index} className="item">
-                    <div className="item-info">
-                      <IconPackage />
-                      <span className="item-name">{item.name}</span>
-                    </div>
-                    <div className="item-total">
-                      <p>{item.quantity} x ${item.price.toFixed(2)}</p>
-                      <p className="item-subtotal">
-                        ${(item.quantity * item.price).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </Card>
+        <OrderCard key={order.orderId} orderData={order} />
       ))}
     </div>
   );
-}
+};
+
+const OrderCard = ({ orderData }) => {
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [showItemDetails, setShowItemDetails] = useState(false);
+
+  const toggleOrderDetails = () => setShowOrderDetails(!showOrderDetails);
+  const toggleItemDetails = () => setShowItemDetails(!showItemDetails);
+
+  return (
+    <div className="order-details-container">
+      <div className="card">
+        <div className="card-header">
+          <div className="card-title text-2xl">Order Summary</div>
+        </div>
+        <div className="card-content">
+          <div className="order-summary">
+            <div className="order-info">
+              <h3 className="text-lg font-semibold flex items-center">
+                <Package className="mr-2" size={20} /> Order #{orderData.orderId}
+              </h3>
+              <p className="text-muted-foreground">
+                Placed on {new Date(orderData.created_At).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="order-total">
+              <h3 className="text-lg font-semibold">Total</h3>
+              <p className="text-2xl font-bold">${orderData.amount.toFixed(2)}</p>
+            </div>
+          </div>
+
+          <div className="accordion">
+            <div className="accordion-item">
+              <button className="accordion-trigger" onClick={toggleOrderDetails}>
+                Order Details 
+                {showOrderDetails ? (
+                  <ChevronUp className="chevron-icon" size={20} />
+                ) : (
+                  <ChevronDown className="chevron-icon" size={20} />
+                )}
+              </button>
+              {showOrderDetails && (
+                <div className="accordion-content">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="detail-section">
+                      <h4 className="font-semibold flex items-center">
+                        <MapPin className="mr-2" size={16} /> Shipping Address
+                      </h4>
+                      <p>{orderData.firstName} {orderData.lastName}</p>
+                      <p>{orderData.address}</p>
+                      <p>{orderData.city}, {orderData.postCode}</p>
+                    </div>
+                    <div className="detail-section">
+                      <h4 className="font-semibold flex items-center">
+                        <Phone className="mr-2" size={16} /> Contact
+                      </h4>
+                      <p>{orderData.phoneNumber}</p>
+                    </div>
+                    <div className="detail-section">
+                      <h4 className="font-semibold flex items-center">
+                        <CreditCard className="mr-2" size={16} /> Payment Method
+                      </h4>
+                      <p>Credit Card (ending in {orderData.paymentId.slice(-4)})</p>
+                    </div>
+                    <div className="detail-section">
+                      <h4 className="font-semibold flex items-center">
+                        <Calendar className="mr-2" size={16} /> Order Date
+                      </h4>
+                      <p>{new Date(orderData.created_At).toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">Ordered Items</h3>
+            <ul className="space-y-2">
+              {orderData.cart.map((item, index) => (
+                <li key={index} className="flex justify-between items-center p-2 bg-secondary rounded-lg">
+                  <span>{item.name} x{item.quantity}</span>
+                  <span className="badge">${(item.price * item.quantity).toFixed(2)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <button className="toggle-button mt-4" onClick={toggleItemDetails}>
+            {showItemDetails ? (
+              <>Hide Item Details <ChevronUp className="ml-2 h-4 w-4" /></>
+            ) : (
+              <>Show Item Details <ChevronDown className="ml-2 h-4 w-4" /></>
+            )}
+          </button>
+
+          {showItemDetails && (
+            <div className="mt-4 space-y-4">
+              {orderData.cart.map((item, index) => (
+                <div key={index} className="card">
+                  <div className="card-content p-4">
+                    <h4 className="font-semibold">{item.name}</h4>
+                    <p className="text-muted-foreground">Quantity: {item.quantity}</p>
+                    <p className="text-muted-foreground">Price per item: ${item.price.toFixed(2)}</p>
+                    <p className="font-semibold mt-2">Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Orders;

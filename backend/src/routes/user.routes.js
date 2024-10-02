@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails,searchProduct } from "../controllers/user.controller.js";
+import { VerifyUserdetails,registerUser,loginUser, logoutUser,billingDetails,searchProduct, orders } from "../controllers/user.controller.js";
 import { verifyJWT,verifyAdmin,verifyUser } from "../middlewares/auth.middleware.js";
 import { createOrder } from "../controllers/payment.controller.js";
 
@@ -15,6 +15,7 @@ router.route("/").get((req,res)=>{
     res.send("hello raj")
 })
 router.route("/billingdetails").post(verifyJWT,billingDetails);
+router.route("/orders").get(verifyJWT,orders);
 router.route("/products/search").get(searchProduct)
 
 export default router;

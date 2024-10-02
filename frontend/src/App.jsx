@@ -149,6 +149,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
+         <Route path='/:username/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
       </Routes>
     </Router>
   );
