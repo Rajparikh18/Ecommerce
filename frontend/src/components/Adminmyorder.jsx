@@ -4,47 +4,52 @@ import './Adminmyorder.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-
 export default function TodaysOrders() {
-    // Calculate the current date in IST
     const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
-    const currentDateInIST = new Date(Date.now() + istOffset);
+    const currentDateInIST = new Date(Date.now() - istOffset);
 
     const [orders, setOrders] = useState([]);
-    const [date, setDate] = useState(currentDateInIST); // Set default date to IST date
+    const [date, setDate] = useState(currentDateInIST);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const ordersPerPage = 5;
 
     useEffect(() => {
-        fetchOrders();
+        fetchOrders(date);
+    }, []);
+
+    useEffect(() => {
+        fetchOrders(date);
     }, [date]);
 
-    const fetchOrders = async () => {
+    const fetchOrders = async (fetchDate) => {
         try {
-            // Adjust the selected date to UTC
-            const fetchDateInUTC = new Date(date.getTime() - istOffset);
+            const fetchDateInUTC = new Date(fetchDate.getTime() - istOffset);
             const formattedDate = fetchDateInUTC.toISOString().split('T')[0];
-
+            console.log(formattedDate);
             const response = await axios.get(`/api/admin/getorders/${formattedDate}`);
-            console.log(response.data);
+            console.log('Fetched orders:', response.data);
 
-            // Update the orders with the response data
             if (response.data.success) {
-                setOrders(response.data.data); // Update this to reflect the correct structure
+                setOrders(response.data.data);
             } else {
                 console.error('Failed to fetch orders:', response.data.message);
-                setOrders([]); // Reset orders if fetching fails
+                setOrders([]);
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     };
 
+    const handleDateChange = (e) => {
+        const newDate = new Date(e.target.value);
+        setDate(newDate);
+    };
+
     // Filter orders based on search term
     const filteredOrders = orders.filter(order =>
         order.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (order.product && order.product.toLowerCase().includes(searchTerm.toLowerCase())) // Assuming there's a product field
+        (order.product && order.product.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     // Pagination logic
@@ -63,7 +68,7 @@ export default function TodaysOrders() {
                     <input
                         type="date"
                         value={date.toISOString().split('T')[0]}
-                        onChange={(e) => setDate(new Date(e.target.value))}
+                        onChange={handleDateChange}
                     />
                 </div>
             </div>
@@ -96,30 +101,33 @@ export default function TodaysOrders() {
                         <th>Product</th>
                         <th>Order Time</th>
                         <th>Amount</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-    {currentOrders.map((order) => (
-        <tr key={order._id}>
-            <td>{order.orderId}</td><td>{`${order.firstName} ${order.lastName}`}</td>
-            <td>{order.product}</td><td>{format(new Date(order.created_At), 'HH:mm:ss')}</td>
-            <td>&#8377;{order.amount.toFixed(2)}</td><td>
-                <Link to={`/order/${order._id}`}>View Details</Link>
-            </td>
-        </tr>
-    ))}
-</tbody>
-
+                    {currentOrders.map((order) => (
+                        <tr key={order._id}>
+                            <td>{order.orderId}</td>
+                            <td>{`${order.firstName} ${order.lastName}`}</td>
+                            <td>{order.cart.length} unique products</td>
+                            <td>{format(new Date(order.created_At), 'HH:mm:ss')}</td>
+                            <td>&#8377;{order.amount.toFixed(2)}</td>
+                            <td>
+                                <Link to={`/order/${order._id}`}>View Details</Link>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
 
             <div className="pagination">
-                <button
+                <button className='button1'
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                 >
                     Previous
                 </button>
-                <button
+                <button className='button1'
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                 >

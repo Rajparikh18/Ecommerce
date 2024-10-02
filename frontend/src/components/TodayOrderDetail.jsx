@@ -4,7 +4,9 @@ import axios from 'axios';
 import './TodayOrderDetail.css';
 
 export default function OrderDetails() {
-    const [order, setOrder] = useState([]); // Set initial state to an empty array
+    const [order, setOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -13,73 +15,82 @@ export default function OrderDetails() {
 
     const fetchOrderDetails = async () => {
         try {
+            setLoading(true);
             const response = await axios.get(`/api/admin/order/${id}`);
-            console.log("API Response:", response); // Log the response
-            if (response && response.data) {
-                setOrder(response.data.data); // Set the order to the data received
-                console.log("Updated order state:", response.data.data); // Log the updated state
+            if (response && response.data && response.data.data) {
+                setOrder(response.data.data[0]);
             } else {
-                console.error('Failed to fetch order details:', response.data.message);
+                setError('Failed to fetch order details');
             }
         } catch (error) {
+            setError('Error fetching order details');
             console.error('Error fetching order details:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    if (order.length === 0) {
-        return <div className="order-details">Loading...</div>; // Loading state
+    if (loading) {
+        return <div className="order-details__loading">Loading...</div>;
     }
 
-    const orderData = order[0]; // Access the first order object from the array
+    if (error) {
+        return <div className="order-details__error">{error}</div>;
+    }
+
+    if (!order) {
+        return <div className="order-details__not-found">Order not found</div>;
+    }
 
     return (
         <div className="order-details">
-            <div className="order-info">
-            <h1>Order Details</h1>
-                <p><strong>Order ID:</strong> {orderData.orderId}</p>
-                <p><strong>Customer:</strong> {`${orderData.firstName} ${orderData.lastName}`}</p>
-                <p><strong>Email:</strong> {orderData.email}</p>
-                <p><strong>Phone:</strong> {orderData.phoneNumber}</p> {/* Updated to phoneNumber */}
-                <p><strong>Order Date:</strong> {new Date(orderData.created_At).toLocaleString()}</p>
-                <p><strong>Total Amount:</strong> &#8377;{orderData.amount}</p>
+            <div className="order-details__info">
+                <h1 className="order-details__title">Order Details</h1>
+                <p className="order-details__field"><strong>Order ID:</strong> {order.orderId}</p>
+                <p className="order-details__field"><strong>Customer:</strong> {`${order.firstName} ${order.lastName}`}</p>
+                <p className="order-details__field"><strong>Email:</strong> {order.email}</p>
+                <p className="order-details__field"><strong>Phone:</strong> {order.phoneNumber}</p>
+                <p className="order-details__field"><strong>Order Date:</strong> {new Date(order.created_At).toLocaleString()}</p>
+                <p className="order-details__field"><strong>Total Amount:</strong> &#8377;{order.amount}</p>
             </div>
 
-            <h2>Products</h2>
-            <table className="products-table">
-            
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orderData.cart && orderData.cart.length > 0 ? ( // Access cart from orderData
-                        orderData.cart.map((product, index) => (
-                            <tr key={index}>
-                                <td>{product.title}</td> {/* Assuming product has a title property */}
-                                <td>{product.qty}</td>
-                                <td>&#8377;{product.price[0]}</td>
-                                <td>&#8377;{(product.quantity * product.price).toFixed(2)}</td>
-                            </tr>
-                        ))
-                    ) : (
+            <h2 className="order-details__subtitle">Products</h2>
+            <div className="order-details__products-table-container">
+                <table className="order-details__products-table">
+                    <thead>
                         <tr>
-                            <td colSpan="4">No products found</td>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
-
-            <div className="shipping-info">
-                <h2>Shipping Information</h2>
-                <p>{orderData.address}</p> {/* Accessing address property */}
-                <p>{orderData.city}, {orderData.postCode}</p> {/* Accessing city and postCode */}
+                    </thead>
+                    <tbody>
+                        {order.cart && order.cart.length > 0 ? (
+                            order.cart.map((product, index) => (
+                                <tr key={index}>
+                                    <td data-label="Product">{product.title}</td>
+                                    <td data-label="Quantity">{product.qty}</td>
+                                    <td data-label="Price">&#8377;{product.price[0]}</td>
+                                    <td data-label="Subtotal">&#8377;{(product.qty * product.price[0]).toFixed(2)}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4">No products found</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </div>
 
-            <Link to="/" className="back-button">Back to Orders</Link>
+            <div className="order-details__shipping">
+                <h2 className="order-details__subtitle">Shipping Information</h2>
+                <p className="order-details__address">{order.address}</p>
+                <p className="order-details__address">{order.city}, {order.postCode}</p>
+            </div>
+
+            <Link to="/" className="order-details__back-button">Back to Orders</Link>
         </div>
     );
 }
