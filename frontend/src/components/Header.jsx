@@ -25,7 +25,7 @@ const Header = () => {
         }, delay);
     };
 };
-
+  
 
   const handleSearch = debounce(async (event) => {
     const value = event.target.value;
@@ -46,7 +46,9 @@ const Header = () => {
   const gotoproduct= (id)=>{
       navigate(`/product/${id}`);
   }
-
+  const gotoMyorders=(name)=>{
+    navigate(`/${name}/myorders`);
+  }
   const search=document.querySelector('results-dropdown');
   window.addEventListener("click",(e)=>{
     if(e.target !=search && results.length>0){
@@ -135,7 +137,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="top-row">
-        <i className="logo">Masterkart</i>
+        <i className="logo">APARNA DISTRIBUTORS</i>
         <div className="mobile-actions">
           <button className="mobile-action-btn" onClick={logClick}>
             <User size={24} />
@@ -168,6 +170,9 @@ const Header = () => {
       </ul>
     </div>
   )}
+</div>
+<div>
+  <button onClick={(e)=>gotoMyorders(username)} className="myorders">My Orders</button>
 </div>
       <div className="nav-items">
         {/* Profile Menu */}
