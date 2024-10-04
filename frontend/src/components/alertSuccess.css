@@ -1,0 +1,36 @@
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: #4CAF50; /* Green background for success */
+    color: white; /* White text color */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Hide the alert by default */
+  .hidden {
+    display: none;
+  }
+  
+  /* Close button styling */
+  .alert-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* Alert message styling */
+  .alert-message {
+    margin-right: 10px;
+  }
+  

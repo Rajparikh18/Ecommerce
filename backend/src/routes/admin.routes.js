@@ -9,7 +9,8 @@ import {
   getProductsByCategory,
   adminlogin,
   getOrder,
-  getOrderDetails
+  getOrderDetails,
+  updateorderstatus
 } from "../controllers/admin.controller.js";
 import { verifyAdmin, verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -58,6 +59,7 @@ router.route("/getbycategory/:category").get(getProductsByCategory);
 router.route("/login").post(adminlogin);
 router.route("/getorders/:date").get(verifyJWT,getOrder)
 router.route("/order/:id").get(verifyJWT,getOrderDetails);
+router.route("/updateOrderStatus").post(verifyJWT,updateorderstatus);
 router.route("/verify").get(verifyJWT, (req, res) => {
   if (req.user) {
     return res.json(new ApiResponse(

@@ -231,8 +231,7 @@ const billingDetails = asyncHandler(async(req,res)=>{
         }
 
         const billing=await billingSchema.create({
-            firstName,lastName,address,city,postCode,cart,owner:req.user._id,phoneNumber
-        });
+            firstName,lastName,address,city,postCode,cart,owner:req.user._id,phoneNumber });
         res
         .status(200)
         .json(
