@@ -258,4 +258,24 @@ const getOrderDetails=asyncHandler(async(req,res)=>{
     }
 })
 
-export {getOrderDetails,getOrder,adminlogin,createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};
+const updateorderstatus=asyncHandler(async(req,res)=>{
+    try {
+        let updatedOrder;
+        let updatedOrders=[];
+        for(let i=0;i<req.body.length;i++){
+            const {orderId,status}=req.body[i];
+           updatedOrder= await billingSchema.findByIdAndUpdate(orderId, { orderStatus: status }, { new: true });
+              updatedOrders.push(updatedOrder);
+        }        
+        if (!updatedOrder) {
+            throw new ApiError(404, "Order not found");
+        }
+        return res.status(200).json(
+            new ApiResponse(200,updatedOrders,"Order status updated successfully")
+        )
+    } catch (error) {
+        console.log(err)
+    }
+})
+
+export {updateorderstatus,getOrderDetails,getOrder,adminlogin,createProduct,adminregister,getProducts,getProductById,deleteProduct,updateProduct,getProductsByCategory};

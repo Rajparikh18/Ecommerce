@@ -67,6 +67,13 @@ const billingDetailSchema = new Schema ({
     created_At:{
         type:Date,
         default:Date.now
+    },
+    orderStatus:{
+        type:Object,
+        required:true,
+        trim:true,
+        lowercase:true,
+        default:"Not Dispatched"
     }
 })
 
