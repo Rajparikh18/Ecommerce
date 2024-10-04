@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function TodaysOrders() {
     const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
-    const currentDateInIST = new Date(Date.now() - istOffset);
+    const currentDateInIST = new Date(Date.now());
 
     const [orders, setOrders] = useState([]);
     const [date, setDate] = useState(currentDateInIST);
@@ -24,11 +24,9 @@ export default function TodaysOrders() {
 
     const fetchOrders = async (fetchDate) => {
         try {
-            const fetchDateInUTC = new Date(fetchDate.getTime() - istOffset);
+            const fetchDateInUTC = new Date(fetchDate.getTime() );
             const formattedDate = fetchDateInUTC.toISOString().split('T')[0];
-            console.log(formattedDate);
             const response = await axios.get(`/api/admin/getorders/${formattedDate}`);
-            console.log('Fetched orders:', response.data);
 
             if (response.data.success) {
                 setOrders(response.data.data);

@@ -233,8 +233,8 @@ const getOrder=asyncHandler(async(req,res)=>{
         
         const Orders = await billingSchema.find({
             created_At: {
-              $gte: new Date(`${date}T00:00:00.000Z`),  
-              $lt: new Date(`${date}T23:59:59.999Z`)
+              $gte: new Date(`${date}T00:00:00.000+05:30`),  
+              $lt: new Date(`${date}T23:59:59.999+05:30`)
             }
           });
           return res.status(200).json(
