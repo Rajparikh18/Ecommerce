@@ -7,14 +7,38 @@
   --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-.header {
+.header66 {
   background-color: #fff;
   box-shadow: 0 2px 4px var(--shadow-color);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-
+.delete-btn11{
+  color: white;
+  padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    margin: 0.25rem 0;
+    cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #dc3545;
+}
+.edit-btn11:hover {
+  background-color: #0056b3;
+}
+.delete-btn11:hover {
+  background-color: #c82333;
+}
+.edit-btn11{
+  background-color: #007bff;
+  color: white;padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  margin: 0.25rem 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
 .header-container {
   padding: 1rem;
   display: flex;
@@ -46,6 +70,7 @@
 }
 
 .search-section {
+  z-index: 1001;
   flex: 1;
   margin: 1rem 0;
   position: relative;
