@@ -59,6 +59,9 @@ const navigate=useNavigate();
     Cookies.set('cart', JSON.stringify(updatedItems)); // Update cookie
     dispatchCartUpdate(); // Notify other components
   };
+  const handleCheckout = () => {
+    navigate('/checkout');
+  };
 
   const dispatchCartUpdate = () => {
     // Custom event to signal cart update to other parts of the app
@@ -110,7 +113,7 @@ const navigate=useNavigate();
 
         <div className="cart-buttons">
           <button className="view-cart-button">VIEW CART</button>
-          <button className="checkout-button" >CHECKOUT</button>
+          <button className="checkout-button" onClick={handleCheckout}>CHECKOUT</button>
         </div>
       </div>
     </div>

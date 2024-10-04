@@ -112,9 +112,7 @@
     border: none;
   }
   
-  .cart-button {
-    background-color: #000;
-    color: #fff;
+  .cart-button1 {
     padding: 0.5rem 1.5rem;
     border-radius: 4px;
   }
@@ -163,3 +161,33 @@
     cursor: not-allowed;
     border: none; /* Change cursor to indicate non-interactivity */
 }
+.adminbtncart1{
+  display: flex;
+  justify-content: space-around;
+  height: auto;
+}
+.updatebtn1{
+  background-color:rgb(0, 140, 255);
+    color: white;
+    border-radius: 10%;
+    width: 4rem;
+    transition: background-color 0.2s ease-in-out;
+    padding: 0.5rem;
+    margin: 2px;
+}
+
+.updatebtn1:hover{
+  background-color: #18264c;
+}
+  .deletebtn1{
+    background-color: red;
+    color: white;
+    border-radius: 10%;
+    width: 4rem;
+    transition: background-color 0.2s ease-in-out;
+    padding: 0.5rem;
+    margin: 2px;
+  }
+  .deletebtn1:hover{
+    background-color: #4c1818;
+  }  

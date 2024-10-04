@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Heart, Eye } from 'lucide-react';
+import { Edit,Trash2 } from 'lucide-react';
 import './ProductDetail.css';
 import Cookies from 'js-cookie';
+import { redirect, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ProductDetail = ({
+  verify,
   productName,
   price,
   description,
@@ -16,8 +19,18 @@ const ProductDetail = ({
   const [quantity, setQuantity] = useState(1);
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
-
-  
+  const navigate = useNavigate();
+  async function Editbtn(e){
+    e.stopPropagation();
+    navigate(`/update/${id}`);
+  }
+  async function deletebtn(e){
+    e.stopPropagation();
+    const deleteproduct= await axios.delete(`/api/admin/delete/${id}`);
+    if(deleteproduct.status===200){
+      navigate(`/`);
+    }
+  }
   function addToCart(e, product) {
     if(availability===false){
       return;
@@ -85,7 +98,13 @@ const ProductDetail = ({
             />
             <button onClick={incrementQuantity}>+</button>
           </div>
-          <button  className={availability? ("cart-button "):("cart-button out-of-stock1")} onClick={(e) => addToCart(e, product)}>ADD TO CART</button>
+         {!verify && (<button  className={availability? ("cart-button1 "):("cart-button1 out-of-stock1")} onClick={(e) => addToCart(e, product)}>ADD TO CART</button>)}
+          {verify && (
+          <div className="adminbtncart1">
+            <button className="updatebtn1" onClick={(e)=>Editbtn(e)}><Edit/></button>
+            <button className="deletebtn1" onClick={(e)=>deletebtn(e)}><Trash2/></button>
+          </div>
+        )}
         </div>
 
       </div>

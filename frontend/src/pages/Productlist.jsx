@@ -28,19 +28,24 @@ const Productlist=(isAdmin)=> {
         <>
             <Header />
             <Navbar/>
-            <div className="container">
-                {products.map((product) => (
-                    <ProductCard 
-                    key={product._id} 
-                    imageUrl={product.image}// Use the correct image path if dynamic
-                    title={product.productName}
-                    description={product.description}
-                    availability={product.availability}
-                    currentPrice={product.price[0]}
-                    originalPrice={product.price[1]}
-                    id={product._id} verify={isAdmin.isAdmin}/>
-                ))}
-            </div>
+            <div className='allcards'>
+        {
+          products.length > 0 ? products.map((product, index) => (
+            <React.Fragment key={index}>
+              <ProductCard 
+                imageUrl={product.image} // Use the correct image path if dynamic
+                title={product.productName}
+                description={product.description}
+                currentPrice={product.price[0]}
+                originalPrice={product.price[1]}
+                id={product._id}
+                availability={product.availability}
+                verify={isAdmin.isAdmin}
+                />   
+            </React.Fragment>
+          )) : <p>No products available</p>
+        }
+      </div>
             <Footer />
         </>
     );

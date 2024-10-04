@@ -4,5 +4,10 @@
         flex-direction: column;
         align-items: center;
      }
-
-}
+    }
+    .allcards{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }

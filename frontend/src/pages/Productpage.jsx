@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
-function ProductPage() {
+function ProductPage(isAdmin) {
   const { id } = useParams(); 
   const [productData, setProductData] = useState(null);
 
@@ -16,6 +16,7 @@ function ProductPage() {
       try {
         const response = await axios.get(`/api/admin/getbyid/${id}`);
         response.data.data.id=id;
+        response.data.data.verify=isAdmin.isAdmin;
         setProductData(response.data.data); 
       } catch (error) {
         console.error('Error fetching product data:', error);

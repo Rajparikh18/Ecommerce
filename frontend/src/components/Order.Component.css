@@ -1,10 +1,10 @@
 :root {
-  --primary-color: #4a90e2;
-  --secondary-color: #f8f9fa;
-  --text-color: #333;
-  --muted-color: #6c757d;
-  --border-color: #e0e0e0;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --primary-color1: #4a90e2;
+  --secondary-color1: #f8f9fa;
+  --text-color1: #333;
+  --muted-color1: #6c757d;
+  --border-color1: #e0e0e0;
+  --shadow-color1: rgba(0, 0, 0, 0.1);
 }
 
 .orders-list {
@@ -16,7 +16,7 @@
 .order-card {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-color);
+  box-shadow: 0 2px 4px var(--shadow-color1);
   margin-bottom: 1.5rem;
   overflow: hidden;
 }
@@ -26,13 +26,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color1);
   cursor: pointer;
 }
 
 .order-title {
   font-size: 1.2rem;
-  color: var(--primary-color);
+  color: var(--primary-color1);
   display: flex;
   align-items: center;
   margin: 0;
@@ -40,7 +40,7 @@
 
 .order-date, .order-total {
   font-size: 0.9rem;
-  color: var(--muted-color);
+  color: var(--muted-color1);
   margin: 0;
 }
 
@@ -50,7 +50,7 @@
 
 .order-details {
   padding: 1rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color1);
 }
 
 .detail-section {
@@ -59,7 +59,7 @@
 
 .detail-section h4 {
   font-size: 1rem;
-  color: var(--primary-color);
+  color: var(--primary-color1);
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -67,7 +67,7 @@
 
 .detail-section p {
   margin: 0;
-  color: var(--text-color);
+  color: var(--text-color1);
   line-height: 1.5;
 }
 
@@ -76,7 +76,7 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color1);
 }
 
 .cart-item:last-child {
@@ -98,20 +98,20 @@
 .cart-item-details h5 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
-  color: var(--text-color);
+  color: var(--text-color1);
 }
 
 .cart-item-details p {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--muted-color);
+  color: var(--muted-color1);
 }
 
 .loading, .error {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
-  color: var(--muted-color);
+  color: var(--muted-color1);
 }
 
 @media (max-width: 640px) {
