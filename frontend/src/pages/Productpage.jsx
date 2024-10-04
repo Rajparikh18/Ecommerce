@@ -32,7 +32,7 @@ function ProductPage(isAdmin) {
 
   return (
     <div>
-      <Header />
+      <Header isAdmin={isAdmin}/>
       <Navbar />
       <ProductDetail {...productData} />
       <Footer />

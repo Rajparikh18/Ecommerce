@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Search, User, ShoppingCart, Menu } from 'lucide-react';
+import { Search, User, ShoppingCart, Menu,Edit,Trash2 } from 'lucide-react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
-export default function Header() {
+export default function Header(isAdmin=false) {
   const navigate = useNavigate();
   const [raj, setRaj] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -16,7 +16,6 @@ export default function Header() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const debounce = (func, delay) => {
     let timeout;
     return (...args) => {
@@ -45,7 +44,26 @@ export default function Header() {
     navigate(`/product/${id}`);
     setResults([]);
   }
-
+  const deletebtn = async (id, e) => {
+    e.stopPropagation();
+    try {
+      const deleteproduct = await axios.delete(`/api/admin/delete/${id}`);
+      if (deleteproduct) {
+        // Consider using state management or a callback to update the UI instead of reloading the page
+        setResults(prevProducts => prevProducts.filter(product => product._id !== id));
+        // Optionally, show a success message to the user
+        alert('Product deleted successfully');
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      // Handle error (e.g., show an error message to the user)
+    }
+  };
+  
+  const Editbtn = (id, e) => {
+    e.stopPropagation();
+    navigate(`/update/${id}`);
+  };
   const gotoMyorders = (name) => {
     navigate(`/${name}/myorders`);
     setIsMobileMenuOpen(false);
@@ -125,7 +143,7 @@ export default function Header() {
   };
 
   return (
-    <header className="header header-container">
+    <header className="header66 header-container">
         <div className="logo-section">
           <h1 className="logo">APARNA DISTRIBUTORS</h1>
           <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
@@ -149,8 +167,24 @@ export default function Header() {
               <ul>
                 {results.map((product) => (
                   <li key={product._id} onClick={() => gotoproduct(product._id)}>
-                    {product.productName}
-                  </li>
+                  {product.productName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {isAdmin.isAdmin.isAdmin && (
+                    <>
+                      <button 
+                        className="edit-btn11" 
+                        onClick={(e) => Editbtn(product._id, e)}
+                      >
+                        <Edit size={16} />
+                      </button>&nbsp;&nbsp;
+                      <button 
+                        className="delete-btn11" 
+                        onClick={(e) => deletebtn(product._id, e)}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </>
+                  )}
+                </li>
                 ))}
               </ul>
             </div>

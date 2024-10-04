@@ -137,7 +137,7 @@ function App() {
           path="/todayorders" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <OrderToday/>
+              <OrderToday isAdmin={isAdmin}/>
             </ProtectedRoute>
           } 
         />
@@ -145,7 +145,7 @@ function App() {
           path="/order/:id" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <AdminOrderTodayDetail/>
+              <AdminOrderTodayDetail isAdmin={isAdmin}/>
             </ProtectedRoute>
           } 
         />

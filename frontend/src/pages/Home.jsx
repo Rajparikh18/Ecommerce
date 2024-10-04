@@ -60,7 +60,7 @@ const Home=(isAdmin)=> {
   }, []);
   return (
     <>
-      <Header />
+      <Header isAdmin={isAdmin}/>
       <Navbar />
       <Slider slides={slides} />
       <br />

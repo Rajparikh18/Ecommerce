@@ -26,7 +26,7 @@ const Productlist=(isAdmin)=> {
 
     return (
         <>
-            <Header />
+            <Header isAdmin={isAdmin}/>
             <Navbar/>
             <div className='allcards'>
         {
