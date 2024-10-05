@@ -104,12 +104,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home isAdmin={isAdmin} />} />
         <Route path="/product/:id" element={<ProductPage isAdmin={isAdmin} />} />
-        <Route path="/authpage" element={<Authpage />} />
+        <Route path="/authpage" element={<Authpage  isAdmin={isAdmin}/>} />
         <Route 
           path="/admin/create" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <AdminCreateProduct />
+              <AdminCreateProduct isAdmin={isAdmin}/>
             </ProtectedRoute>
           } 
         />
@@ -127,12 +127,11 @@ function App() {
           path="/checkout" 
           element={
             <UserProtectedRoute>
-              <Checkout />
+              <Checkout isAdmin={isAdmin} />
             </UserProtectedRoute>
           }
         />
          <Route path="/mobileotp" element={<Auth />} />
-         <Route path='/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
          <Route 
           path="/todayorders" 
           element={
@@ -149,7 +148,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
-         <Route path='/:username/myorders' element={<UserProtectedRoute><Orders/></UserProtectedRoute>} />
+         <Route path='/:username/myorders' element={<UserProtectedRoute><Orders isAdmin={isAdmin}/></UserProtectedRoute>} />
       </Routes>
     </Router>
   );
