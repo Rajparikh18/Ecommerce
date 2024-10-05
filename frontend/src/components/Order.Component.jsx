@@ -3,6 +3,7 @@ import { Package, MapPin, Phone, CreditCard, Calendar, ChevronDown, ChevronUp, S
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Order.Component.css'
+import MorphingLoader from './MorphingLoader';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -27,7 +28,7 @@ const Orders = () => {
     fetchOrders();
   }, [username]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <MorphingLoader />;
   if (error) return <div className="error">Error: {error}</div>;
 
   return (

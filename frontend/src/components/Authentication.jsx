@@ -4,38 +4,44 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import OtpInputWithValidation from './otpverification';
-
+import AlertSuccessMessage from './alertSuccess';
+import AlertFailureMessage from './alertFailure';
+import MorphingLoader from './MorphingLoader'; // Import the MorphingLoader component
 
 const Authcomponent = () => {
   const navigate = useNavigate();
+  const [alertSuccessVisible, setAlertSuccessVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [logger, setLogger] = useState(false);
-  const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
-  const [fdjghjd,setFdjghjd]=useState({});
-  const [loggerdetails,setLoggerdetails]=useState({});
-  // Function to trigger OTP popup
-  const otpClick = async() => {
+  const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false);
+  const [fdjghjd, setFdjghjd] = useState({});
+  const [loggerdetails, setLoggerdetails] = useState({});
+  const [isLoading, setIsLoading] = useState(false); // New state for loader
+
+  const otpClick = async () => {
     try {
-      const response = await axios.post(`/api/checkotp/sendotp`,loggerdetails);
+      setIsLoading(true); // Show loader
+      const response = await axios.post(`/api/checkotp/sendotp`, loggerdetails);
       setFdjghjd(response);
-      // Access data only after the state has been updated
       if (response && response.data && response.data.data) {
         setIsOtpPopupVisible(true);
       } else {
-        // Handle cases where response.data or response.data.data is missing
         console.error("Response data is missing or invalid.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false); // Hide loader
     }
   };
-  useEffect(() => {
-  }, [fdjghjd]);
+
   const handleSubmit = async (e, type) => {
     e.preventDefault();
 
@@ -44,23 +50,32 @@ const Authcomponent = () => {
     };
 
     try {
+      setIsLoading(true); // Show loader
       const response = await axios.post(`/api/${type}`, formData);
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 7);
       if (response.status === 285) {
         setLoggerdetails(response.data.data);
         setLogger(true);
-      }
-      else if (response.status === 200) {
-        window.location.reload();
-        navigate("/");
+        setAlertMessage("Admin exists, please verify OTP");
+        setAlertSuccessVisible(true);
+      } else if (response.status === 200) {
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/", { state: { message: response.data.message } });
+        }, 2000);
       }
     } catch (error) {
-      console.error('Error submitting form', error);
-    }
-  };
+      if (error.response && error.response.data) {
+        const { message } = error.response.data;
+        setAlertMessage(message);
+      } else {
+        setAlertMessage("An unknown error occurred. Please try again.");
+      }
+      setAlertVisible(true);
+    } 
+  };  
   useEffect(()=>{
     if(Cookies.get("username")){
+      setIsLoading(false);
       navigate("/");
     }
   },[]);
@@ -70,6 +85,18 @@ const Authcomponent = () => {
 
   const renderForm = (type) => (
     <form onSubmit={(e) => { handleSubmit(e, type) }} className="auth-form">
+      {alertVisible && (
+                <AlertFailureMessage 
+                    message={alertMessage} 
+                    onClose={() => setAlertVisible(false)}
+                />
+            )}
+            {alertSuccessVisible && (
+                <AlertSuccessMessage 
+                    message={alertMessage} 
+                    onClose={() => setAlertSuccessVisible(false)}
+                />
+            )}
       {type === 'register' && (
         <>
           <div className="form-group">
@@ -144,6 +171,7 @@ const Authcomponent = () => {
 
   return (
     <div className="auth-container">
+      {isLoading && <MorphingLoader />} 
       <div className="auth-card">
         <div className="card-header">
           <h2>Welcome</h2>

@@ -91,7 +91,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Login Successful");
           setTimeout(() => {
-            navigate("/");
+            navigate("/",{ state: { message: fjkasdf.message }});
             window.location.reload();
           }, 300);
         }, 0);

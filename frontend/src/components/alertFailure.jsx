@@ -1,6 +1,6 @@
 import React from "react";
 import "./alertFailure.css";
-
+import { useEffect } from "react";
 function AlertFailureMessage({ message, onClose }) {
     useEffect(() => {
         const timer = setTimeout(() => {

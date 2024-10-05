@@ -1,4 +1,4 @@
-.alert {
+.alerts {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -16,12 +16,12 @@
   }
   
   /* Hide the alert by default */
-  .hidden {
+  .hiddens {
     display: none;
   }
   
   /* Close button styling */
-  .alert-close {
+  .alert-closes {
     background: none;
     border: none;
     color: white;
@@ -30,7 +30,7 @@
   }
   
   /* Alert message styling */
-  .alert-message {
+  .alert-messages {
     margin-right: 10px;
   }
   

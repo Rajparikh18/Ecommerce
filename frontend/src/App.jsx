@@ -28,7 +28,6 @@ const useAuth = () => {
     const checkAuth = async () => {
       try {
         const response = await axios.get('/api/admin/verify', { withCredentials: true });
-        console.log(response);
         
         const { isAuthenticated, admin, user } = response.data.data;
         
