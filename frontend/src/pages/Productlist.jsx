@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import './Home.css'
 import ProductCard from '../components/Productcard';
 import Navbar from '../components/Navbar';
 const Productlist=(isAdmin)=> {
@@ -28,7 +29,7 @@ const Productlist=(isAdmin)=> {
         <>
             <Header isAdmin={isAdmin}/>
             <Navbar/>
-            <div className='allcards'>
+            <div className='allcards11'>
         {
           products.length > 0 ? products.map((product, index) => (
             <React.Fragment key={index}>

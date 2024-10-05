@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Edit,Trash2 } from 'lucide-react';
+import { Edit, Trash2, Minus, Plus, ShoppingCart } from 'lucide-react';
 import './ProductDetail.css';
 import Cookies from 'js-cookie';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ProductDetail = ({
@@ -17,22 +17,26 @@ const ProductDetail = ({
   availability,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
+
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
-  const navigate = useNavigate();
-  async function Editbtn(e){
+
+  async function Editbtn(e) {
     e.stopPropagation();
     navigate(`/update/${id}`);
   }
-  async function deletebtn(e){
+
+  async function deletebtn(e) {
     e.stopPropagation();
-    const deleteproduct= await axios.delete(`/api/admin/delete/${id}`);
-    if(deleteproduct.status===200){
+    const deleteproduct = await axios.delete(`/api/admin/delete/${id}`);
+    if (deleteproduct.status === 200) {
       navigate(`/`);
     }
   }
+
   function addToCart(e, product) {
-    if(availability===false){
+    if (availability === false) {
       return;
     }
     if (!Cookies.get("cart")) {
@@ -49,64 +53,67 @@ const ProductDetail = ({
     Cookies.set("cart", JSON.stringify(cartArr), { expires: 7 });
     Cookies.set("CartbtnStatusClicked", "true", { expires: 7 });
 
-    // Dispatch a custom event to notify Header component
     window.dispatchEvent(new Event("cartUpdated"));
   }
+
   const product = {
     id: id,
     title: productName,
     imageUrl: image,
-    price ,
+    price,
     qty: quantity,
   };
+
   return (
-    <div className="product-page">
-        <div className="product-image">
-          <img src={image} alt={productName} />
+    <div className="pd-container">
+      <div className="pd-image-wrapper">
+        <img className="pd-image" src={image} alt={productName} />
+      </div>
+      <div className="pd-info">
+        <h1 className="pd-title">{productName}</h1>
+        <div className="pd-price-info">
+          <span className="pd-current-price">₹{price[0]}</span>
+          <span className="pd-discount">-{Math.round(((price[1] - price[0]) / price[1]) * 100)}%</span>
+          <p className="pd-original-price">M.R.P.: <span>₹{price[1]}</span></p>
         </div>
-      <div className="product-info">
-        <h1>{productName}</h1>
-        {/* <div className="ratings">
-          <div className="stars">
-            {"★★★★☆".slice(0, ratings)}
-            {"☆☆☆☆☆".slice(ratings)}
-          </div>
-        </div> */}
-        
-        <div className="price-info">
-          <span className="current-price"> &#8377;{price[0]}</span> 
-          <span className="discount">-{Math.round(((price[1]-price[0])/price[1])*100)}%</span>
-          <p className="original-price">M.R.P.: <span> &#8377;{price[1]}</span></p>
-        </div>
-        
-        <p className="description">{description}</p>
-        
-        <ul className="features">
+        <p className="pd-description">{description}</p>
+        <ul className="pd-features">
           {characs.map((feature, index) => (
             <li key={index}>{feature}</li>
           ))}
         </ul>
-          <h3 className='Quantity'>1 Quantity equals {fixedqty} packets</h3>
-          <p className={availability?("available"):("notavailable")}>{availability? ('In Stock'):("Out of Stock")}</p>
-        <div className='add-to-cart'>
-          <div className="quantity-selector">
-            <button onClick={decrementQuantity}>-</button>
-            <input 
-              type="number" 
-              value={quantity} 
+        <p className="pd-quantity-info">1 Quantity equals {fixedqty} packets</p>
+        <p className={`pd-availability ${availability ? "pd-in-stock" : "pd-out-of-stock"}`}>
+          {availability ? 'In Stock' : 'Out of Stock'}
+        </p>
+        <div className="pd-add-to-cart">
+          <div className="pd-quantity-selector">
+            <button className="pd-quantity-btn" onClick={decrementQuantity}><Minus size={16} /></button>
+            <input
+              className="pd-quantity-input"
+              type="number"
+              value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
             />
-            <button onClick={incrementQuantity}>+</button>
+            <button className="pd-quantity-btn" onClick={incrementQuantity}><Plus size={16} /></button>
           </div>
-         {!verify && (<button  className={availability? ("cart-button1 "):("cart-button1 out-of-stock1")} onClick={(e) => addToCart(e, product)}>ADD TO CART</button>)}
+          {!verify && (
+            <button
+              className={`pd-cart-button ${!availability && "pd-cart-button-disabled"}`}
+              onClick={(e) => addToCart(e, product)}
+              disabled={!availability}
+            >
+              <ShoppingCart size={20} />
+              ADD TO CART
+            </button>
+          )}
           {verify && (
-          <div className="adminbtncart1">
-            <button className="updatebtn1" onClick={(e)=>Editbtn(e)}><Edit/></button>
-            <button className="deletebtn1" onClick={(e)=>deletebtn(e)}><Trash2/></button>
-          </div>
-        )}
+            <div className="pd-admin-actions">
+              <button className="pd-edit-button" onClick={(e) => Editbtn(e)}><Edit size={20} /></button>
+              <button className="pd-delete-button" onClick={(e) => deletebtn(e)}><Trash2 size={20} /></button>
+            </div>
+          )}
         </div>
-
       </div>
     </div>
   );

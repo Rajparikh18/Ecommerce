@@ -114,7 +114,6 @@ function App() {
           } 
         />
         <Route path="/products/:category" element={<Productlist isAdmin={isAdmin} />} />
-        <Route path="/otp" element={<OtpInputWithValidation numberOfDigits={6} />} />
         <Route 
           path="/update/:id" 
           element={

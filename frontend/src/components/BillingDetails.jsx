@@ -103,15 +103,9 @@ const BillingDetails = () => {
       if (response.data.success) {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
+        let name= Cookies.get('username');
         Cookies.remove('cart');
-
-        navigate("/myorders", { 
-          state: { 
-            message: response.data.message, 
-            alert: true 
-          },
-          replace: true
-        });
+        navigate(`/${name}/myorders`);
         // Redirect to success page or show success message
       } else {
         // Handle payment verification failure

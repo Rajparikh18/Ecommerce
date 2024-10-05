@@ -1,100 +1,158 @@
-/* General styles for the OTP container */
+:root {
+  --primary-color: #2e8b57;
+  --primary-dark: #226941;
+  --secondary-color: #f4f4f4;
+  --text-color: #333;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.otp-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.otp-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 .otp-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    padding: 20px;
-    background-color: #333;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  position: relative;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.otp-overlay.active .otp-container {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: var(--primary-color);
+}
+
+.label {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.otp-input-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.otp-box {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.otp-box:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.2);
+}
+
+.error-message,
+.success-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.error-message svg,
+.success-message svg {
+  margin-right: 0.5rem;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.6s ease-in-out;
+}
+
+/* Media queries for mobile devices */
+@media screen and (max-width: 480px) {
+  .otp-container {
+    padding: 1.5rem;
+    max-width: 90%;
   }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 20px;
-  }
-  
-  
+
   .label {
-    font-size: 16px;
-    color: white;
-    margin-bottom: 10px;
+    font-size: 1.2rem;
   }
-  
+
   .otp-input-wrapper {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    gap: 0.25rem;
   }
-  
+
   .otp-box {
-    width: 40px;
-    height: 50px;
-    font-size: 24px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #000;
-    color: #fff;
-    outline: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
   }
-  
-  .otp-box:focus {
-    border-color: #00bfff;
-  }
-  
-  .error-message {
-    font-size: 16px;
-    color: red;
-    text-align: center;
-    visibility: hidden;
-  }
+
+  .error-message,
   .success-message {
-    font-size: 16px;
-    color: green;
-    text-align: center;
-    visibility: hidden;
+    font-size: 0.8rem;
   }
-  
-  .error-show,.success-show {
-    visibility: visible;
-    animation: shake 0.3s ease-in-out;
-  }
-  
-  /* Popup background overlay */
-  .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 999;
-  }
-  
-  /* Shake animation for the error message */
-  @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-  }
-  
-  /* Close button style */
+
   .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    color: white;
-    cursor: pointer;
+    top: 0.25rem;
+    right: 0.25rem;
   }
-  
+}

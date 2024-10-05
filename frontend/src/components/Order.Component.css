@@ -1,15 +1,16 @@
 :root {
-  --primary-color1: #4a90e2;
-  --secondary-color1: #f8f9fa;
+  --primary-color1: #2e8b57;
+  --primary-dark1: #226941;
+  --secondary-color1: #f4f4f4;
   --text-color1: #333;
-  --muted-color1: #6c757d;
   --border-color1: #e0e0e0;
   --shadow-color1: rgba(0, 0, 0, 0.1);
 }
 
 .orders-list {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 2rem auto;
+  margin-top: 80px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -19,6 +20,10 @@
   box-shadow: 0 2px 4px var(--shadow-color1);
   margin-bottom: 1.5rem;
   overflow: hidden;
+}
+.order-status{
+  font-weight: 500;
+  color:var(--primary-color1);
 }
 
 .order-header {
