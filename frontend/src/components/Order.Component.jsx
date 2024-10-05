@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Package, MapPin, Phone, CreditCard, Calendar, ChevronDown, ChevronUp, ShoppingCart } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { Package, MapPin, Phone, Calendar, ChevronDown, ChevronUp, ShoppingCart } from 'lucide-react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './Order.Component.css'
+import './Order.Component.css';
+import AlertSuccessMessage from '../components/alertSuccess';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { username } = useParams();
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.alert) {
+      setAlertMessage(location.state.message);
+      setShowAlert(true);
+      // Clear the location state to prevent the alert from showing again on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -27,14 +41,27 @@ const Orders = () => {
     fetchOrders();
   }, [username]);
 
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    setAlertMessage('');
+  };
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
   return (
-    <div className="orders-list">
-      {orders.map((order) => (
-        <OrderCard key={order.orderId} order={order} />
-      ))}
+    <div className="orders-container">
+      {showAlert && (
+        <AlertSuccessMessage
+          message={alertMessage}
+          onClose={handleCloseAlert}
+        />
+      )}
+      <div className="orders-list">
+        {orders.map((order) => (
+          <OrderCard key={order.orderId} order={order} />
+        ))}
+      </div>
     </div>
   );
 };

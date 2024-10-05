@@ -104,7 +104,14 @@ const BillingDetails = () => {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
         Cookies.remove('cart');
-        navigate('/myorders');
+
+        navigate("/myorders", { 
+          state: { 
+            message: response.data.message, 
+            alert: true 
+          },
+          replace: true
+        });
         // Redirect to success page or show success message
       } else {
         // Handle payment verification failure

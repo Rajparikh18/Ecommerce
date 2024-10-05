@@ -137,7 +137,9 @@ const loginUser=asyncHandler(async(req,res)=>{
         )
         }
         else{
-            throw new ApiError(401,"Password is incorrect")
+            return res.status(402).json(
+                new ApiError(402,"Password is incorrect")
+            );
         }
     } catch (error) {
         console.log(error);

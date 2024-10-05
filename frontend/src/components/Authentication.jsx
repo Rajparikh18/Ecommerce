@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import OtpInputWithValidation from './otpverification';
 
-
 const Authcomponent = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login');
@@ -15,27 +14,30 @@ const Authcomponent = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [logger, setLogger] = useState(false);
-  const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false); // Manage OTP popup visibility
-  const [fdjghjd,setFdjghjd]=useState({});
-  const [loggerdetails,setLoggerdetails]=useState({});
-  // Function to trigger OTP popup
-  const otpClick = async() => {
+  const [isOtpPopupVisible, setIsOtpPopupVisible] = useState(false);
+  const [fdjghjd, setFdjghjd] = useState({});
+  const [loggerdetails, setLoggerdetails] = useState({});
+
+  const otpClick = async () => {
     try {
-      const response = await axios.post(`/api/checkotp/sendotp`,loggerdetails);
+      const response = await axios.post(`/api/checkotp/sendotp`, loggerdetails);
       setFdjghjd(response);
-      // Access data only after the state has been updated
       if (response && response.data && response.data.data) {
         setIsOtpPopupVisible(true);
       } else {
-        // Handle cases where response.data or response.data.data is missing
         console.error("Response data is missing or invalid.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
-  }, [fdjghjd]);
+    if (Cookies.get("username")) {
+      navigate("/");
+    }
+  }, []);
+
   const handleSubmit = async (e, type) => {
     e.preventDefault();
 
@@ -45,31 +47,34 @@ const Authcomponent = () => {
 
     try {
       const response = await axios.post(`/api/${type}`, formData);
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 7);
       if (response.status === 285) {
         setLoggerdetails(response.data.data);
         setLogger(true);
       }
       else if (response.status === 200) {
+          navigate("/", { 
+          state: { 
+            message: response.data.message, 
+            alert: true 
+          },
+          replace: true
+        });
         window.location.reload();
-        navigate("/");
+      }
+      else if(response.status==402){
+        
       }
     } catch (error) {
+      console.log('Error submitting form', error);
       console.error('Error submitting form', error);
+      // Handle error (e.g., show an error message to the user)
     }
   };
-  useEffect(()=>{
-    if(Cookies.get("username")){
-      navigate("/");
-    }
-  },[]);
-
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const renderForm = (type) => (
-    <form onSubmit={(e) => { handleSubmit(e, type) }} className="auth-form">
+    <form onSubmit={(e) => handleSubmit(e, type)} className="auth-form">
       {type === 'register' && (
         <>
           <div className="form-group">
@@ -92,11 +97,11 @@ const Authcomponent = () => {
               value={number}
               onChange={(e) => setNumber(e.target.value)}
               minLength={10}
-              maxLength={10} // Restrict to 10 digits for a standard mobile number
-              pattern="[0-9]*" // Allow only numeric input
-              required // Make it a required field
+              maxLength={10}
+              pattern="[0-9]*"
+              required
               onInvalid={(e) => e.target.setCustomValidity('Please enter a valid phone number')}
-              onInput={(e) => e.target.setCustomValidity('')} // Clear the custom validity on input
+              onInput={(e) => e.target.setCustomValidity('')}
             />
           </div>
         </>
@@ -109,6 +114,7 @@ const Authcomponent = () => {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
       <div className="form-group">
@@ -137,7 +143,7 @@ const Authcomponent = () => {
         </div>
       )}
       <button type="submit" className="submit-btn">
-        {type}
+        {type.charAt(0).toUpperCase() + type.slice(1)}
       </button>
     </form>
   );
@@ -175,11 +181,14 @@ const Authcomponent = () => {
         </div>
       </div>
 
-      {/* Render OTP Popup */}
       {isOtpPopupVisible && (
-        <OtpInputWithValidation details={loggerdetails} numberOfDigits={6} onClose={() => setIsOtpPopupVisible(false)} fjkasdf={fdjghjd.data} />
+        <OtpInputWithValidation 
+          details={loggerdetails} 
+          numberOfDigits={6} 
+          onClose={() => setIsOtpPopupVisible(false)} 
+          fjkasdf={fdjghjd.data} 
+        />
       )}
-
     </div>
   );
 };

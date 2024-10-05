@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
@@ -12,6 +12,7 @@ import './Home.css';
 import '../App.css';
 import ProductCard from '../components/Productcard';
 import axios from 'axios';
+import AlertSuccessMessage from '../components/alertSuccess';
 
 const slides = [
     { mainImage: image1 },
@@ -20,67 +21,80 @@ const slides = [
     { mainImage: image4 },
 ];
 
-const Home=(isAdmin)=> {
-  const [products, setProducts] = useState([]);// Combined product list from both categories
+const Home = ({ isAdmin }) => {
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  // Function to fetch products by category
+  const location = useLocation();
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+
   const getProductsByCategory = async (category) => {
     try {
       const response = await axios.get(`/api/admin/getbycategory/${category}`);
       const productData = response.data.data;
-      // Ensure the response is an array, otherwise return an empty array
-      if (Array.isArray(productData)) {
-        return productData.slice(0, 10); // Return only 10 products
-      } else {
-        return []; // In case of any issue, return an empty array
-      }
+      return Array.isArray(productData) ? productData.slice(0, 10) : [];
     } catch (error) {
       console.log("Error fetching product data: ", error);
-      return []; // Return an empty array in case of error
+      return [];
     }
   };
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch 10 products from "Haldiram"
         const haldiramProducts = await getProductsByCategory("Haldiram");
-        // Fetch 10 products from "G2"
         const g2Products = await getProductsByCategory("G2");
-
-        // Combine both product arrays
         const allProducts = [...haldiramProducts, ...g2Products];
-        setProducts(allProducts); // Update the state with combined products
+        setProducts(allProducts);
       } catch (error) {
         console.log("Error fetching products: ", error);
       }
     };
-    fetchProducts(); // Call the async function to fetch the products
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    fetchProducts();
+    window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (location.state?.alert) {
+      console.log("namaskar",location.state.message);
+      setAlertMessage(location.state.message);
+      setShowAlert(true);
+      // Clear the location state to prevent the alert from showing again on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    setAlertMessage('');
+  };
+
   return (
     <>
-      <Header isAdmin={isAdmin}/>
+      <Header isAdmin={isAdmin} />
+      {showAlert && (
+        <AlertSuccessMessage
+          message={alertMessage}
+          onClose={handleCloseAlert}
+        />
+      )}
       <Navbar />
       <Slider slides={slides} />
       <br />
       <div className='allcards'>
-        {
-          products.length > 0 ? products.map((product, index) => (
-            <React.Fragment key={index}>
-              <ProductCard 
-                imageUrl={product.image} // Use the correct image path if dynamic
-                title={product.productName}
-                description={product.description}
-                currentPrice={product.price[0]}
-                originalPrice={product.price[1]}
-                id={product._id}
-                availability={product.availability}
-                verify={isAdmin.isAdmin}
-                />   
-            </React.Fragment>
-          )) : <p>No products available</p>
-        }
+        {products.length > 0 ? products.map((product, index) => (
+          <ProductCard 
+            key={index}
+            imageUrl={product.image}
+            title={product.productName}
+            description={product.description}
+            currentPrice={product.price[0]}
+            originalPrice={product.price[1]}
+            id={product._id}
+            availability={product.availability}
+            verify={isAdmin}
+          />   
+        )) : <p>No products available</p>}
       </div>
       <br />
       <Footer />
