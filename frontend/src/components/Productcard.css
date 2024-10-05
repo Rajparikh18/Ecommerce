@@ -130,6 +130,18 @@
   background-color: #cccccc;
   cursor: not-allowed;
 }
+.add-to-cart-btn,
+.edit-btn,
+.delete-btn {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.add-to-cart-btn:active,
+.edit-btn:active,
+.delete-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 
 .edit-btn,
 .delete-btn {
@@ -173,6 +185,7 @@
     flex-direction: row;
     max-width: none;
     margin: 0.5rem 0;
+    height: 150px; /* Set a fixed height for mobile */
   }
 
   .image-container {
@@ -184,39 +197,46 @@
 
   .product-details {
     padding: 0.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* Prevent content from overflowing */
   }
 
+  
   .product-title {
     font-size: 1rem;
-  }
-
-  .product-description {
-    font-size: 0.8rem;
+    line-height: 1.2;
+    max-height: 2.4em; /* Allows for two lines of text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
     -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.25rem;
+    white-space: normal; /* Allow text to wrap */
+  }
+  .product-description {
+    display: none;
   }
 
-  .current-price {
-    font-size: 1.1rem;
-  }
-
-  .original-price {
-    font-size: 0.9rem;
+  .price-container {
+    margin-bottom: 0.5rem;
   }
 
   .action-buttons {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .add-to-cart-btn,
   .edit-btn,
   .delete-btn {
-    padding: 0.4rem 0.75rem;
+    margin: 2px;
+    padding: 4px 2px;
     font-size: 0.8rem;
-    margin: 0.25rem 0;
-  }
-
-  .edit-btn,
-  .delete-btn {
-    margin: 0.25rem 0;
+    margin-right: 0.5rem;
+    white-space: nowrap;
   }
 }

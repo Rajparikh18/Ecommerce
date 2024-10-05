@@ -113,14 +113,7 @@
   transform: rotate(90deg);
 }
 
-/* Desktop Styles (updated for a classy look) */
-.ecom-nav__desktop {
-  background-color: #fff;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
+
 
 .ecom-nav__desktop-container {
   padding: 1rem;
@@ -141,6 +134,11 @@
 .ecom-nav__desktop-list {
   display: flex;
   list-style-type: none;
+  background-color: #fff;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  z-index: 999;
+  position: fixed;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
