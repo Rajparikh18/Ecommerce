@@ -6,14 +6,14 @@ import Footer from '../components/Footer';
 import Authcomponent from '../components/Authentication';
 
 
-function Authpage(){
+function Authpage(isAdmin){
   useEffect(() => {
     // Scroll to the top of the page on component mount
     window.scrollTo(0, 0);
   }, []);
   return (
     <>
-        <Header/>
+        <Header isAdmin={isAdmin}/>
         <Navbar/>
         <Authcomponent/>
         <Footer/>
