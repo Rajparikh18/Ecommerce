@@ -172,9 +172,6 @@
   margin-right: 0.25rem;
 }
 
-.product-card.out-of-stock {
-  opacity: 0.7;
-}
 
 .product-card.out-of-stock .product-details {
   filter: grayscale(100%);
