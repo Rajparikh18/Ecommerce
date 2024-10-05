@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import "./Product.createform.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToggleLeft, ToggleRight } from "lucide-react";
+import AlertSuccessMessage from "./alertSuccess";
 
 const EditProductForm = () => {
-    const [imgStatus,setImgStatus]=useState(false);
+  const [imgStatus, setImgStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [productData, setProductData] = useState(null);
   const [product, setProduct] = useState({
@@ -77,28 +77,30 @@ const EditProductForm = () => {
     setProduct({ ...product, productImage: file });
     setImgStatus(true);
   };
-  
+
   const toggleAvailability = () => {
     setProduct({ ...product, availability: !product.availability });
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
       let data;
       let headers = {};
-      
+
       if (imgStatus) {
         data = new FormData();
         if (product.productImage) {
-          data.append('productImage', product.productImage);
+          data.append("productImage", product.productImage);
         }
-        data.append('productName', product.productName);
-        data.append('price', JSON.stringify(product.price));
-        data.append('characs', JSON.stringify(product.characs));
-        data.append('description', product.description);
-        data.append('fixedqty', product.fixedqty);
-        data.append('category', product.category);
-        data.append('availability', product.availability);
+        data.append("productName", product.productName);
+        data.append("price", JSON.stringify(product.price));
+        data.append("characs", JSON.stringify(product.characs));
+        data.append("description", product.description);
+        data.append("fixedqty", product.fixedqty);
+        data.append("category", product.category);
+        data.append("availability", product.availability);
       } else {
         data = {
           productName: product.productName,
@@ -107,16 +109,16 @@ const EditProductForm = () => {
           description: product.description,
           fixedqty: product.fixedqty,
           category: product.category,
-          availability: product.availability
+          availability: product.availability,
         };
-        headers['Content-Type'] = 'application/json';
+        headers["Content-Type"] = "application/json";
       }
-  
+
       const response = await axios.put(`/api/admin/update/${id}/${imgStatus}`, data, { headers });
-      
+      console.log(response);
       if (response.status === 200) {
-        navigate("/");
-        // Reset product state...
+        // Navigate to home with flash message
+        navigate("/", { state: { message: response.data.message } });
       } else {
         console.error("Error submitting form");
       }

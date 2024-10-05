@@ -182,3 +182,28 @@ button:disabled {
 .todays-orders .view-details-link:hover {
   background-color: #0056b3;
 }
+
+@media screen and (max-width: 600px) {
+  .todays-orders table th:first-child,
+  .todays-orders table td:first-child{
+    display: none;
+  }
+  
+  .todays-orders table th:nth-child(4),
+  .todays-orders table td:nth-child(4) {
+    display: none;
+  }
+
+  .todays-orders table {
+    font-size: 14px;
+  }
+
+  .todays-orders th, .todays-orders td {
+    padding: 8px;
+  }
+
+  .todays-orders .view-details-link {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}

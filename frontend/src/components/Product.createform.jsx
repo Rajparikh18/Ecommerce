@@ -52,7 +52,7 @@ const ProductForm = () => {
       });
       console.log(response);
       if (response.status === 201) {
-        navigate("/")
+        navigate("/", { state: { message: response.data.message } })
         setProduct({
           productImage: null,
           productName: '',

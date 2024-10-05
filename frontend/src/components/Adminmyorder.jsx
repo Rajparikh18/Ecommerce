@@ -93,113 +93,134 @@ export default function TodaysOrders() {
     const totalRevenue = filteredOrders.reduce((sum, order) => sum + order.amount, 0);
 
     return (
-        <div className="todays-orders">
-            {alertVisible && (
-                <AlertSuccessMessage 
-                    message={alertMessage} 
-                    onClose={() => setAlertVisible(false)}
-                />
-            )}
+      <div className="todays-orders">
+        {alertVisible && (
+          <AlertSuccessMessage
+            message={alertMessage}
+            onClose={() => setAlertVisible(false)}
+          />
+        )}
 
-            <div className="heading1">
-                <h1>Today's Orders</h1>
-                <div className="date-picker">
-                    <input
-                        type="date"
-                        value={date.toISOString().split("T")[0]}
-                        onChange={handleDateChange}
-                    />
-                </div>
-            </div>
-
-            <div className="summary">
-                <div className="card">
-                    <h2>Total Orders</h2>
-                    <p>{totalOrders}</p>
-                </div>
-                <div className="card">
-                    <h2>Total Revenue</h2>
-                    <p>&#8377;{totalRevenue.toFixed(2)}</p>
-                </div>
-            </div>
-
-            <div className="search">
-                <input
-                    type="text"
-                    placeholder="Search orders..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Order Status</th>
-                        <th>Order Time</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentOrders.map((order) => (
-                        <tr key={order._id}>
-                            <td>{order.orderId}</td>
-                            <td>{`${order.firstName} ${order.lastName}`}</td>
-                            <td>
-                                <div className="status-checkbox">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name={`order_${order._id}`}
-                                            value="Dispatched"
-                                            checked={orderStatuses[order._id] === "Dispatched"}
-                                            onChange={handleStatusChange}
-                                        />
-                                        <Truck size={24} className='truck' />
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name={`order_${order._id}`}
-                                            value="Delivered"
-                                            checked={orderStatuses[order._id] === "Delivered"}
-                                            onChange={handleStatusChange}
-                                        />
-                                        <Package size={24} className='package' />
-                                    </label>
-                                </div>
-                            </td>
-                            <td>{format(new Date(order.created_At), "HH:mm:ss")}</td>
-                            <td>&#8377;{order.amount.toFixed(2)}</td>
-                            <td>
-                                <Link to={`/order/${order._id}`}>View Details</Link>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            <button onClick={updatestatusindb}>Update in Database</button>
-
-            <div className="pagination">
-                <button
-                    className="button1"
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <button
-                    className="button1"
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
+        <div className="heading1">
+          <h1>Today's Orders</h1>
+          <div className="date-picker">
+            <input
+              type="date"
+              value={date.toISOString().split("T")[0]}
+              onChange={handleDateChange}
+            />
+          </div>
         </div>
+
+        <div className="summary">
+          <div className="card">
+            <h2>Total Orders</h2>
+            <p>{totalOrders}</p>
+          </div>
+          <div className="card">
+            <h2>Total Revenue</h2>
+            <p>&#8377;{totalRevenue.toFixed(2)}</p>
+          </div>
+        </div>
+
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search orders..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Order Status</th>
+              <th>Order Time</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentOrders.map((order) => (
+              <tr key={order._id}>
+                <td>{order.orderId}</td>
+                <td>{`${order.firstName} ${order.lastName}`}</td>
+                <td>
+                  <div className="status-checkbox">
+                    <label>
+                      <input
+                        type="radio"
+                        name={`order_${order._id}`}
+                        value="Dispatched"
+                        checked={orderStatuses[order._id] === "Dispatched"}
+                        onChange={handleStatusChange}
+                      />
+                      <Truck size={24} className="truck" />
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={`order_${order._id}`}
+                        value="Delivered"
+                        checked={orderStatuses[order._id] === "Delivered"}
+                        onChange={handleStatusChange}
+                      />
+                      <Package size={24} className="package" />
+                    </label>
+                  </div>
+                </td>
+                <td>{format(new Date(order.created_At), "HH:mm:ss")}</td>
+                <td>&#8377;{order.amount.toFixed(2)}</td>
+                <td>
+                  <Link to={`/order/${order._id}`}>View Details</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <button
+          onClick={updatestatusindb}
+          style={{
+            backgroundColor: "#28a745",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = "#218838")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = "#28a745")
+          }
+        >
+          Update in Database
+        </button>
+
+        <div className="pagination">
+          <button
+            className="button1"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <button
+            className="button1"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
@@ -12,17 +12,21 @@ import './Home.css';
 import '../App.css';
 import ProductCard from '../components/Productcard';
 import axios from 'axios';
+import AlertSuccessMessage from '../components/alertSuccess.jsx'; // Import your flash message component
 
 const slides = [
-    { mainImage: image1 },
-    { mainImage: image2 },
-    { mainImage: image3 },
-    { mainImage: image4 },
+  { mainImage: image1 },
+  { mainImage: image2 },
+  { mainImage: image3 },
+  { mainImage: image4 },
 ];
 
-const Home=(isAdmin)=> {
-  const [products, setProducts] = useState([]);// Combined product list from both categories
+const Home = ( isAdmin ) => {
+  const [products, setProducts] = useState([]); // Combined product list from both categories
+  const [flashMessage, setFlashMessage] = useState(null); // To handle the flash message
   const navigate = useNavigate();
+  const location = useLocation();
+
   // Function to fetch products by category
   const getProductsByCategory = async (category) => {
     try {
@@ -35,40 +39,52 @@ const Home=(isAdmin)=> {
         return []; // In case of any issue, return an empty array
       }
     } catch (error) {
-      console.log("Error fetching product data: ", error);
+      console.log('Error fetching product data: ', error);
       return []; // Return an empty array in case of error
     }
   };
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch 10 products from "Haldiram"
-        const haldiramProducts = await getProductsByCategory("Haldiram");
-        // Fetch 10 products from "G2"
-        const g2Products = await getProductsByCategory("G2");
+        const haldiramProducts = await getProductsByCategory('Haldiram');
+        const g2Products = await getProductsByCategory('G2');
 
-        // Combine both product arrays
         const allProducts = [...haldiramProducts, ...g2Products];
         setProducts(allProducts); // Update the state with combined products
       } catch (error) {
-        console.log("Error fetching products: ", error);
+        console.log('Error fetching products: ', error);
       }
     };
     fetchProducts(); // Call the async function to fetch the products
     window.scrollTo(0, 0); // Scroll to the top of the page
-  }, []);
+
+    // Check if there’s a message passed from the previous route
+    if (location.state && location.state.message) {
+      setFlashMessage(location.state.message);
+
+      // Clear the flash message from history by resetting location state
+      navigate('.', { replace: true, state: {} }); // Remove the state after the message is displayed
+    }
+  }, [location.state, navigate]);
+
   return (
     <>
-      <Header isAdmin={isAdmin}/>
+      <Header isAdmin={isAdmin} />
       <Navbar />
       <Slider slides={slides} />
+      {flashMessage && (
+        <AlertSuccessMessage
+          message={flashMessage}
+          onClose={() => setFlashMessage(null)} // Close the flash message
+        />
+      )}
       <br />
       <div className='allcards'>
-        {
-          products.length > 0 ? products.map((product, index) => (
+        {products.length > 0 ? (
+          products.map((product, index) => (
             <React.Fragment key={index}>
-              <ProductCard 
+              <ProductCard
                 imageUrl={product.image} // Use the correct image path if dynamic
                 title={product.productName}
                 description={product.description}
@@ -77,15 +93,17 @@ const Home=(isAdmin)=> {
                 id={product._id}
                 availability={product.availability}
                 verify={isAdmin.isAdmin}
-                />   
+              />
             </React.Fragment>
-          )) : <p>No products available</p>
-        }
+          ))
+        ) : (
+          <p>No products available</p>
+        )}
       </div>
       <br />
       <Footer />
     </>
   );
-}
+};
 
 export default Home;
