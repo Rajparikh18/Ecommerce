@@ -82,10 +82,10 @@ const Home = ( isAdmin ) => {
       )}
       <br />
       <div className='allcards'>
-        {products.length > 0 ? (
-          products.map((product, index) => (
+      {
+          products.length > 0 ? products.map((product, index) => (
             <React.Fragment key={index}>
-              <ProductCard
+              <ProductCard 
                 imageUrl={product.image} // Use the correct image path if dynamic
                 title={product.productName}
                 description={product.description}
@@ -94,7 +94,7 @@ const Home = ( isAdmin ) => {
                 id={product._id}
                 availability={product.availability}
                 verify={isAdmin.isAdmin}
-              />
+                />   
             </React.Fragment>
           )) : <MorphingLoader/>
         }
