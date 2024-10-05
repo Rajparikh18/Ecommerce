@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Productcard.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Edit, Trash2 } from "lucide-react";
-import axios from "axios";
+import DeleteProduct from "./adminDeleteProduct.jsx";
 
 const ProductCard = ({
   verify,
@@ -16,8 +16,9 @@ const ProductCard = ({
   id,
 }) => {
   const navigate = useNavigate();
+  const [deletePopup, setDeletePopup] = useState(false);
 
-  const handleclick = () => {
+  const handleClick = () => {
     navigate(`/product/${id}`);
   };
 
@@ -46,15 +47,12 @@ const ProductCard = ({
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const deletebtn = async (e) => {
+  const deleteBtn = (e) => {
     e.stopPropagation();
-    const deleteproduct = await axios.delete(`/api/admin/delete/${id}`);
-    if (deleteproduct) {
-      window.location.reload();
-    }
+    setDeletePopup(true);
   };
 
-  const Editbtn = (e) => {
+  const editBtn = (e) => {
     e.stopPropagation();
     navigate(`/update/${id}`);
   };
@@ -62,8 +60,15 @@ const ProductCard = ({
   return (
     <div 
       className={`product-card ${!availability ? 'out-of-stock' : ''}`} 
-      onClick={handleclick}
+      onClick={handleClick}
     >
+      {deletePopup && (
+            <DeleteProduct 
+              productName={title} 
+              id={id} 
+              onClose={() => setDeletePopup(false)} 
+            />
+          )}
       <div className="image-container">
         <img src={imageUrl} alt={title} className="product-image1" />
         {!availability && <span className="out-of-stock-label">Out of Stock</span>}
@@ -89,11 +94,11 @@ const ProductCard = ({
           )}
           {verify && (
             <>
-              <button className="edit-btn" onClick={Editbtn}>
+              <button className="edit-btn" onClick={editBtn}>
                 <Edit size={16} />
                 Edit
               </button>
-              <button className="delete-btn" onClick={deletebtn}>
+              <button className="delete-btn" onClick={deleteBtn}>
                 <Trash2 size={16} />
                 Delete
               </button>
