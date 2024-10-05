@@ -65,6 +65,9 @@ export default function Header(isAdmin ) {
     navigate(`/update/${id}`);
   };
   const gotoMyorders = (name) => {
+    if (!name) {
+      return navigate('/authpage');
+    }
     navigate(`/${name}/myorders`);
     setIsMobileMenuOpen(false);
   }
@@ -188,7 +191,7 @@ export default function Header(isAdmin ) {
           )}
         </div>
         <nav className={`nav-section ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
-        {isAdmin?.isAdmin?.isAdmin ? (
+        {isAdmin.isAdmin.isAdmin ? (
   <button onClick={gotoTodaysorders} className="nav-button">Today's Orders</button>
 ) : (
   <button onClick={() => gotoMyorders(username)} className="nav-button">My Orders</button>
