@@ -53,6 +53,9 @@ const OrderCard = ({ order }) => {
         <p className="order-date">
           Placed on {new Date(order.created_At).toLocaleDateString()}
         </p>
+        <p className='order-status'>
+            Order Status : {order.orderStatus}
+        </p>
         <p className="order-total">Total: ₹{order.amount}</p>
         {showDetails ? <ChevronUp className="icon" /> : <ChevronDown className="icon" />}
       </div>

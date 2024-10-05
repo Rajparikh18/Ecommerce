@@ -11,3 +11,14 @@
         flex-wrap: wrap;
         justify-content: space-around;
     }
+    .allcards11{
+        margin-top: 50px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .slider-container{
+        margin-top: 50px;
+    }
