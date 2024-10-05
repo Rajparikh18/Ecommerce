@@ -6,7 +6,7 @@ import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
-export default function Header(isAdmin=false) {
+export default function Header(isAdmin ) {
   const navigate = useNavigate();
   const [raj, setRaj] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -145,10 +145,7 @@ export default function Header(isAdmin=false) {
   return (
     <header className="header66 header-container">
         <div className="logo-section">
-          <h1 className="logo">APARNA DISTRIBUTORS</h1>
-          <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-            <Menu size={24} />
-          </button>
+          <p className="logo">APARNA DISTRIBUTORS</p>
         </div>
         <div className="search-section">
           <div className="search-container">
@@ -191,8 +188,12 @@ export default function Header(isAdmin=false) {
           )}
         </div>
         <nav className={`nav-section ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
-          <button onClick={() => gotoMyorders(username)} className="nav-button">My Orders</button>
-          <button onClick={gotoTodaysorders} className="nav-button">Today's Orders</button>
+        {isAdmin?.isAdmin?.isAdmin ? (
+  <button onClick={gotoTodaysorders} className="nav-button">Today's Orders</button>
+) : (
+  <button onClick={() => gotoMyorders(username)} className="nav-button">My Orders</button>
+)}
+
           <div className="profile-section">
             <button onClick={checkforlogin} className="profile-button">
               <User size={24} />
