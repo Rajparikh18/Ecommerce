@@ -4,6 +4,8 @@ import './ProductDetail.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { set } from 'date-fns';
+import DeleteProduct from './adminDeleteProduct';
 
 const ProductDetail = ({
   verify,
@@ -17,6 +19,7 @@ const ProductDetail = ({
   availability,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const [deletePopup, setDeletePopup] = useState(false);
   const navigate = useNavigate();
 
   const incrementQuantity = () => setQuantity(prev => prev + 1);
@@ -29,11 +32,8 @@ const ProductDetail = ({
 
   async function deletebtn(e) {
     e.stopPropagation();
-    const deleteproduct = await axios.delete(`/api/admin/delete/${id}`);
-    if (deleteproduct.status === 200) {
-      navigate(`/`);
+    setDeletePopup(true);
     }
-  }
 
   function addToCart(e, product) {
     if (availability === false) {
@@ -66,6 +66,13 @@ const ProductDetail = ({
 
   return (
     <div className="pd-container">
+      {deletePopup && (
+            <DeleteProduct 
+              productName={productName} 
+              id={id} 
+              onClose={() => setDeletePopup(false)} 
+            />
+          )}
       <div className="pd-image-wrapper">
         <img className="pd-image" src={image} alt={productName} />
       </div>
@@ -118,5 +125,4 @@ const ProductDetail = ({
     </div>
   );
 };
-
 export default ProductDetail;
