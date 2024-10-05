@@ -8,6 +8,7 @@ import image1 from '../assets/slider1.jpg';
 import image2 from '../assets/slider2.png';
 import image3 from '../assets/slider3.jpg';
 import image4 from '../assets/slider4.png';
+import MorphingLoader from '../components/MorphingLoader';
 import './Home.css';
 import '../App.css';
 import ProductCard from '../components/Productcard';
@@ -79,7 +80,7 @@ const Home=(isAdmin)=> {
                 verify={isAdmin.isAdmin}
                 />   
             </React.Fragment>
-          )) : <p>No products available</p>
+          )) : <MorphingLoader/>
         }
       </div>
       <br />

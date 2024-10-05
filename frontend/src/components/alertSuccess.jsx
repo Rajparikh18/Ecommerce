@@ -10,10 +10,10 @@ function AlertSuccessMessage({ message, onClose }) {
         return () => clearTimeout(timer); 
       }, [onClose]);
   return (
-    <div id="custom-alert" className="alert">
-      <div className="alert-content">
-        <span className="alert-message">{message}</span>
-        <button className="alert-close" onClick={onClose}>
+    <div id="custom-alert" className="alerts">
+      <div className="alert-contents">
+        <span className="alert-messages">{message}</span>
+        <button className="alert-closes" onClick={onClose}>
           &times; {/* Using a close icon */}
         </button>
       </div>

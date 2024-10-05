@@ -53,7 +53,6 @@ const BillingDetails = () => {
 
       const response = await axios.post('/api/payment/createorder', submissionData);
       if (response.data && response.data.data) {
-        console.log(response.data.data);
         initializeRazorpay(response.data.data);
       } else {
         console.error('Invalid response from server');

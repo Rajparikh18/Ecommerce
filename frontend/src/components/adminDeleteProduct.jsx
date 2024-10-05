@@ -6,10 +6,11 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const DeleteProduct = ({ productName, id, onClose }) => {
   const handleConfirmDelete = async (e) => {
     e.stopPropagation(); 
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     try {
       const deleteProduct = await axios.delete(`/api/admin/delete/${id}`);
       if (deleteProduct) {
+        navigate('/');
         window.location.reload();  // Reload the page after successful deletion
       }
     } catch (error) {

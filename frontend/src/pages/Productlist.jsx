@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import './Home.css'
 import ProductCard from '../components/Productcard';
 import Navbar from '../components/Navbar';
+import MorphingLoader from '../components/MorphingLoader';
 const Productlist=(isAdmin)=> {
     const { category } = useParams();
     const [products, setProducts] = useState([]);
@@ -44,7 +45,7 @@ const Productlist=(isAdmin)=> {
                 verify={isAdmin.isAdmin}
                 />   
             </React.Fragment>
-          )) : <p>No products available</p>
+          )) : <MorphingLoader/>
         }
       </div>
             <Footer />

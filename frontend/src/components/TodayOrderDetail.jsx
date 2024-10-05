@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import './TodayOrderDetail.css';
+import MorphingLoader from './MorphingLoader';
 
 export default function OrderDetails() {
     const [order, setOrder] = useState(null);
@@ -31,7 +32,7 @@ export default function OrderDetails() {
     };
 
     if (loading) {
-        return <div className="order-details__loading">Loading...</div>;
+        return <MorphingLoader/>;
     }
 
     if (error) {
