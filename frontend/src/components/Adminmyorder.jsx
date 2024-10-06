@@ -162,7 +162,7 @@ export default function TodaysOrders() {
                                             <label>
                                                 <input
                                                     type="radio"
-                                                    name={order_`${order._id}`}
+                                                    name={`order_${order._id}`}
                                                     value="Dispatched"
                                                     checked={orderStatuses[order._id] === "Dispatched"}
                                                     onChange={handleStatusChange}
@@ -172,7 +172,7 @@ export default function TodaysOrders() {
                                             <label>
                                                 <input
                                                     type="radio"
-                                                    name={order_`${order._id}`}
+                                                    name={`order_${order._id}`}
                                                     value="Delivered"
                                                     checked={orderStatuses[order._id] === "Delivered"}
                                                     onChange={handleStatusChange}

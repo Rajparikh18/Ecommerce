@@ -213,17 +213,41 @@ const updateProduct = asyncHandler(async (req, res) => {
         );
     }
 });
-const getProductsByCategory = asyncHandler(async(req,res)=>{
+const getProductsByCategory = asyncHandler(async (req, res) => {
     try {
-        const products=await Product.find({category:req.params.category});
-        if(!products){
-            throw new ApiError(404,"No products found");
+        const { category } = req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const skip = (page - 1) * limit;
+
+        const total = await Product.countDocuments({ category });
+        
+        const products = await Product.find({ category })
+            .skip(skip)
+            .limit(limit);
+
+        if (products.length === 0) {
+            throw new ApiError(404, "No products found");
         }
+
         return res.status(200).json(
-            new ApiResponse(200,products,"Products fetched successfully")
-        )
+            new ApiResponse(200, {
+                products,
+                currentPage: page,
+                totalPages: Math.ceil(total / limit),
+                total
+            }, "Products fetched successfully")
+        );
     } catch (err) {
         console.log(err);
+        if (err instanceof ApiError) {
+            return res.status(err.statusCode).json(
+                new ApiResponse(err.statusCode, null, err.message)
+            );
+        }
+        return res.status(500).json(
+            new ApiResponse(500, null, "Internal Server Error")
+        );
     }
 });
 

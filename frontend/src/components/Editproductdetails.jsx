@@ -115,7 +115,6 @@ const EditProductForm = () => {
       }
 
       const response = await axios.put(`/api/admin/update/${id}/${imgStatus}`, data, { headers });
-      console.log(response);
       if (response.status === 200) {
         // Navigate to home with flash message
         navigate("/", { state: { message: response.data.message } });

@@ -197,7 +197,10 @@ button:disabled {
   .todays-orders table {
     font-size: 14px;
   }
-
+  .status-checkbox{
+    display: flex;
+    flex-direction: column;
+  }
   .todays-orders th, .todays-orders td {
     padding: 8px;
   }

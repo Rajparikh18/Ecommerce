@@ -58,11 +58,10 @@ const Authcomponent = () => {
         setAlertMessage("Admin exists, please verify OTP");
         setAlertSuccessVisible(true);
       } else if (response.status === 200) {
-        setTimeout(() => {
-          window.location.reload();
           navigate("/", { state: { message: response.data.message } });
-        }, 2000);
+        window.location.reload();
       }
+      setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.data) {
         const { message } = error.response.data;
@@ -71,6 +70,7 @@ const Authcomponent = () => {
         setAlertMessage("An unknown error occurred. Please try again.");
       }
       setAlertVisible(true);
+      setIsLoading(false);
     } 
   };  
   useEffect(()=>{

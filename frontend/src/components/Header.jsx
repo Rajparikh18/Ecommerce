@@ -5,7 +5,7 @@ import axios from 'axios';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
-
+import DeleteProduct from './adminDeleteProduct';
 export default function Header(isAdmin ) {
   const navigate = useNavigate();
   const [raj, setRaj] = useState(false);
@@ -15,6 +15,7 @@ export default function Header(isAdmin ) {
   const [username, setUsername] = useState("");
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [deletePopup, setDeletePopup] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const debounce = (func, delay) => {
     let timeout;
@@ -44,20 +45,9 @@ export default function Header(isAdmin ) {
     navigate(`/product/${id}`);
     setResults([]);
   }
-  const deletebtn = async (id, e) => {
+  const deleteBtn = (e,id) => {
     e.stopPropagation();
-    try {
-      const deleteproduct = await axios.delete(`/api/admin/delete/${id}`);
-      if (deleteproduct) {
-        // Consider using state management or a callback to update the UI instead of reloading the page
-        setResults(prevProducts => prevProducts.filter(product => product._id !== id));
-        // Optionally, show a success message to the user
-        alert('Product deleted successfully');
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      // Handle error (e.g., show an error message to the user)
-    }
+    setDeletePopup(true);
   };
   
   const Editbtn = (id, e) => {
@@ -178,12 +168,19 @@ export default function Header(isAdmin ) {
                       </button>&nbsp;&nbsp;
                       <button 
                         className="delete-btn11" 
-                        onClick={(e) => deletebtn(product._id, e)}
+                        onClick={(e) => deleteBtn( e,product._id)}
                       >
                         <Trash2 size={16} />
                       </button>
                     </>
                   )}
+                   {deletePopup && (
+            <DeleteProduct 
+              productName={product.productName} 
+              id={product._id} 
+              onClose={() => setDeletePopup(false)} 
+            />
+          )}
                 </li>
                 ))}
               </ul>

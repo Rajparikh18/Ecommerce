@@ -91,7 +91,7 @@ export default function OrderDetails() {
                 <p className="order-details__address">{order.city}, {order.postCode}</p>
             </div>
 
-            <Link to="/" className="order-details__back-button">Back to Orders</Link>
+            <Link to="/todayorders" className="order-details__back-button">Back to Orders</Link>
         </div>
     );
 }

@@ -22,3 +22,58 @@
     .slider-container{
         margin-top: 50px;
     }
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding-right: 20px;
+}
+.pagination button {
+    background-color: #2e8b57;
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.pagination button:hover {
+    background-color: #3cb371;
+}
+
+.pagination button:active {
+    background-color: #2e8b57;
+    transform: scale(0.95);
+}@media (max-width: 768px) {
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px; /* Reduced margin */
+        padding-right: 10px; /* Reduced padding */
+    }
+    .pagination button {
+        background-color: #2e8b57;
+        border: none;
+        color: rgb(255, 255, 255);
+        padding: 8px 16px; /* Reduced padding */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px; /* Reduced font size */
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+    .pagination button:hover {
+        background-color: #3cb371;
+    }
+    .pagination button:active {
+        background-color: #2e8b57;
+        transform: scale(0.95);
+    }
+}

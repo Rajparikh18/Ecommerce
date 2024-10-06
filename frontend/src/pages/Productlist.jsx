@@ -7,47 +7,84 @@ import './Home.css'
 import ProductCard from '../components/Productcard';
 import Navbar from '../components/Navbar';
 import MorphingLoader from '../components/MorphingLoader';
-const Productlist=(isAdmin)=> {
+
+const Productlist = ({ isAdmin }) => {
     const { category } = useParams();
     const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const productsPerPage = 20;
 
     useEffect(() => {
-        // Define the async function inside the useEffect
         const fetchProducts = async () => {
+            setIsLoading(true);
             try {
-                const response = await axios.get(`/api/admin/getbycategory/${category}`);
-                setProducts(response.data.data);
+                const response = await axios.get(`/api/admin/getbycategory/${category}`, {
+                    params: {
+                        page: currentPage,
+                        limit: productsPerPage
+                    }
+                });
+                setProducts(response.data.data.products);
+                setTotalPages(response.data.data.totalPages);
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
+            setIsLoading(false);
         };
 
-        // Call the async function
         fetchProducts();
-    }, [category]);
+    }, [category, currentPage]);
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
 
     return (
         <>
-            <Header isAdmin={isAdmin}/>
-            <Navbar/>
+            <Header isAdmin={isAdmin} />
+            <Navbar />
             <div className='allcards11'>
-        {
-          products.length > 0 ? products.map((product, index) => (
-            <React.Fragment key={index}>
-              <ProductCard 
-                imageUrl={product.image} // Use the correct image path if dynamic
-                title={product.productName}
-                description={product.description}
-                currentPrice={product.price[0]}
-                originalPrice={product.price[1]}
-                id={product._id}
-                availability={product.availability}
-                verify={isAdmin.isAdmin}
-                />   
-            </React.Fragment>
-          )) : <MorphingLoader/>
-        }
-      </div>
+                {isLoading ? (
+                    <MorphingLoader />
+                ) : products.length > 0 ? (
+                    products.map((product, index) => (
+                        <React.Fragment key={product._id}>
+                            <ProductCard 
+                                imageUrl={product.image}
+                                title={product.productName}
+                                description={product.description}
+                                currentPrice={product.price[0]}
+                                originalPrice={product.price[1]}
+                                id={product._id}
+                                availability={product.availability}
+                                verify={isAdmin}
+                            />   
+                        </React.Fragment>
+                    ))
+                ) : (
+                    <p>No products found in this category.</p>
+                )}
+            </div>
+            {totalPages > 1 && (
+                <div className="pagination">
+                    <button 
+                        onClick={() => handlePageChange(currentPage - 1)} 
+                        disabled={currentPage === 1}
+                    >
+                        Previous
+                    </button>
+                    <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                    <button 
+                        onClick={() => handlePageChange(currentPage + 1)} 
+                        disabled={currentPage === totalPages}
+                    >
+                        Next
+                    </button>
+                </div>
+            )}<br />
             <Footer />
         </>
     );

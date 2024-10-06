@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { useNavigate, useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Slider from '../components/Slider';
 import image1 from '../assets/slider1.jpg';
-import image2 from '../assets/slider2.png';
+import image2 from '../assets/slider2.jpg';
 import image3 from '../assets/slider3.jpg';
-import image4 from '../assets/slider4.png';
+import image4 from '../assets/slider4.jpg';
 import MorphingLoader from '../components/MorphingLoader';
 import './Home.css';
 import '../App.css';
 import ProductCard from '../components/Productcard';
 import axios from 'axios';
-import AlertSuccessMessage from '../components/alertSuccess.jsx'; // Import your flash message component
+import AlertSuccessMessage from '../components/alertSuccess.jsx';
 
 const slides = [
   { mainImage: image1 },
@@ -22,50 +22,46 @@ const slides = [
   { mainImage: image4 },
 ];
 
-const Home = ( isAdmin ) => {
-  const [products, setProducts] = useState([]); // Combined product list from both categories
-  const [flashMessage, setFlashMessage] = useState(null); // To handle the flash message
+const Home = (isAdmin ) => {
+  const [products, setProducts] = useState([]);
+  const [flashMessage, setFlashMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to fetch products by category
-  const getProductsByCategory = async (category) => {
+  const getProductsByCategory = async (category, page = 1, limit = 10) => {
     try {
-      const response = await axios.get(`/api/admin/getbycategory/${category}`);
-      const productData = response.data.data;
-      // Ensure the response is an array, otherwise return an empty array
-      if (Array.isArray(productData)) {
-        return productData.slice(0, 10); // Return only 10 products
-      } else {
-        return []; // In case of any issue, return an empty array
-      }
+      const response = await axios.get(`/api/admin/getbycategory/${category}`, {
+        params: { page, limit }
+      });
+      return response.data.data.products;
     } catch (error) {
-      console.log('Error fetching product data: ', error);
-      return []; // Return an empty array in case of error
+      console.log(`Error fetching ${category} products:`, error);
+      return [];
     }
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
         const haldiramProducts = await getProductsByCategory('Haldiram');
         const g2Products = await getProductsByCategory('G2');
 
         const allProducts = [...haldiramProducts, ...g2Products];
-        setProducts(allProducts); // Update the state with combined products
+        setProducts(allProducts);
       } catch (error) {
         console.log('Error fetching products: ', error);
       }
+      setIsLoading(false);
     };
-    fetchProducts(); // Call the async function to fetch the products
-    window.scrollTo(0, 0); // Scroll to the top of the page
 
-    // Check if there’s a message passed from the previous route
+    fetchProducts();
+    window.scrollTo(0, 0);
+
     if (location.state && location.state.message) {
       setFlashMessage(location.state.message);
-
-      // Clear the flash message from history by resetting location state
-      navigate('.', { replace: true, state: {} }); // Remove the state after the message is displayed
+      navigate('.', { replace: true, state: {} });
     }
   }, [location.state, navigate]);
 
@@ -77,16 +73,18 @@ const Home = ( isAdmin ) => {
       {flashMessage && (
         <AlertSuccessMessage
           message={flashMessage}
-          onClose={() => setFlashMessage(null)} // Close the flash message
+          onClose={() => setFlashMessage(null)}
         />
       )}
       <br />
       <div className='allcards'>
-      {
-          products.length > 0 ? products.map((product, index) => (
+        {isLoading ? (
+          <MorphingLoader />
+        ) : (
+          products.map((product, index) => (
             <React.Fragment key={index}>
               <ProductCard 
-                imageUrl={product.image} // Use the correct image path if dynamic
+                imageUrl={product.image}
                 title={product.productName}
                 description={product.description}
                 currentPrice={product.price[0]}
@@ -94,10 +92,10 @@ const Home = ( isAdmin ) => {
                 id={product._id}
                 availability={product.availability}
                 verify={isAdmin.isAdmin}
-                />   
+              />   
             </React.Fragment>
-          )) : <MorphingLoader/>
-        }
+          ))
+        )}
       </div>
       <br />
       <Footer />
